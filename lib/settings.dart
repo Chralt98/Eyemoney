@@ -6,7 +6,7 @@ class Settings extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Settings'),
-        backgroundColor: Colors.lightGreenAccent,
+        backgroundColor: Colors.blueAccent,
       ),
       body: Container(
 

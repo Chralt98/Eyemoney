@@ -6,7 +6,7 @@ class Categories extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Categories'),
-        backgroundColor: Colors.lightGreenAccent,
+        backgroundColor: Colors.blueAccent,
       ),
       body: Container(
 

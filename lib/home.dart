@@ -3,10 +3,14 @@ import 'dart:math';
 import 'statistics.dart';
 import 'categories.dart';
 import 'settings.dart';
-import 'dart:async';
+import 'package:month_picker_dialog/month_picker_dialog.dart';
 
 class Home extends StatefulWidget {
-  final String title = 'Cashflow';
+  final DateTime initialDate;
+  final String title;
+
+  const Home({Key key, @required this.title, @required this.initialDate}) : super(key: key);
+
   @override
   _HomeState createState() => new _HomeState();
 }
@@ -14,38 +18,23 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   static var rand = new Random();
   List<String> items = List<String>.generate(20, (int counter) => '$counter consumption ' + rand.nextInt(100).toString() + '€');
-  DateTime _date = new DateTime.now();
-  TimeOfDay _time = new TimeOfDay.now();
-
-  Future<Null> _selectDate(BuildContext context) async {
-    final DateTime selected = await showDatePicker(
-        context: context,
-        initialDate: _date,
-        firstDate: new DateTime(1900),
-        lastDate: new DateTime(2100)
-    );
-
-    if(selected != null && selected != _date) {
-      print('Date selected: ${_date.toString()}');
-      setState(() {
-        _date = selected;
-      });
-    }
-  }
+  DateTime selectedDate;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(Home().title),
+        title: Text(widget.title),
         backgroundColor: Colors.blueAccent,
         actions: <Widget>[
           new IconButton(
               icon: Icon(Icons.date_range),
-              onPressed: (){
-                _selectDate(context);
-              }
-          ),
+              onPressed: () {
+                showMonthPicker(context: context, initialDate: selectedDate ?? widget.initialDate).then((date) => setState(() {
+                      selectedDate = date;
+                      print(selectedDate.toString());
+                    }));
+              }),
         ],
       ),
       body: Container(
@@ -73,7 +62,7 @@ class _HomeState extends State<Home> {
               ),
             ),
             ListTile(
-              title: Text('List'),
+              title: Text('Home'),
               onTap: () {
                 // Update the state of the app
                 // ...
