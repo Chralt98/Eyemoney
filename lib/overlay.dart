@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class TextInputOverlay extends ModalRoute {
+class MyOverlay extends ModalRoute {
   double top;
   double bottom;
   double left;
@@ -9,18 +9,10 @@ class TextInputOverlay extends ModalRoute {
   Color bgColor;
   final Widget child;
 
-  TextInputOverlay(
-      {Key key,
-      this.bgColor,
-      @required this.child,
-      this.top,
-      this.bottom,
-      this.left,
-      this.right});
+  MyOverlay({Key key, this.bgColor, @required this.child, this.top, this.bottom, this.left, this.right});
 
   @override
-  Color get barrierColor =>
-      bgColor == null ? Colors.black.withOpacity(0.5) : bgColor;
+  Color get barrierColor => bgColor == null ? Colors.black.withOpacity(0.5) : bgColor;
 
   @override
   bool get barrierDismissible => false;
@@ -29,8 +21,7 @@ class TextInputOverlay extends ModalRoute {
   String get barrierLabel => null;
 
   @override
-  Widget buildPage(BuildContext context, Animation<double> animation,
-      Animation<double> secondaryAnimation) {
+  Widget buildPage(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
     if (top == null) this.top = 10;
     if (bottom == null) this.bottom = 20;
     if (left == null) this.left = 20;
@@ -55,11 +46,7 @@ class TextInputOverlay extends ModalRoute {
 
   Widget _buildOverlayContent(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(
-          bottom: this.bottom,
-          left: this.left,
-          right: this.right,
-          top: this.top),
+      margin: EdgeInsets.only(bottom: this.bottom, left: this.left, right: this.right, top: this.top),
       child: child,
     );
   }
@@ -74,8 +61,7 @@ class TextInputOverlay extends ModalRoute {
   Duration get transitionDuration => Duration(milliseconds: 300);
 
   @override
-  Widget buildTransitions(BuildContext context, Animation<double> animation,
-      Animation<double> secondaryAnimation, Widget child) {
+  Widget buildTransitions(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
     // You can add your own animations for the overlay content
     return FadeTransition(
       opacity: animation,

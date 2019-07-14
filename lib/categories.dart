@@ -87,7 +87,7 @@ class _CategoriesState extends State<Categories> {
 
   void _loadCategoryPref() {
     setState(() {
-      this._categories = this._prefs.getStringList(categoryPrefKey) ?? ['salary', 'food', 'rent', 'contract'];
+      this._categories = this._prefs.getStringList(categoryPrefKey) ?? standard_categories;
     });
   }
 
@@ -105,7 +105,7 @@ class _CategoriesState extends State<Categories> {
     final double height = MediaQuery.of(context).size.height;
     Navigator.push(
       context,
-      TextInputOverlay(
+      MyOverlay(
         top: 100,
         left: 50,
         right: 50,
@@ -141,8 +141,16 @@ class _CategoriesState extends State<Categories> {
     return Container(
         padding: EdgeInsets.all(20.0),
         child: Center(
-            child: TextField(
-          onSubmitted: (text) {
+            child: TextFormField(
+          textCapitalization: TextCapitalization.words,
+          decoration: InputDecoration(
+            border: UnderlineInputBorder(),
+            filled: true,
+            icon: Icon(Icons.category),
+            hintText: 'e.g. electronics',
+            labelText: 'category',
+          ),
+          onFieldSubmitted: (text) {
             this._addCategory(text);
             try {
               Navigator.pop(context); //close the popup
@@ -151,8 +159,6 @@ class _CategoriesState extends State<Categories> {
             }
           },
           keyboardType: TextInputType.text,
-          style: Theme.of(context).textTheme.title,
-          decoration: InputDecoration(hintText: hintText, labelText: labelText, border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10.0)))),
         )));
   }
 }
