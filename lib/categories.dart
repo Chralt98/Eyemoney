@@ -87,7 +87,7 @@ class _CategoriesState extends State<Categories> {
 
   void _loadCategoryPref() {
     setState(() {
-      this._categories = this._prefs.getStringList(categoryPrefKey) ?? ['rent', 'food', 'contract', 'salary'];
+      this._categories = this._prefs.getStringList(categoryPrefKey) ?? ['salary', 'food', 'rent', 'contract'];
     });
   }
 
@@ -102,14 +102,14 @@ class _CategoriesState extends State<Categories> {
   }
 
   _showPopup(BuildContext context, Widget widget, String title, {BuildContext popupContext}) {
-    double height = MediaQuery.of(context).size.height;
+    final double height = MediaQuery.of(context).size.height;
     Navigator.push(
       context,
       TextInputOverlay(
-        top: height * 0.3,
+        top: 100,
         left: 50,
         right: 50,
-        bottom: height * 0.4,
+        bottom: height - 300,
         child: PopupContent(
           content: Scaffold(
             appBar: AppBar(
