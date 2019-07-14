@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import 'globals.dart';
 import 'overlay.dart';
 
 class Categories extends StatefulWidget {
@@ -10,7 +12,6 @@ class Categories extends StatefulWidget {
 
 class _CategoriesState extends State<Categories> {
   SharedPreferences _prefs;
-  static const String categoryPrefKey = 'category_pref';
   List<String> _categories = List<String>();
 
   @override
@@ -53,6 +54,7 @@ class _CategoriesState extends State<Categories> {
                   ),
                 ));
               }
+              this._setCategoryPref(_categories);
             },
             secondaryBackground: Container(
               color: Colors.red,
@@ -77,8 +79,7 @@ class _CategoriesState extends State<Categories> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         backgroundColor: Colors.blueAccent,
-        onPressed: () => showPopup(
-            context, _popupBody('e.g. electronics', 'category'), 'Add'),
+        onPressed: () => _showPopup(context, _popupBody('e.g. electronics', 'category'), 'Add'),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
@@ -86,25 +87,21 @@ class _CategoriesState extends State<Categories> {
 
   void _loadCategoryPref() {
     setState(() {
-      this._prefs.getString(categoryPrefKey) ?? 'electronics';
+      this._categories = this._prefs.getStringList(categoryPrefKey) ?? ['rent', 'food', 'contract', 'salary'];
     });
   }
 
-  Future<Null> _setCategoryPref(List<String> category) async {
-    await this._prefs.setList(categoryPrefKey, category);
+  Future<Null> _setCategoryPref(List<String> categories) async {
+    await this._prefs.setStringList(categoryPrefKey, categories);
     _loadCategoryPref();
   }
 
-  // TODO: at the end of screen save the categorys in prefs every time
-  // overwrite it every time the user leaves the screen
-  // but before load it to set the current cateogries list
-
   void _addCategory(String name) {
     _categories.add(name);
+    this._setCategoryPref(_categories);
   }
 
-  showPopup(BuildContext context, Widget widget, String title,
-      {BuildContext popupContext}) {
+  _showPopup(BuildContext context, Widget widget, String title, {BuildContext popupContext}) {
     double height = MediaQuery.of(context).size.height;
     Navigator.push(
       context,
@@ -155,11 +152,7 @@ class _CategoriesState extends State<Categories> {
           },
           keyboardType: TextInputType.text,
           style: Theme.of(context).textTheme.title,
-          decoration: InputDecoration(
-              hintText: hintText,
-              labelText: labelText,
-              border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10.0)))),
+          decoration: InputDecoration(hintText: hintText, labelText: labelText, border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10.0)))),
         )));
   }
 }
