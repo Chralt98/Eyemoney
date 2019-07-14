@@ -9,24 +9,11 @@ class Categories extends StatefulWidget {
 }
 
 class _CategoriesState extends State<Categories> {
+  List<String> _categories = List<String>();
+
   @override
   Widget build(BuildContext context) {
-    final _biggerFont = const TextStyle(fontSize: 18.0);
-    List<String> categories = List<String>();
-
-    void _addCategory(String name) {
-      categories.add(name);
-    }
-
-    Widget _buildRow(int index) {
-      return ListTile(
-        leading: Icon(Icons.arrow_right),
-        title: Text(
-          'Test $index',
-          style: _biggerFont,
-        ),
-      );
-    }
+    final _biggerFont = const TextStyle(fontSize: 20.0);
 
     return Scaffold(
       appBar: AppBar(
@@ -34,21 +21,59 @@ class _CategoriesState extends State<Categories> {
         backgroundColor: Colors.blueAccent,
       ),
       body: ListView.builder(
-        itemCount: categories.length * 2,
-        padding: const EdgeInsets.all(16.0),
-        itemBuilder: (BuildContext context, int i) {
-          if (i.isOdd) return Divider();
-          final index = i ~/ 2 + 1;
-          return _buildRow(index);
+        itemCount: _categories.length,
+        padding: const EdgeInsets.all(25.0),
+        itemBuilder: (context, index) {
+          final String item = _categories[index];
+          return Dismissible(
+            key: Key(item[index]),
+            direction: DismissDirection.endToStart,
+            onDismissed: (DismissDirection dir) {
+              if (dir == DismissDirection.endToStart) {
+                setState(() => this._categories.removeAt(index));
+                Scaffold.of(context).showSnackBar(SnackBar(
+                  content: Text('$item removed.'),
+                  action: SnackBarAction(
+                    label: 'UNDO',
+                    onPressed: () {
+                      setState(() => this._categories.insert(index, item));
+                    },
+                  ),
+                ));
+              }
+            },
+            secondaryBackground: Container(
+              color: Colors.red,
+              child: Icon(Icons.delete),
+              alignment: Alignment.centerRight,
+            ),
+            background: Container(
+              color: Colors.transparent,
+              child: Icon(Icons.edit),
+              alignment: Alignment.centerLeft,
+            ),
+            child: ListTile(
+              leading: Icon(Icons.dehaze),
+              title: Text(
+                _categories[index],
+                style: _biggerFont,
+              ),
+            ),
+          );
         },
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         backgroundColor: Colors.blueAccent,
-        onPressed: () => showPopup(context, _popupBody(), 'Add'),
+        onPressed: () => showPopup(
+            context, _popupBody('e.g. electronics', 'category'), 'Add'),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
+  }
+
+  void _addCategory(String name) {
+    _categories.add(name);
   }
 
   showPopup(BuildContext context, Widget widget, String title,
@@ -86,16 +111,22 @@ class _CategoriesState extends State<Categories> {
     );
   }
 
-  Widget _popupBody() {
+  Widget _popupBody(String hintText, String labelText) {
     return Container(
         padding: EdgeInsets.all(20.0),
         child: Center(
             child: TextField(
+          onSubmitted: (text) {
+            this._addCategory(text);
+            try {
+              Navigator.pop(context); //close the popup
+            } catch (e) {}
+          },
           keyboardType: TextInputType.text,
           style: Theme.of(context).textTheme.title,
           decoration: InputDecoration(
-              hintText: 'e. g. rent',
-              labelText: 'category',
+              hintText: hintText,
+              labelText: labelText,
               border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(10.0)))),
         )));
