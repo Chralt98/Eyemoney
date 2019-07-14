@@ -9,7 +9,19 @@ class Categories extends StatefulWidget {
 }
 
 class _CategoriesState extends State<Categories> {
+  SharedPreferences _prefs;
+  static const String categoryPrefKey = 'category_pref';
   List<String> _categories = List<String>();
+
+  @override
+  void initState() {
+    super.initState();
+    SharedPreferences.getInstance()
+      ..then((prefs) {
+        setState(() => this._prefs = prefs);
+        _loadCategoryPref();
+      });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,11 +38,11 @@ class _CategoriesState extends State<Categories> {
         itemBuilder: (context, index) {
           final String item = _categories[index];
           return Dismissible(
-            key: Key(item[index]),
+            key: Key(item),
             direction: DismissDirection.endToStart,
             onDismissed: (DismissDirection dir) {
               if (dir == DismissDirection.endToStart) {
-                setState(() => this._categories.removeAt(index));
+                setState(() => this._categories.remove(_categories[index]));
                 Scaffold.of(context).showSnackBar(SnackBar(
                   content: Text('$item removed.'),
                   action: SnackBarAction(
@@ -55,7 +67,7 @@ class _CategoriesState extends State<Categories> {
             child: ListTile(
               leading: Icon(Icons.dehaze),
               title: Text(
-                _categories[index],
+                item,
                 style: _biggerFont,
               ),
             ),
@@ -71,6 +83,21 @@ class _CategoriesState extends State<Categories> {
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
+
+  void _loadCategoryPref() {
+    setState(() {
+      this._prefs.getString(categoryPrefKey) ?? 'electronics';
+    });
+  }
+
+  Future<Null> _setCategoryPref(List<String> category) async {
+    await this._prefs.setList(categoryPrefKey, category);
+    _loadCategoryPref();
+  }
+
+  // TODO: at the end of screen save the categorys in prefs every time
+  // overwrite it every time the user leaves the screen
+  // but before load it to set the current cateogries list
 
   void _addCategory(String name) {
     _categories.add(name);
@@ -97,7 +124,9 @@ class _CategoriesState extends State<Categories> {
                   onPressed: () {
                     try {
                       Navigator.pop(context); //close the popup
-                    } catch (e) {}
+                    } catch (e) {
+                      print(e);
+                    }
                   },
                 );
               }),
@@ -120,7 +149,9 @@ class _CategoriesState extends State<Categories> {
             this._addCategory(text);
             try {
               Navigator.pop(context); //close the popup
-            } catch (e) {}
+            } catch (e) {
+              print(e);
+            }
           },
           keyboardType: TextInputType.text,
           style: Theme.of(context).textTheme.title,
