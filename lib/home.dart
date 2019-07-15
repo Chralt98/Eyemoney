@@ -177,6 +177,7 @@ class _HomeState extends State<Home> {
                   icon: Icon(Icons.close),
                   onPressed: () {
                     try {
+                      this._selectedCategory = null;
                       Navigator.pop(context); //close the popup
                     } catch (e) {
                       print(e);
@@ -195,69 +196,64 @@ class _HomeState extends State<Home> {
   }
 
   Widget _popupBody() {
-    return SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            SizedBox(height: 24.0),
-            TextFormField(
-              textCapitalization: TextCapitalization.words,
-              decoration: InputDecoration(
-                border: UnderlineInputBorder(),
-                filled: true,
-                icon: Icon(Icons.info_outline),
-                hintText: 'e.g. water',
-                labelText: 'description',
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          TextFormField(
+            textCapitalization: TextCapitalization.words,
+            decoration: InputDecoration(
+              border: UnderlineInputBorder(),
+              filled: true,
+              icon: Icon(Icons.info_outline),
+              hintText: 'e.g. water',
+              labelText: 'description',
+            ),
+            onSaved: (String text) => this.description = text,
+          ),
+          TextFormField(
+            controller: MoneyMaskedTextController(decimalSeparator: ',', thousandSeparator: '.'),
+            keyboardType: TextInputType.numberWithOptions(signed: false, decimal: false),
+            decoration: const InputDecoration(border: UnderlineInputBorder(), filled: true, icon: Icon(Icons.attach_money), hintText: 'e.g. 42', labelText: 'amount'),
+            onSaved: (String number) => this.amount = number,
+          ),
+          Row(
+            children: <Widget>[
+              Text('expenditure', style: TextStyle(color: Colors.red)),
+              CrazySwitch(),
+              Text('revenue', style: TextStyle(color: Colors.lightGreen)),
+            ],
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Icon(Icons.category, color: Colors.black38),
+              SizedBox(width: 16.0),
+              DropdownButton(
+                value: _selectedCategory,
+                hint: Text('category'),
+                onChanged: ((String c) {
+                  setState(() {
+                    this._selectedCategory = c;
+                  });
+                }),
+                items: categories.map((String choice) => DropdownMenuItem<String>(value: choice, child: Text(choice))).toList(),
               ),
-              onSaved: (String text) => this.description = text,
+            ],
+          ),
+          Container(
+            child: FloatingActionButton(
+              child: Icon(Icons.check),
+              backgroundColor: Colors.blueAccent,
+              onPressed: null,
             ),
-            SizedBox(height: 24.0),
-            TextFormField(
-              controller: MoneyMaskedTextController(decimalSeparator: ',', thousandSeparator: '.'),
-              keyboardType: TextInputType.numberWithOptions(signed: false, decimal: false),
-              decoration: const InputDecoration(border: UnderlineInputBorder(), filled: true, icon: Icon(Icons.attach_money), hintText: 'e.g. 42', labelText: 'amount'),
-              onSaved: (String number) => this.amount = number,
-            ),
-            SizedBox(height: 12.0),
-            Row(
-              children: <Widget>[
-                Text('expenditure', style: TextStyle(color: Colors.red)),
-                CrazySwitch(),
-                Text('revenue', style: TextStyle(color: Colors.lightGreen)),
-              ],
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-            ),
-            SizedBox(height: 12.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Icon(Icons.category, color: Colors.black38),
-                SizedBox(width: 16),
-                Container(
-                    child: DropdownButton(
-                  value: _selectedCategory,
-                  hint: Text('category'),
-                  onChanged: ((String c) {
-                    setState(() {
-                      _selectedCategory = c;
-                    });
-                  }),
-                  items: categories.map((String choice) => DropdownMenuItem<String>(value: choice, child: Text(choice))).toList(),
-                )),
-              ],
-            ),
-            SizedBox(height: 12.0),
-            Container(
-              child: FloatingActionButton(
-                child: Icon(Icons.check),
-                backgroundColor: Colors.blueAccent,
-                onPressed: null,
-              ),
-              alignment: Alignment.bottomRight,
-            ),
-          ],
-        ));
+            alignment: Alignment.bottomRight,
+          )
+        ],
+      ),
+    );
   }
 }
