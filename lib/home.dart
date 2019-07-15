@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app/switch.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -31,8 +32,7 @@ class _HomeState extends State<Home> {
   DateTime selectedDate;
   String description;
   String amount;
-  Color _revenue = Colors.black12;
-  Color _expenditure = Colors.black12;
+  String _selectedCategory;
 
   @override
   void initState() {
@@ -48,7 +48,7 @@ class _HomeState extends State<Home> {
   // only category for shared preferences
   void _loadCategoryPref() {
     setState(() {
-      this.categories = this._prefs.getStringList(categoryPrefKey) ?? standard_categories;
+      categories = this._prefs.getStringList(categoryPrefKey) ?? standard_categories;
     });
   }
 
@@ -160,7 +160,6 @@ class _HomeState extends State<Home> {
   }
 
   _showPopup(BuildContext context, Widget widget, String title, {BuildContext popupContext}) {
-    final double height = MediaQuery.of(context).size.height;
     Navigator.push(
       context,
       MyOverlay(
@@ -222,35 +221,41 @@ class _HomeState extends State<Home> {
               onSaved: (String number) => this.amount = number,
             ),
             SizedBox(height: 12.0),
-            Dismissible(
-              key: Key('sign'),
-              onDismissed: (DismissDirection dir) {},
-              child: Text('sign'),
-              background: Container(
-                color: Colors.lightGreenAccent,
-                child: Icon(Icons.plus_one),
-                alignment: Alignment.centerRight,
-              ),
-              secondaryBackground: Container(
-                color: Colors.red,
-                child: Icon(Icons.exposure_neg_1),
-              ),
+            Row(
+              children: <Widget>[
+                Text('expenditure', style: TextStyle(color: Colors.red)),
+                CrazySwitch(),
+                Text('revenue', style: TextStyle(color: Colors.lightGreen)),
+              ],
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
             ),
             SizedBox(height: 12.0),
-            PopupMenuButton(
-              child: RaisedButton(
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Icon(Icons.category, color: Colors.black38),
+                SizedBox(width: 16),
+                Container(
+                    child: DropdownButton(
+                  value: _selectedCategory,
+                  hint: Text('category'),
+                  onChanged: ((String c) {
+                    setState(() {
+                      _selectedCategory = c;
+                    });
+                  }),
+                  items: categories.map((String choice) => DropdownMenuItem<String>(value: choice, child: Text(choice))).toList(),
+                )),
+              ],
+            ),
+            SizedBox(height: 12.0),
+            Container(
+              child: FloatingActionButton(
+                child: Icon(Icons.check),
+                backgroundColor: Colors.blueAccent,
                 onPressed: null,
-                child: Text('category'),
-                disabledTextColor: Colors.black54,
-                disabledColor: Colors.black12,
               ),
-              itemBuilder: (BuildContext context) {
-                List<PopupMenuItem> popUps = [];
-                for (final i in categories) {
-                  popUps.add(PopupMenuItem(child: Text(i)));
-                }
-                return popUps;
-              },
+              alignment: Alignment.bottomRight,
             ),
           ],
         ));
