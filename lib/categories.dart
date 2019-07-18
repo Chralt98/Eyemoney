@@ -159,6 +159,7 @@ class _CategoriesState extends State<Categories> {
             }
           },
           keyboardType: TextInputType.text,
+          maxLength: 15,
         )));
   }
 }

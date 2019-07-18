@@ -1,14 +1,12 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/switch.dart';
-import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'adding.dart';
 import 'categories.dart';
 import 'globals.dart';
-import 'overlay.dart';
 import 'settings.dart';
 import 'statistics.dart';
 
@@ -29,10 +27,7 @@ class _HomeState extends State<Home> {
   // TODO: paint the font red for consumer spending and green for income
   List<String> categories = List<String>();
   SharedPreferences _prefs;
-  DateTime selectedDate;
-  String description;
-  String amount;
-  String _selectedCategory;
+  DateTime _selectedDate = DateTime.now();
 
   @override
   void initState() {
@@ -59,12 +54,15 @@ class _HomeState extends State<Home> {
         title: Text(widget.title),
         backgroundColor: Colors.blueAccent,
         actions: <Widget>[
-          new IconButton(
+          Container(
+            child: Text(_selectedDate.month.toString() + ' / ' + _selectedDate.year.toString()),
+            alignment: Alignment.centerRight,
+          ),
+          IconButton(
               icon: Icon(Icons.date_range),
               onPressed: () {
-                showMonthPicker(context: context, initialDate: selectedDate ?? widget.initialDate).then((date) => setState(() {
-                      selectedDate = date;
-                      print(selectedDate.toString());
+                showMonthPicker(context: context, initialDate: _selectedDate ?? widget.initialDate).then((date) => setState(() {
+                      _selectedDate = date;
                     }));
               }),
         ],
@@ -94,10 +92,11 @@ class _HomeState extends State<Home> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 textBaseline: TextBaseline.alphabetic,
                 children: <Widget>[
-                  Text('Cashflow', textScaleFactor: 2),
+                  Text('Cashflow', textScaleFactor: 2, style: TextStyle(color: Colors.white)),
                   Icon(
                     Icons.monetization_on,
                     size: 50,
+                    color: Colors.white,
                   ),
                 ],
               ),
@@ -152,108 +151,10 @@ class _HomeState extends State<Home> {
         child: Icon(Icons.attach_money),
         backgroundColor: Colors.blueAccent,
         onPressed: () {
-          _showPopup(context, _popupBody(), 'Add');
+          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Adding(selectedDate: _selectedDate)));
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-    );
-  }
-
-  _showPopup(BuildContext context, Widget widget, String title, {BuildContext popupContext}) {
-    Navigator.push(
-      context,
-      MyOverlay(
-        top: 50,
-        left: 50,
-        right: 50,
-        bottom: 50,
-        child: PopupContent(
-          content: Scaffold(
-            appBar: AppBar(
-              centerTitle: true,
-              title: Text(title),
-              leading: new Builder(builder: (context) {
-                return IconButton(
-                  icon: Icon(Icons.close),
-                  onPressed: () {
-                    try {
-                      this._selectedCategory = null;
-                      Navigator.pop(context); //close the popup
-                    } catch (e) {
-                      print(e);
-                    }
-                  },
-                );
-              }),
-              brightness: Brightness.light,
-            ),
-            resizeToAvoidBottomPadding: false,
-            body: widget,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _popupBody() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          TextFormField(
-            textCapitalization: TextCapitalization.words,
-            decoration: InputDecoration(
-              border: UnderlineInputBorder(),
-              filled: true,
-              icon: Icon(Icons.info_outline),
-              hintText: 'e.g. water',
-              labelText: 'description',
-            ),
-            onSaved: (String text) => this.description = text,
-          ),
-          TextFormField(
-            controller: MoneyMaskedTextController(decimalSeparator: ',', thousandSeparator: '.'),
-            keyboardType: TextInputType.numberWithOptions(signed: false, decimal: false),
-            decoration: const InputDecoration(border: UnderlineInputBorder(), filled: true, icon: Icon(Icons.attach_money), hintText: 'e.g. 42', labelText: 'amount'),
-            onSaved: (String number) => this.amount = number,
-          ),
-          Row(
-            children: <Widget>[
-              Text('expenditure', style: TextStyle(color: Colors.red)),
-              CrazySwitch(),
-              Text('revenue', style: TextStyle(color: Colors.lightGreen)),
-            ],
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Icon(Icons.category, color: Colors.black38),
-              SizedBox(width: 16.0),
-              DropdownButton(
-                value: _selectedCategory,
-                hint: Text('category'),
-                onChanged: ((String c) {
-                  setState(() {
-                    this._selectedCategory = c;
-                  });
-                }),
-                items: categories.map((String choice) => DropdownMenuItem<String>(value: choice, child: Text(choice))).toList(),
-              ),
-            ],
-          ),
-          Container(
-            child: FloatingActionButton(
-              child: Icon(Icons.check),
-              backgroundColor: Colors.blueAccent,
-              onPressed: null,
-            ),
-            alignment: Alignment.bottomRight,
-          )
-        ],
-      ),
     );
   }
 }

@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 
 class CrazySwitch extends StatefulWidget {
+  _CrazySwitchState _crazySwitchState = new _CrazySwitchState();
   @override
-  _CrazySwitchState createState() => _CrazySwitchState();
+  _CrazySwitchState createState() => _crazySwitchState;
+
+  bool isChecked() {
+    return _crazySwitchState.isChecked;
+  }
 }
 
 class _CrazySwitchState extends State<CrazySwitch> with SingleTickerProviderStateMixin {
@@ -28,20 +33,15 @@ class _CrazySwitchState extends State<CrazySwitch> with SingleTickerProviderStat
     super.dispose();
   }
 
-  // only for communicate the status of toggle for revenue or not
-  bool isGreen() {
-    return this.isChecked;
-  }
-
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: _animationController,
       builder: (context, child) {
         return Container(
-          width: 50,
-          height: 20,
-          padding: EdgeInsets.fromLTRB(0, 2, 0, 2),
+          width: 80,
+          height: 30,
+          padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
           decoration: BoxDecoration(
             color: isChecked ? Colors.lightGreen : Colors.red,
             borderRadius: BorderRadius.all(
@@ -65,8 +65,8 @@ class _CrazySwitchState extends State<CrazySwitch> with SingleTickerProviderStat
                     });
                   },
                   child: Container(
-                    width: 20,
-                    height: 20,
+                    width: 30,
+                    height: 30,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: Colors.white,
