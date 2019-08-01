@@ -27,11 +27,12 @@ class _HomeState extends State<Home> {
   // TODO: paint the font red for consumer spending and green for income
   List<String> categories = List<String>();
   SharedPreferences _prefs;
-  DateTime _selectedDate = DateTime.now();
+  DateTime _selectedDate;
 
   @override
   void initState() {
     super.initState();
+    _selectedDate = DateTime.now();
     SharedPreferences.getInstance()
       ..then((prefs) {
         setState(() => this._prefs = prefs);
