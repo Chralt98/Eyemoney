@@ -50,17 +50,19 @@ class _AddingState extends State<Adding> {
   @override
   Widget build(BuildContext context) {
     final _listTiles = _categories
-        .map((item) => RadioListTile<int>(
-            value: _categories.indexOf(item),
-            groupValue: this._radioVal,
-            onChanged: (int value) {
-              setState(() {
-                this._radioVal = value;
-                _selectedCategory = item;
-              });
-            },
-            activeColor: Colors.blue,
-            title: Text(item)))
+        .map((item) => Container(
+            decoration: new BoxDecoration(border: new Border(top: BorderSide(color: Colors.black26, width: 2))),
+            child: RadioListTile<int>(
+                value: _categories.indexOf(item),
+                groupValue: this._radioVal,
+                onChanged: (int value) {
+                  setState(() {
+                    this._radioVal = value;
+                    _selectedCategory = item;
+                  });
+                },
+                activeColor: Colors.blue,
+                title: Text(item))))
         .toList();
     return new Scaffold(
         appBar: new AppBar(
@@ -73,7 +75,7 @@ class _AddingState extends State<Adding> {
             child: Column(
               children: <Widget>[
                 SizedBox(height: 40),
-                TextFormField(
+                TextField(
                   controller: moneyController,
                   keyboardType: TextInputType.numberWithOptions(signed: false, decimal: false),
                   decoration: const InputDecoration(
@@ -83,16 +85,10 @@ class _AddingState extends State<Adding> {
                     hintText: 'How much is it?',
                     labelText: 'amount',
                   ),
-                  onFieldSubmitted: (String number) => this._amount = number,
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return 'value is required.';
-                    }
-                    return null;
-                  },
+                  onChanged: (String number) => this._amount = number,
                 ),
                 SizedBox(height: 26),
-                TextFormField(
+                TextField(
                   textCapitalization: TextCapitalization.words,
                   decoration: InputDecoration(
                     border: UnderlineInputBorder(),
@@ -101,13 +97,7 @@ class _AddingState extends State<Adding> {
                     hintText: 'What is it?',
                     labelText: 'description',
                   ),
-                  onFieldSubmitted: (String text) => this._description = text,
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return 'description is required.';
-                    }
-                    return null;
-                  },
+                  onChanged: (String text) => this._description = text,
                   maxLength: 50,
                 ),
                 SizedBox(height: 26),

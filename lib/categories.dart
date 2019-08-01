@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'add_category.dart';
 import 'globals.dart';
-import 'overlay.dart';
 
 class Categories extends StatefulWidget {
   @override
@@ -12,11 +11,12 @@ class Categories extends StatefulWidget {
 
 class _CategoriesState extends State<Categories> {
   SharedPreferences _prefs;
-  List<String> _categories = List<String>();
+  List<String> _categories;
 
   @override
   void initState() {
     super.initState();
+    _categories = List<String>();
     SharedPreferences.getInstance()
       ..then((prefs) {
         setState(() => this._prefs = prefs);
@@ -26,7 +26,7 @@ class _CategoriesState extends State<Categories> {
 
   @override
   Widget build(BuildContext context) {
-    final _biggerFont = const TextStyle(fontSize: 20.0);
+    final _biggerFont = const TextStyle(fontSize: 16.0);
 
     return Scaffold(
       appBar: AppBar(
@@ -79,7 +79,10 @@ class _CategoriesState extends State<Categories> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         backgroundColor: Colors.blueAccent,
-        onPressed: () => _showPopup(context, _popupBody('e.g. electronics', 'category'), 'Add'),
+        onPressed: () async {
+          this._categories = await Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AddCategory(categories: _categories)));
+          this._setCategoryPref(_categories);
+        },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
@@ -94,72 +97,5 @@ class _CategoriesState extends State<Categories> {
   Future<Null> _setCategoryPref(List<String> categories) async {
     await this._prefs.setStringList(categoryPrefKey, categories);
     _loadCategoryPref();
-  }
-
-  void _addCategory(String name) {
-    _categories.add(name);
-    this._setCategoryPref(_categories);
-  }
-
-  _showPopup(BuildContext context, Widget widget, String title, {BuildContext popupContext}) {
-    final double height = MediaQuery.of(context).size.height;
-    Navigator.push(
-      context,
-      MyOverlay(
-        top: 100,
-        left: 50,
-        right: 50,
-        bottom: height - 300,
-        child: PopupContent(
-          content: Scaffold(
-            appBar: AppBar(
-              centerTitle: true,
-              title: Text(title),
-              leading: new Builder(builder: (context) {
-                return IconButton(
-                  icon: Icon(Icons.close),
-                  onPressed: () {
-                    try {
-                      Navigator.pop(context); //close the popup
-                    } catch (e) {
-                      print(e);
-                    }
-                  },
-                );
-              }),
-              brightness: Brightness.light,
-            ),
-            resizeToAvoidBottomPadding: false,
-            body: widget,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _popupBody(String hintText, String labelText) {
-    return Container(
-        padding: EdgeInsets.all(20.0),
-        child: Center(
-            child: TextFormField(
-          textCapitalization: TextCapitalization.words,
-          decoration: InputDecoration(
-            border: UnderlineInputBorder(),
-            filled: true,
-            icon: Icon(Icons.category),
-            hintText: 'e.g. electronics',
-            labelText: 'category',
-          ),
-          onFieldSubmitted: (text) {
-            this._addCategory(text);
-            try {
-              Navigator.pop(context); //close the popup
-            } catch (e) {
-              print(e);
-            }
-          },
-          keyboardType: TextInputType.text,
-          maxLength: 15,
-        )));
   }
 }
