@@ -92,7 +92,7 @@ class _HomeState extends State<Home> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 textBaseline: TextBaseline.alphabetic,
                 children: <Widget>[
-                  Text('Cashflow', textScaleFactor: 2, style: TextStyle(color: Colors.white)),
+                  Text('Cashprotocol', textScaleFactor: 2, style: TextStyle(color: Colors.white)),
                   Icon(
                     Icons.monetization_on,
                     size: 50,

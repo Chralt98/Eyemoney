@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_app/switch.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -62,12 +63,24 @@ class _AddingState extends State<Adding> {
                 labelText: 'description',
               ),
               onFieldSubmitted: (String text) => this._description = text,
+              validator: (value) {
+                if (value.isEmpty) {
+                  return 'description is required.';
+                }
+                return null;
+              },
             ),
             SizedBox(height: 26),
             TextFormField(
-              keyboardType: TextInputType.numberWithOptions(signed: false, decimal: false),
+              keyboardType: TextInputType.numberWithOptions(signed: false, decimal: true),
               decoration: const InputDecoration(border: UnderlineInputBorder(), filled: true, icon: Icon(Icons.attach_money), hintText: 'e.g. 42', labelText: 'amount'),
               onFieldSubmitted: (String number) => this._amount = number,
+              validator: (value) {
+                if (value.isEmpty) {
+                  return 'value is required.';
+                }
+                return null;
+              },
             ),
             SizedBox(height: 26),
             Row(
@@ -106,7 +119,8 @@ class _AddingState extends State<Adding> {
                   print(_description);
                   print(_amount);
                   print(_crazySwitch.isChecked());
-                  print(widget.selectedDate);
+                  print(widget.selectedDate.month.toString() + '/' + widget.selectedDate.year.toString());
+                  // TODO: _insertInDatabase();
                 },
               ),
               alignment: Alignment.bottomRight,
@@ -116,4 +130,15 @@ class _AddingState extends State<Adding> {
       ),
     );
   }
+}
+
+class Transaction {
+  final String category;
+  final String description;
+  final String amount;
+  final bool revenue;
+  final String month;
+  final String year;
+
+  Transaction({this.category, this.description, this.amount, this.revenue, this.month, this.year});
 }
