@@ -19,10 +19,11 @@ class _AddingState extends State<Adding> {
   List<String> _categories = List<String>();
   SharedPreferences _prefs;
   String _description;
-  String _amount;
+  String _amount = '0.00';
   String _selectedCategory;
   CrazySwitch _crazySwitch = new CrazySwitch();
   var moneyController = MoneyMaskedTextController(decimalSeparator: '.', thousandSeparator: ',');
+  int _radioVal = 0;
 
   @override
   void initState() {
@@ -40,11 +41,27 @@ class _AddingState extends State<Adding> {
   void _loadCategoryPref() {
     setState(() {
       _categories = this._prefs.getStringList(categoryPrefKey) ?? standard_categories;
+      if (_categories.isNotEmpty) {
+        _selectedCategory = _categories.first;
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final _listTiles = _categories
+        .map((item) => RadioListTile<int>(
+            value: _categories.indexOf(item),
+            groupValue: this._radioVal,
+            onChanged: (int value) {
+              setState(() {
+                this._radioVal = value;
+                _selectedCategory = item;
+              });
+            },
+            activeColor: Colors.blue,
+            title: Text(item)))
+        .toList();
     return new Scaffold(
         appBar: new AppBar(
           title: const Text('Add'),
@@ -52,7 +69,7 @@ class _AddingState extends State<Adding> {
         ),
         body: new Stack(alignment: AlignmentDirectional.topCenter, children: <Widget>[
           new SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16, top: 0),
             child: Column(
               children: <Widget>[
                 SizedBox(height: 40),
@@ -103,22 +120,8 @@ class _AddingState extends State<Adding> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                 ),
                 SizedBox(height: 26),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Icon(Icons.category, color: Colors.black38),
-                    SizedBox(width: 16.0),
-                    DropdownButton(
-                      value: _selectedCategory,
-                      hint: Text('category'),
-                      onChanged: ((String c) {
-                        setState(() {
-                          this._selectedCategory = c;
-                        });
-                      }),
-                      items: _categories.map((String choice) => DropdownMenuItem<String>(value: choice, child: Text(choice))).toList(),
-                    ),
-                  ],
+                Column(
+                  children: _listTiles,
                 ),
               ],
             ),
