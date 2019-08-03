@@ -14,7 +14,8 @@ class Home extends StatefulWidget {
   final DateTime initialDate;
   final String title;
 
-  const Home({Key key, @required this.title, @required this.initialDate}) : super(key: key);
+  const Home({Key key, @required this.title, @required this.initialDate})
+      : super(key: key);
 
   @override
   _HomeState createState() => new _HomeState();
@@ -22,7 +23,10 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   static var rand = new Random();
-  List<String> items = List<String>.generate(20, (int counter) => '$counter consumption ' + rand.nextInt(100).toString() + '€');
+  List<String> items = List<String>.generate(
+      20,
+      (int counter) =>
+          '$counter consumption ' + rand.nextInt(100).toString() + '€');
 
   // TODO: paint the font red for consumer spending and green for income
   List<String> categories = List<String>();
@@ -32,7 +36,7 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    _selectedDate = DateTime.now();
+    this._selectedDate = DateTime.now();
     SharedPreferences.getInstance()
       ..then((prefs) {
         setState(() => this._prefs = prefs);
@@ -44,38 +48,98 @@ class _HomeState extends State<Home> {
   // only category for shared preferences
   void _loadCategoryPref() {
     setState(() {
-      categories = this._prefs.getStringList(categoryPrefKey) ?? standard_categories;
+      categories =
+          this._prefs.getStringList(categoryPrefKey) ?? standard_categories;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
         backgroundColor: Colors.blueAccent,
         actions: <Widget>[
           Container(
-            child: Text(_selectedDate.month.toString() + ' / ' + _selectedDate.year.toString()),
+            child: Text((_selectedDate ?? DateTime.now()).month.toString() +
+                ' / ' +
+                (_selectedDate ?? DateTime.now()).year.toString()),
             alignment: Alignment.centerRight,
           ),
           IconButton(
               icon: Icon(Icons.date_range),
               onPressed: () {
-                showMonthPicker(context: context, initialDate: _selectedDate ?? widget.initialDate).then((date) => setState(() {
-                      _selectedDate = date;
-                    }));
+                showMonthPicker(
+                        context: context,
+                        initialDate: _selectedDate ?? widget.initialDate)
+                    .then((date) => setState(() {
+                          _selectedDate = date;
+                        }));
               }),
         ],
       ),
       body: Container(
-        child: ListView.builder(
-          itemCount: 20,
-          itemBuilder: (BuildContext context, int index) {
-            return ListTile(
-              title: Text(items[index]),
-            );
-          },
+        child: Column(
+          children: <Widget>[
+            Container(
+              height: 27,
+              color: Colors.black12,
+              child: Row(
+                children: <Widget>[
+                  Container(
+                      child: Icon(Icons.info_outline),
+                      width: screenWidth / 3,
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black54))),
+                  Container(
+                      child: Icon(Icons.category),
+                      width: screenWidth / 3,
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black54))),
+                  Container(
+                      child: Icon(Icons.attach_money),
+                      width: screenWidth / 3,
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black54))),
+                ],
+              ),
+            ),
+            Expanded(
+                child: Container(
+              child: ListView.builder(
+                  itemCount: 100,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Container(
+                        decoration: BoxDecoration(
+                            border: Border.fromBorderSide(BorderSide(
+                                width: 0.0,
+                                color: Colors.black12,
+                                style: BorderStyle.solid))),
+                        child: Row(
+                          children: <Widget>[
+                            Container(
+                              child: Text('info',
+                                  textScaleFactor: 1.2,
+                                  textAlign: TextAlign.center),
+                              width: screenWidth / 3,
+                            ),
+                            Container(
+                              child: Text('category',
+                                  textScaleFactor: 1.2,
+                                  textAlign: TextAlign.center),
+                              width: screenWidth / 3,
+                            ),
+                            Container(
+                                child: Text('amount',
+                                    textScaleFactor: 1.2,
+                                    textAlign: TextAlign.center),
+                                width: screenWidth / 3),
+                          ],
+                        ));
+                  }),
+            )),
+          ],
         ),
       ),
       drawer: Drawer(
@@ -93,7 +157,9 @@ class _HomeState extends State<Home> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 textBaseline: TextBaseline.alphabetic,
                 children: <Widget>[
-                  Text('Cashprotocol', textScaleFactor: 2, style: TextStyle(color: Colors.white)),
+                  Text('Cashprotocol',
+                      textScaleFactor: 2,
+                      style: TextStyle(color: Colors.white)),
                   Icon(
                     Icons.monetization_on,
                     size: 50,
@@ -122,7 +188,10 @@ class _HomeState extends State<Home> {
                 // Update the state of the app
                 // ...
                 // Then close the drawer
-                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Statistics()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => Statistics()));
               },
             ),
             ListTile(
@@ -132,7 +201,10 @@ class _HomeState extends State<Home> {
                 // Update the state of the app
                 // ...
                 // Then close the drawer
-                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Categories()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => Categories()));
               },
             ),
             ListTile(
@@ -142,7 +214,10 @@ class _HomeState extends State<Home> {
                 // Update the state of the app
                 // ...
                 // Then close the drawer
-                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Settings()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => Settings()));
               },
             ),
           ],
@@ -152,7 +227,11 @@ class _HomeState extends State<Home> {
         child: Icon(Icons.attach_money),
         backgroundColor: Colors.blueAccent,
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Adding(selectedDate: _selectedDate)));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) =>
+                      Adding(selectedDate: _selectedDate)));
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,

@@ -35,7 +35,7 @@ class _CategoriesState extends State<Categories> {
       ),
       body: ListView.builder(
         itemCount: _categories.length,
-        padding: const EdgeInsets.all(25.0),
+        padding: const EdgeInsets.all(20.0),
         itemBuilder: (context, index) {
           final String item = _categories[index];
           return Dismissible(
@@ -80,7 +80,10 @@ class _CategoriesState extends State<Categories> {
         child: Icon(Icons.add),
         backgroundColor: Colors.blueAccent,
         onPressed: () async {
-          this._categories.add(await Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AddCategory())));
+          this._categories.add(await Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => AddCategory())));
           this._setCategoryPref(_categories);
         },
       ),
@@ -90,7 +93,8 @@ class _CategoriesState extends State<Categories> {
 
   void _loadCategoryPref() {
     setState(() {
-      this._categories = this._prefs.getStringList(categoryPrefKey) ?? standard_categories;
+      this._categories =
+          this._prefs.getStringList(categoryPrefKey) ?? standard_categories;
     });
   }
 
