@@ -80,7 +80,7 @@ class _CategoriesState extends State<Categories> {
         child: Icon(Icons.add),
         backgroundColor: Colors.blueAccent,
         onPressed: () async {
-          this._categories = await Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AddCategory(categories: _categories)));
+          this._categories.add(await Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AddCategory())));
           this._setCategoryPref(_categories);
         },
       ),

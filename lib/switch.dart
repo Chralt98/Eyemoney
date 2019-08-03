@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class CrazySwitch extends StatefulWidget {
   _CrazySwitchState _crazySwitchState = new _CrazySwitchState();
+
   @override
   _CrazySwitchState createState() => _crazySwitchState;
 
@@ -10,7 +11,8 @@ class CrazySwitch extends StatefulWidget {
   }
 }
 
-class _CrazySwitchState extends State<CrazySwitch> with SingleTickerProviderStateMixin {
+class _CrazySwitchState extends State<CrazySwitch>
+    with SingleTickerProviderStateMixin {
   bool isChecked = false;
   Duration _duration = Duration(milliseconds: 370);
   Animation<Alignment> _animation;
@@ -20,10 +22,16 @@ class _CrazySwitchState extends State<CrazySwitch> with SingleTickerProviderStat
   void initState() {
     super.initState();
 
-    _animationController = AnimationController(vsync: this, duration: _duration);
+    _animationController =
+        AnimationController(vsync: this, duration: _duration);
 
-    _animation = AlignmentTween(begin: Alignment.centerLeft, end: Alignment.centerRight).animate(
-      CurvedAnimation(parent: _animationController, curve: Curves.bounceOut, reverseCurve: Curves.bounceIn),
+    _animation =
+        AlignmentTween(begin: Alignment.centerLeft, end: Alignment.centerRight)
+            .animate(
+      CurvedAnimation(
+          parent: _animationController,
+          curve: Curves.bounceOut,
+          reverseCurve: Curves.bounceIn),
     );
   }
 
@@ -39,9 +47,9 @@ class _CrazySwitchState extends State<CrazySwitch> with SingleTickerProviderStat
       animation: _animationController,
       builder: (context, child) {
         return Container(
-          width: 80,
+          width: 50,
           height: 30,
-          padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
+          padding: EdgeInsets.fromLTRB(0, 3, 0, 3),
           decoration: BoxDecoration(
             color: isChecked ? Colors.lightGreen : Colors.red,
             borderRadius: BorderRadius.all(
