@@ -223,30 +223,8 @@ class _AddingState extends State<Adding> {
       );
     }
 
-    void print_transactions() async {
-      // Get a reference to the database.
-      final Database db = await database;
-
-      // Query the table for all The Dogs.
-      final List<Map<String, dynamic>> maps = await db.query('transactions');
-
-      // id INTEGER PRIMARY KEY AUTOINCREMENT, category TEXT, description TEXT, amount REAL, date DATE
-      // Convert the List<Map<String, dynamic> into a List<Dog>.
-      for (int i = 0; i < maps.length; i++) {
-        print(MyTransaction(
-            id: maps[i]['id'],
-            category: maps[i]['category'],
-            description: maps[i]['description'],
-            amount: maps[i]['amount'],
-            date: maps[i]['date']));
-      }
-    }
-
     // Insert a transaction into the database.
     await insertTransaction(data);
-
-    // Print the list of transactions (only data for now).
-    print_transactions();
 
     /*
     Future<void> updateTransaction(Transaction transaction) async {

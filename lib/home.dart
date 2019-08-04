@@ -31,14 +31,22 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    setState(() {
-      this._loadDatabase();
-    });
+    this._loadDatabase();
     this._selectedDate = DateTime.now();
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    this._loadDatabase();
+  }
+
   void _loadDatabase() async {
-    this.myTransactions = await _getDatabase();
+    List<MyTransaction> temp = await _getDatabase();
+    // refresh GUI
+    setState(() {
+      this.myTransactions = temp;
+    });
   }
 
   @override
@@ -213,18 +221,24 @@ class _HomeState extends State<Home> {
                     Container(
                       child: Text(myTransactions[index].description ?? '–',
                           textScaleFactor: 1.2, textAlign: TextAlign.center),
+                      color: Color.fromARGB(5, 255, 255, 0),
                       width: screenWidth / 3,
                     ),
                     Container(
                       child: Text(myTransactions[index].category ?? '–',
                           textScaleFactor: 1.2, textAlign: TextAlign.center),
+                      color: Color.fromARGB(5, 0, 0, 255),
                       width: screenWidth / 3,
                     ),
                     Container(
                         child: Text(
                             myTransactions[index].amount.toString() ?? '–',
                             textScaleFactor: 1.2,
-                            textAlign: TextAlign.center),
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: (myTransactions[index].amount < 0.0)
+                                    ? Colors.red
+                                    : Colors.lightGreen)),
                         width: screenWidth / 3),
                   ],
                 ));
