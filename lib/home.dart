@@ -48,6 +48,21 @@ class _HomeState extends State<Home> {
     });
   }
 
+  List<double> _getTupleRevenueExpenditure() {
+    double sumRevenue = 0.0;
+    double sumExpenditure = 0.0;
+    if (this.myTransactions != null) {
+      for (int i = 0; i < this.myTransactions.length; i++) {
+        if (this.myTransactions[i].amount > 0) {
+          sumRevenue += this.myTransactions[i].amount;
+        } else if (this.myTransactions[i].amount < 0) {
+          sumExpenditure += this.myTransactions[i].amount;
+        }
+      }
+    }
+    return [round(sumRevenue, 2), round(sumExpenditure, 2)];
+  }
+
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
@@ -72,6 +87,26 @@ class _HomeState extends State<Home> {
       body: Container(
         child: Column(
           children: <Widget>[
+            Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Container(
+                      child: Text(_getTupleRevenueExpenditure()[0].toString(), textAlign: TextAlign.center, style: TextStyle(color: Colors.lightGreen)),
+                      width: screenWidth / 3,
+                      decoration: BoxDecoration(border: Border.all(color: Colors.black54))),
+                  Container(
+                      child: Text(_getTupleRevenueExpenditure()[1].toString(), textAlign: TextAlign.center, style: TextStyle(color: Colors.red)),
+                      width: screenWidth / 3,
+                      decoration: BoxDecoration(border: Border.all(color: Colors.black54))),
+                  Container(
+                      child: Text(round((_getTupleRevenueExpenditure()[0] + _getTupleRevenueExpenditure()[1]), 2).toString(),
+                          textAlign: TextAlign.center, style: TextStyle(color: Colors.blue)),
+                      width: screenWidth / 3,
+                      decoration: BoxDecoration(border: Border.all(color: Colors.black54))),
+                ],
+              ),
+            ),
             Container(
               height: 27,
               color: Colors.black12,
@@ -105,7 +140,7 @@ class _HomeState extends State<Home> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 textBaseline: TextBaseline.alphabetic,
                 children: <Widget>[
-                  Text('Cashprotocol', textScaleFactor: 2, style: TextStyle(color: Colors.white)),
+                  Text(appName, textScaleFactor: 2, style: TextStyle(color: Colors.white)),
                   Icon(
                     Icons.monetization_on,
                     size: 50,
@@ -178,6 +213,7 @@ class _HomeState extends State<Home> {
           itemCount: myTransactions.length,
           itemBuilder: (BuildContext context, int index) {
             return Container(
+              padding: EdgeInsets.only(bottom: 10, top: 10),
               decoration: BoxDecoration(
                   color: (index % 2 == 0) ? Color.fromARGB(5, 255, 255, 0) : Color.fromARGB(5, 0, 0, 255),
                   border: Border.fromBorderSide(BorderSide(width: 0.0, color: Colors.black12, style: BorderStyle.solid))),

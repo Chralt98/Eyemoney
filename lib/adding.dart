@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -29,8 +28,7 @@ class _AddingState extends State<Adding> {
   String _amount = '0.00';
   String _selectedCategory;
   CrazySwitch _crazySwitch = new CrazySwitch();
-  var moneyController =
-      MoneyMaskedTextController(decimalSeparator: '.', thousandSeparator: ',');
+  var moneyController = MoneyMaskedTextController(decimalSeparator: '.', thousandSeparator: ',');
   int _radioVal = 0;
 
   @override
@@ -48,8 +46,7 @@ class _AddingState extends State<Adding> {
   // only category for shared preferences
   void _loadCategoryPref() {
     setState(() {
-      _categories =
-          this._prefs.getStringList(categoryPrefKey) ?? standard_categories;
+      _categories = this._prefs.getStringList(categoryPrefKey) ?? standard_categories;
       if (_categories.isNotEmpty) {
         _selectedCategory = _categories.first;
       }
@@ -65,9 +62,7 @@ class _AddingState extends State<Adding> {
   Widget build(BuildContext context) {
     final _listTiles = _categories
         .map((item) => Container(
-            decoration: new BoxDecoration(
-                border: new Border(
-                    top: BorderSide(color: Colors.black26, width: 2))),
+            decoration: new BoxDecoration(border: new Border(top: BorderSide(color: Colors.black26, width: 2))),
             child: RadioListTile<int>(
                 value: _categories.indexOf(item),
                 groupValue: this._radioVal,
@@ -85,18 +80,15 @@ class _AddingState extends State<Adding> {
           title: const Text('Add'),
           actions: [],
         ),
-        body: new Stack(alignment: AlignmentDirectional.topCenter, children: <
-            Widget>[
+        body: new Stack(alignment: AlignmentDirectional.topCenter, children: <Widget>[
           new SingleChildScrollView(
-            padding:
-                const EdgeInsets.only(left: 16, right: 16, bottom: 16, top: 0),
+            padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16, top: 0),
             child: Column(
               children: <Widget>[
                 SizedBox(height: 40),
                 TextField(
                   controller: moneyController,
-                  keyboardType: TextInputType.numberWithOptions(
-                      signed: false, decimal: true),
+                  keyboardType: TextInputType.numberWithOptions(signed: false, decimal: true),
                   decoration: const InputDecoration(
                     border: UnderlineInputBorder(),
                     filled: true,
@@ -121,15 +113,11 @@ class _AddingState extends State<Adding> {
                 SizedBox(height: 26),
                 Row(
                   children: <Widget>[
-                    Text('expenditure',
-                        style: TextStyle(color: Colors.red),
-                        textScaleFactor: 1.1),
+                    Text('expenditure', style: TextStyle(color: Colors.red), textScaleFactor: 1.1),
                     SizedBox(width: 16),
                     _crazySwitch,
                     SizedBox(width: 16),
-                    Text('revenue',
-                        style: TextStyle(color: Colors.lightGreen),
-                        textScaleFactor: 1.1),
+                    Text('revenue', style: TextStyle(color: Colors.lightGreen), textScaleFactor: 1.1),
                   ],
                   mainAxisAlignment: MainAxisAlignment.center,
                 ),
@@ -140,11 +128,7 @@ class _AddingState extends State<Adding> {
                 RaisedButton(
                     child: Icon(Icons.add),
                     onPressed: () async {
-                      String category = await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  AddCategory()));
+                      String category = await Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AddCategory()));
                       if (category != null) {
                         this._categories.add(category);
                         this._setCategoryPref(this._categories);
@@ -160,18 +144,12 @@ class _AddingState extends State<Adding> {
               backgroundColor: Colors.blueAccent,
               onPressed: () {
                 final int sign = _crazySwitch.isChecked() ? 1 : -1;
-                final double _realAmount = round(
-                    (sign) *
-                        10 *
-                        double.parse(_amount.replaceAll(new RegExp(','), '')),
-                    2);
+                final double _realAmount = round((sign) * 10 * double.parse(_amount.replaceAll(new RegExp(','), '')), 2);
                 final MyTransaction data = MyTransaction(
                   category: _selectedCategory,
                   description: _description,
                   amount: _realAmount,
-                  date: DateTime((widget.selectedDate ?? DateTime.now()).year,
-                          (widget.selectedDate ?? DateTime.now()).month)
-                      .toString(),
+                  date: DateTime((widget.selectedDate ?? DateTime.now()).year, (widget.selectedDate ?? DateTime.now()).month).toString(),
                 );
                 _insertInDatabase(data);
                 try {
@@ -185,11 +163,6 @@ class _AddingState extends State<Adding> {
             margin: EdgeInsets.all(16),
           )
         ]));
-  }
-
-  double round(double val, double places) {
-    double mod = pow(10.0, places);
-    return ((val * mod).round().toDouble() / mod);
   }
 
   void _insertInDatabase(MyTransaction data) async {

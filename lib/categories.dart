@@ -37,7 +37,7 @@ class _CategoriesState extends State<Categories> {
         itemCount: _categories.length,
         padding: const EdgeInsets.all(20.0),
         itemBuilder: (context, index) {
-          final String item = _categories[index];
+          final String item = _categories[index] ?? '';
           return Dismissible(
             key: Key(item),
             direction: DismissDirection.endToStart,
@@ -80,11 +80,12 @@ class _CategoriesState extends State<Categories> {
         child: Icon(Icons.add),
         backgroundColor: Colors.blueAccent,
         onPressed: () async {
-          this._categories.add(await Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (BuildContext context) => AddCategory())));
-          this._setCategoryPref(_categories);
+          String category = await Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AddCategory()));
+          if (category != null) {
+            this._categories.add(category);
+            this._setCategoryPref(this._categories);
+            this._loadCategoryPref();
+          }
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
@@ -93,8 +94,7 @@ class _CategoriesState extends State<Categories> {
 
   void _loadCategoryPref() {
     setState(() {
-      this._categories =
-          this._prefs.getStringList(categoryPrefKey) ?? standard_categories;
+      this._categories = this._prefs.getStringList(categoryPrefKey) ?? standard_categories;
     });
   }
 
