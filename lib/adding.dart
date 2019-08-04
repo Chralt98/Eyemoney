@@ -11,6 +11,7 @@ import 'package:sqflite/sqflite.dart';
 
 import 'add_category.dart';
 import 'globals.dart';
+import 'transaction.dart';
 
 class Adding extends StatefulWidget {
   final DateTime selectedDate;
@@ -164,15 +165,20 @@ class _AddingState extends State<Adding> {
                         10 *
                         double.parse(_amount.replaceAll(new RegExp(','), '')),
                     2);
-                final Transaction data = Transaction(
+                final MyTransaction data = MyTransaction(
                   category: _selectedCategory,
                   description: _description,
                   amount: _realAmount,
-                  date: DateTime(
-                          widget.selectedDate.year, widget.selectedDate.month)
+                  date: DateTime((widget.selectedDate ?? DateTime.now()).year,
+                          (widget.selectedDate ?? DateTime.now()).month)
                       .toString(),
                 );
                 _insertInDatabase(data);
+                try {
+                  Navigator.pop(context);
+                } catch (e) {
+                  print(e);
+                }
               },
             ),
             alignment: Alignment.bottomRight,
@@ -186,7 +192,7 @@ class _AddingState extends State<Adding> {
     return ((val * mod).round().toDouble() / mod);
   }
 
-  void _insertInDatabase(Transaction data) async {
+  void _insertInDatabase(MyTransaction data) async {
     final database = openDatabase(
       // Set the path to the database. Note: Using the `join` function from the
       // `path` package is best practice to ensure the path is correctly
@@ -203,7 +209,7 @@ class _AddingState extends State<Adding> {
       version: 1,
     );
 
-    Future<void> insertTransaction(Transaction transaction) async {
+    Future<void> insertTransaction(MyTransaction transaction) async {
       // Get a reference to the database.
       final Database db = await database;
 
@@ -227,7 +233,7 @@ class _AddingState extends State<Adding> {
       // id INTEGER PRIMARY KEY AUTOINCREMENT, category TEXT, description TEXT, amount REAL, date DATE
       // Convert the List<Map<String, dynamic> into a List<Dog>.
       for (int i = 0; i < maps.length; i++) {
-        print(Transaction(
+        print(MyTransaction(
             id: maps[i]['id'],
             category: maps[i]['category'],
             description: maps[i]['description'],
@@ -289,33 +295,5 @@ class _AddingState extends State<Adding> {
     // Print the list of dogs (empty).
     print(await transactions());
      */
-  }
-}
-
-class Transaction {
-  final int id;
-  final String category;
-  final String description;
-  final double amount;
-  final String date;
-
-  Transaction(
-      {this.id, this.category, this.description, this.amount, this.date});
-
-  Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'category': category,
-      'description': description,
-      'amount': amount,
-      'date': date,
-    };
-  }
-
-  // Implement toString to make it easier to see information about
-  // each Transaction when using the print statement.
-  @override
-  String toString() {
-    return 'Transactions{id: $id, category: $category, description: $description, amount: $amount, date: $date}';
   }
 }

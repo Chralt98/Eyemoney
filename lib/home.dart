@@ -1,14 +1,16 @@
-import 'dart:math';
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
 
 import 'adding.dart';
 import 'categories.dart';
 import 'globals.dart';
 import 'settings.dart';
 import 'statistics.dart';
+import 'transaction.dart';
 
 class Home extends StatefulWidget {
   final DateTime initialDate;
@@ -22,35 +24,21 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  static var rand = new Random();
-  List<String> items = List<String>.generate(
-      20,
-      (int counter) =>
-          '$counter consumption ' + rand.nextInt(100).toString() + '€');
-
   // TODO: paint the font red for consumer spending and green for income
-  List<String> categories = List<String>();
-  SharedPreferences _prefs;
   DateTime _selectedDate;
+  List<MyTransaction> myTransactions;
 
   @override
   void initState() {
     super.initState();
+    setState(() {
+      this._loadDatabase();
+    });
     this._selectedDate = DateTime.now();
-    SharedPreferences.getInstance()
-      ..then((prefs) {
-        setState(() => this._prefs = prefs);
-        _loadCategoryPref();
-      });
   }
 
-  // TODO: use a sqflite database for saving the user data on device
-  // only category for shared preferences
-  void _loadCategoryPref() {
-    setState(() {
-      categories =
-          this._prefs.getStringList(categoryPrefKey) ?? standard_categories;
-    });
+  void _loadDatabase() async {
+    this.myTransactions = await _getDatabase();
   }
 
   @override
@@ -107,37 +95,7 @@ class _HomeState extends State<Home> {
             ),
             Expanded(
                 child: Container(
-              child: ListView.builder(
-                  itemCount: 100,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Container(
-                        decoration: BoxDecoration(
-                            border: Border.fromBorderSide(BorderSide(
-                                width: 0.0,
-                                color: Colors.black12,
-                                style: BorderStyle.solid))),
-                        child: Row(
-                          children: <Widget>[
-                            Container(
-                              child: Text('info',
-                                  textScaleFactor: 1.2,
-                                  textAlign: TextAlign.center),
-                              width: screenWidth / 3,
-                            ),
-                            Container(
-                              child: Text('category',
-                                  textScaleFactor: 1.2,
-                                  textAlign: TextAlign.center),
-                              width: screenWidth / 3,
-                            ),
-                            Container(
-                                child: Text('amount',
-                                    textScaleFactor: 1.2,
-                                    textAlign: TextAlign.center),
-                                width: screenWidth / 3),
-                          ],
-                        ));
-                  }),
+              child: _getList(context),
             )),
           ],
         ),
@@ -236,5 +194,78 @@ class _HomeState extends State<Home> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
+  }
+
+  Widget _getList(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+    if (myTransactions != null) {
+      return ListView.builder(
+          itemCount: myTransactions.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Container(
+                decoration: BoxDecoration(
+                    border: Border.fromBorderSide(BorderSide(
+                        width: 0.0,
+                        color: Colors.black12,
+                        style: BorderStyle.solid))),
+                child: Row(
+                  children: <Widget>[
+                    Container(
+                      child: Text(myTransactions[index].description ?? '–',
+                          textScaleFactor: 1.2, textAlign: TextAlign.center),
+                      width: screenWidth / 3,
+                    ),
+                    Container(
+                      child: Text(myTransactions[index].category ?? '–',
+                          textScaleFactor: 1.2, textAlign: TextAlign.center),
+                      width: screenWidth / 3,
+                    ),
+                    Container(
+                        child: Text(
+                            myTransactions[index].amount.toString() ?? '–',
+                            textScaleFactor: 1.2,
+                            textAlign: TextAlign.center),
+                        width: screenWidth / 3),
+                  ],
+                ));
+          });
+    } else {
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+  }
+
+  Future<List<MyTransaction>> _getDatabase() async {
+    final database = openDatabase(
+      // Set the path to the database. Note: Using the `join` function from the
+      // `path` package is best practice to ensure the path is correctly
+      // constructed for each platform.
+      join(await getDatabasesPath(), appName + 'Database.db'),
+      // When the database is first created, create a table to store transactions.
+      onCreate: (db, version) {
+        return db.execute(
+          "CREATE TABLE transactions(id INTEGER PRIMARY KEY AUTOINCREMENT, category TEXT, description TEXT, amount REAL, date DATETIME)",
+        );
+      },
+      // Set the version. This executes the onCreate function and provides a
+      // path to perform database upgrades and downgrades.
+      version: 1,
+    );
+
+    final Database db = await database;
+
+    // Query the table for all The Dogs.
+    final List<Map<String, dynamic>> maps = await db.query('transactions');
+
+    return List.generate(maps.length, (i) {
+      return MyTransaction(
+        id: maps[i]['id'],
+        category: maps[i]['category'],
+        description: maps[i]['description'],
+        amount: maps[i]['amount'],
+        date: maps[i]['date'],
+      );
+    });
   }
 }
