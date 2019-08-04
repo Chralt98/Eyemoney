@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AddCategory extends StatefulWidget {
-  final List<String> categories;
-
-  const AddCategory({Key key, @required this.categories}) : super(key: key);
+  const AddCategory({Key key}) : super(key: key);
 
   @override
   _AddCategoryState createState() => new _AddCategoryState();
@@ -34,7 +32,7 @@ class _AddCategoryState extends State<AddCategory> {
                 ),
                 onChanged: (text) => this._category = text,
                 keyboardType: TextInputType.text,
-                maxLength: 15,
+                maxLength: 25,
               ))),
           Container(
             child: new FloatingActionButton(
@@ -42,9 +40,7 @@ class _AddCategoryState extends State<AddCategory> {
               backgroundColor: Colors.blueAccent,
               onPressed: () {
                 try {
-                  List<String> temp = widget.categories;
-                  temp.add(_category);
-                  Navigator.pop(context, temp);
+                  Navigator.pop(context, this._category);
                 } catch (e) {
                   print(e);
                 }
