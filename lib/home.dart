@@ -16,8 +16,7 @@ class Home extends StatefulWidget {
   final DateTime initialDate;
   final String title;
 
-  const Home({Key key, @required this.title, @required this.initialDate})
-      : super(key: key);
+  const Home({Key key, @required this.title, @required this.initialDate}) : super(key: key);
 
   @override
   _HomeState createState() => new _HomeState();
@@ -58,20 +57,15 @@ class _HomeState extends State<Home> {
         backgroundColor: Colors.blueAccent,
         actions: <Widget>[
           Container(
-            child: Text((_selectedDate ?? DateTime.now()).month.toString() +
-                ' / ' +
-                (_selectedDate ?? DateTime.now()).year.toString()),
+            child: Text((_selectedDate ?? DateTime.now()).month.toString() + ' / ' + (_selectedDate ?? DateTime.now()).year.toString()),
             alignment: Alignment.centerRight,
           ),
           IconButton(
               icon: Icon(Icons.date_range),
               onPressed: () {
-                showMonthPicker(
-                        context: context,
-                        initialDate: _selectedDate ?? widget.initialDate)
-                    .then((date) => setState(() {
-                          _selectedDate = date;
-                        }));
+                showMonthPicker(context: context, initialDate: _selectedDate ?? widget.initialDate).then((date) => setState(() {
+                      _selectedDate = date;
+                    }));
               }),
         ],
       ),
@@ -83,21 +77,9 @@ class _HomeState extends State<Home> {
               color: Colors.black12,
               child: Row(
                 children: <Widget>[
-                  Container(
-                      child: Icon(Icons.info_outline),
-                      width: screenWidth / 3,
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black54))),
-                  Container(
-                      child: Icon(Icons.category),
-                      width: screenWidth / 3,
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black54))),
-                  Container(
-                      child: Icon(Icons.attach_money),
-                      width: screenWidth / 3,
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black54))),
+                  Container(child: Icon(Icons.info_outline), width: screenWidth / 3, decoration: BoxDecoration(border: Border.all(color: Colors.black54))),
+                  Container(child: Icon(Icons.category), width: screenWidth / 3, decoration: BoxDecoration(border: Border.all(color: Colors.black54))),
+                  Container(child: Icon(Icons.attach_money), width: screenWidth / 3, decoration: BoxDecoration(border: Border.all(color: Colors.black54))),
                 ],
               ),
             ),
@@ -123,9 +105,7 @@ class _HomeState extends State<Home> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 textBaseline: TextBaseline.alphabetic,
                 children: <Widget>[
-                  Text('Cashprotocol',
-                      textScaleFactor: 2,
-                      style: TextStyle(color: Colors.white)),
+                  Text('Cashprotocol', textScaleFactor: 2, style: TextStyle(color: Colors.white)),
                   Icon(
                     Icons.monetization_on,
                     size: 50,
@@ -154,10 +134,7 @@ class _HomeState extends State<Home> {
                 // Update the state of the app
                 // ...
                 // Then close the drawer
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) => Statistics()));
+                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Statistics()));
               },
             ),
             ListTile(
@@ -167,10 +144,7 @@ class _HomeState extends State<Home> {
                 // Update the state of the app
                 // ...
                 // Then close the drawer
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) => Categories()));
+                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Categories()));
               },
             ),
             ListTile(
@@ -180,10 +154,7 @@ class _HomeState extends State<Home> {
                 // Update the state of the app
                 // ...
                 // Then close the drawer
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) => Settings()));
+                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Settings()));
               },
             ),
           ],
@@ -193,11 +164,7 @@ class _HomeState extends State<Home> {
         child: Icon(Icons.attach_money),
         backgroundColor: Colors.blueAccent,
         onPressed: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (BuildContext context) =>
-                      Adding(selectedDate: _selectedDate)));
+          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Adding(selectedDate: _selectedDate)));
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
@@ -211,37 +178,28 @@ class _HomeState extends State<Home> {
           itemCount: myTransactions.length,
           itemBuilder: (BuildContext context, int index) {
             return Container(
-                decoration: BoxDecoration(
-                    border: Border.fromBorderSide(BorderSide(
-                        width: 0.0,
-                        color: Colors.black12,
-                        style: BorderStyle.solid))),
-                child: Row(
-                  children: <Widget>[
-                    Container(
-                      child: Text(myTransactions[index].description ?? '–',
-                          textScaleFactor: 1.2, textAlign: TextAlign.center),
-                      color: Color.fromARGB(5, 255, 255, 0),
-                      width: screenWidth / 3,
-                    ),
-                    Container(
-                      child: Text(myTransactions[index].category ?? '–',
-                          textScaleFactor: 1.2, textAlign: TextAlign.center),
-                      color: Color.fromARGB(5, 0, 0, 255),
-                      width: screenWidth / 3,
-                    ),
-                    Container(
-                        child: Text(
-                            myTransactions[index].amount.toString() ?? '–',
-                            textScaleFactor: 1.2,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: (myTransactions[index].amount < 0.0)
-                                    ? Colors.red
-                                    : Colors.lightGreen)),
-                        width: screenWidth / 3),
-                  ],
-                ));
+              decoration: BoxDecoration(
+                  color: (index % 2 == 0) ? Color.fromARGB(5, 255, 255, 0) : Color.fromARGB(5, 0, 0, 255),
+                  border: Border.fromBorderSide(BorderSide(width: 0.0, color: Colors.black12, style: BorderStyle.solid))),
+              child: Row(
+                children: <Widget>[
+                  Container(
+                    child: Text(myTransactions[index].description ?? '–', textScaleFactor: 1.2, textAlign: TextAlign.center),
+                    width: screenWidth / 3,
+                  ),
+                  Container(
+                    child: Text(myTransactions[index].category ?? '–', textScaleFactor: 1.2, textAlign: TextAlign.center),
+                    width: screenWidth / 3,
+                  ),
+                  Container(
+                      child: Text(myTransactions[index].amount.toString() ?? '–',
+                          textScaleFactor: 1.2,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: (myTransactions[index].amount < 0.0) ? Colors.red : Colors.lightGreen)),
+                      width: screenWidth / 3),
+                ],
+              ),
+            );
           });
     } else {
       return Center(
