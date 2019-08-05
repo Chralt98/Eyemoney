@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_app/switch.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -10,6 +9,7 @@ import 'package:sqflite/sqflite.dart';
 
 import 'add_category.dart';
 import 'globals.dart';
+import 'switch.dart';
 import 'transaction.dart';
 
 class Adding extends StatefulWidget {

@@ -23,7 +23,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  // TODO: paint the font red for consumer spending and green for income
   DateTime _selectedDate;
   List<MyTransaction> _myTransactions;
 
@@ -218,10 +217,7 @@ class _HomeState extends State<Home> {
 
   Widget _getList(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
-    if (_myTransactions.isEmpty) {
-      return Center(child: Icon(Icons.edit, size: 60, color: Colors.black38));
-    }
-    if (_myTransactions != null) {
+    if (_myTransactions != null && _myTransactions.isNotEmpty) {
       return ListView.builder(
           padding: EdgeInsets.only(bottom: 90),
           itemCount: _myTransactions.length,
@@ -251,10 +247,12 @@ class _HomeState extends State<Home> {
               ),
             );
           });
-    } else {
+    } else if (_myTransactions == null) {
       return Center(
         child: CircularProgressIndicator(),
       );
+    } else if (_myTransactions.isEmpty) {
+      return Center(child: Icon(Icons.edit, size: 60, color: Colors.black38));
     }
   }
 
