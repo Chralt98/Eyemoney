@@ -34,8 +34,8 @@ class _CategoriesState extends State<Categories> {
         backgroundColor: Colors.blueAccent,
       ),
       body: ListView.builder(
+        padding: EdgeInsets.only(bottom: 90, top: 16, left: 16, right: 16),
         itemCount: _categories.length,
-        padding: const EdgeInsets.all(20.0),
         itemBuilder: (context, index) {
           final String item = _categories[index] ?? '';
           return Dismissible(

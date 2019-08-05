@@ -28,18 +28,28 @@ class _AddingState extends State<Adding> {
   String _amount = '0.00';
   String _selectedCategory;
   CrazySwitch _crazySwitch = new CrazySwitch();
-  var moneyController = MoneyMaskedTextController(decimalSeparator: '.', thousandSeparator: ',');
+  var _moneyController = MoneyMaskedTextController(decimalSeparator: '.', thousandSeparator: ',');
   int _radioVal = 0;
+  final _formKey = GlobalKey<FormState>();
+  ScrollController _scrollController;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    _scrollController = new ScrollController();
     SharedPreferences.getInstance()
       ..then((prefs) {
         setState(() => this._prefs = prefs);
         _loadCategoryPref();
       });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    _moneyController.dispose();
+    super.dispose();
   }
 
   // TODO: use a sqflite database for saving the user data on device
@@ -83,79 +93,94 @@ class _AddingState extends State<Adding> {
         body: new Stack(alignment: AlignmentDirectional.topCenter, children: <Widget>[
           new SingleChildScrollView(
             padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16, top: 0),
-            child: Column(
-              children: <Widget>[
-                SizedBox(height: 40),
-                TextField(
-                  controller: moneyController,
-                  keyboardType: TextInputType.numberWithOptions(signed: false, decimal: true),
-                  decoration: const InputDecoration(
-                    border: UnderlineInputBorder(),
-                    filled: true,
-                    icon: Icon(Icons.attach_money),
-                    labelText: 'amount',
-                  ),
-                  onChanged: (String number) => this._amount = number,
-                ),
-                SizedBox(height: 26),
-                TextField(
-                  textCapitalization: TextCapitalization.words,
-                  decoration: InputDecoration(
-                    border: UnderlineInputBorder(),
-                    filled: true,
-                    icon: Icon(Icons.info_outline),
-                    hintText: 'What is it?',
-                    labelText: 'description',
-                  ),
-                  onChanged: (String text) => this._description = text,
-                  maxLength: 50,
-                ),
-                SizedBox(height: 26),
-                Row(
-                  children: <Widget>[
-                    Text('expenditure', style: TextStyle(color: Colors.red), textScaleFactor: 1.1),
-                    SizedBox(width: 16),
-                    _crazySwitch,
-                    SizedBox(width: 16),
-                    Text('revenue', style: TextStyle(color: Colors.lightGreen), textScaleFactor: 1.1),
-                  ],
-                  mainAxisAlignment: MainAxisAlignment.center,
-                ),
-                SizedBox(height: 26),
-                Column(
-                  children: _listTiles,
-                ),
-                RaisedButton(
-                    child: Icon(Icons.add),
-                    onPressed: () async {
-                      String category = await Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AddCategory()));
-                      if (category != null) {
-                        this._categories.add(category);
-                        this._setCategoryPref(this._categories);
-                        this._loadCategoryPref();
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: <Widget>[
+                  SizedBox(height: 40),
+                  TextFormField(
+                    controller: _moneyController,
+                    keyboardType: TextInputType.numberWithOptions(signed: false, decimal: true),
+                    decoration: const InputDecoration(
+                      border: UnderlineInputBorder(),
+                      filled: true,
+                      icon: Icon(Icons.attach_money),
+                      labelText: 'amount',
+                    ),
+                    validator: (String number) {
+                      if (number == '0.00') {
+                        _scrollController.animateTo(0, duration: new Duration(milliseconds: 500), curve: Curves.ease);
+                        return 'Please enter an amount!';
                       }
-                    }),
-              ],
+                      return null;
+                    },
+                    onFieldSubmitted: (String number) => this._amount = number,
+                    // onChanged: (String number) => this._amount = number,
+                  ),
+                  SizedBox(height: 26),
+                  TextField(
+                    textCapitalization: TextCapitalization.words,
+                    decoration: InputDecoration(
+                      border: UnderlineInputBorder(),
+                      filled: true,
+                      icon: Icon(Icons.info_outline),
+                      hintText: 'What is it?',
+                      labelText: 'description',
+                    ),
+                    onChanged: (String text) => this._description = text,
+                    maxLength: 50,
+                  ),
+                  SizedBox(height: 26),
+                  Row(
+                    children: <Widget>[
+                      Text('expenditure', style: TextStyle(color: Colors.red), textScaleFactor: 1.1),
+                      SizedBox(width: 16),
+                      _crazySwitch,
+                      SizedBox(width: 16),
+                      Text('revenue', style: TextStyle(color: Colors.lightGreen), textScaleFactor: 1.1),
+                    ],
+                    mainAxisAlignment: MainAxisAlignment.center,
+                  ),
+                  SizedBox(height: 26),
+                  Column(
+                    children: _listTiles,
+                  ),
+                  RaisedButton(
+                      child: Icon(Icons.add),
+                      onPressed: () async {
+                        String category = await Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AddCategory()));
+                        if (category != null) {
+                          this._categories.add(category);
+                          this._setCategoryPref(this._categories);
+                          this._loadCategoryPref();
+                        }
+                      }),
+                ],
+              ),
             ),
+            controller: _scrollController,
           ),
           Container(
             child: new FloatingActionButton(
               child: Icon(Icons.check),
               backgroundColor: Colors.blueAccent,
               onPressed: () {
-                final int sign = _crazySwitch.isChecked() ? 1 : -1;
-                final double _realAmount = round((sign) * 10 * double.parse(_amount.replaceAll(new RegExp(','), '')), 2);
-                final MyTransaction data = MyTransaction(
-                  category: _selectedCategory,
-                  description: _description,
-                  amount: _realAmount,
-                  date: DateTime((widget.selectedDate ?? DateTime.now()).year, (widget.selectedDate ?? DateTime.now()).month).toString(),
-                );
-                _insertInDatabase(data);
-                try {
-                  Navigator.pop(context);
-                } catch (e) {
-                  print(e);
+                if (_formKey.currentState.validate()) {
+                  this._amount = _moneyController.numberValue.toString();
+                  final int sign = _crazySwitch.isChecked() ? 1 : -1;
+                  final double _realAmount = round((sign) * 10 * double.parse(_amount.replaceAll(new RegExp(','), '')), 2);
+                  final MyTransaction data = MyTransaction(
+                    category: _selectedCategory,
+                    description: _description,
+                    amount: _realAmount,
+                    date: DateTime((widget.selectedDate ?? DateTime.now()).year, (widget.selectedDate ?? DateTime.now()).month).toString(),
+                  );
+                  _insertInDatabase(data);
+                  try {
+                    Navigator.pop(context);
+                  } catch (e) {
+                    print(e);
+                  }
                 }
               },
             ),

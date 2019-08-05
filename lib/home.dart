@@ -25,13 +25,14 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   // TODO: paint the font red for consumer spending and green for income
   DateTime _selectedDate;
-  List<MyTransaction> myTransactions;
+  List<MyTransaction> _myTransactions;
 
   @override
   void initState() {
     super.initState();
+    // DateTime.now(); => 2019-08-05 17:41:24.065004
+    this._selectedDate = DateTime(DateTime.now().year, DateTime.now().month);
     this._loadDatabase();
-    this._selectedDate = DateTime.now();
   }
 
   @override
@@ -44,19 +45,19 @@ class _HomeState extends State<Home> {
     List<MyTransaction> temp = await _getDatabase();
     // refresh GUI
     setState(() {
-      this.myTransactions = temp;
+      this._myTransactions = temp;
     });
   }
 
   List<double> _getTupleRevenueExpenditure() {
     double sumRevenue = 0.0;
     double sumExpenditure = 0.0;
-    if (this.myTransactions != null) {
-      for (int i = 0; i < this.myTransactions.length; i++) {
-        if (this.myTransactions[i].amount > 0) {
-          sumRevenue += this.myTransactions[i].amount;
-        } else if (this.myTransactions[i].amount < 0) {
-          sumExpenditure += this.myTransactions[i].amount;
+    if (this._myTransactions != null) {
+      for (int i = 0; i < this._myTransactions.length; i++) {
+        if (this._myTransactions[i].amount > 0) {
+          sumRevenue += this._myTransactions[i].amount;
+        } else if (this._myTransactions[i].amount < 0) {
+          sumExpenditure += this._myTransactions[i].amount;
         }
       }
     }
@@ -80,6 +81,7 @@ class _HomeState extends State<Home> {
               onPressed: () {
                 showMonthPicker(context: context, initialDate: _selectedDate ?? widget.initialDate).then((date) => setState(() {
                       _selectedDate = date;
+                      this._loadDatabase();
                     }));
               }),
         ],
@@ -92,16 +94,24 @@ class _HomeState extends State<Home> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
                   Container(
-                      child: Text(_getTupleRevenueExpenditure()[0].toString(), textAlign: TextAlign.center, style: TextStyle(color: Colors.lightGreen)),
+                      child: Text(_getTupleRevenueExpenditure()[0].toString(),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Colors.lightGreen),
+                          textScaleFactor: (_getTupleRevenueExpenditure()[0].toString().length < 12) ? 1.0 : 0.8),
                       width: screenWidth / 3,
                       decoration: BoxDecoration(border: Border.all(color: Colors.black54))),
                   Container(
-                      child: Text(_getTupleRevenueExpenditure()[1].toString(), textAlign: TextAlign.center, style: TextStyle(color: Colors.red)),
+                      child: Text(_getTupleRevenueExpenditure()[1].toString(),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Colors.red),
+                          textScaleFactor: (_getTupleRevenueExpenditure()[1].toString().length < 12) ? 1.0 : 0.8),
                       width: screenWidth / 3,
                       decoration: BoxDecoration(border: Border.all(color: Colors.black54))),
                   Container(
                       child: Text(round((_getTupleRevenueExpenditure()[0] + _getTupleRevenueExpenditure()[1]), 2).toString(),
-                          textAlign: TextAlign.center, style: TextStyle(color: Colors.blue)),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Colors.blue),
+                          textScaleFactor: (round((_getTupleRevenueExpenditure()[0] + _getTupleRevenueExpenditure()[1]), 2).toString().length < 12) ? 1.0 : 0.8),
                       width: screenWidth / 3,
                       decoration: BoxDecoration(border: Border.all(color: Colors.black54))),
                 ],
@@ -208,9 +218,13 @@ class _HomeState extends State<Home> {
 
   Widget _getList(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
-    if (myTransactions != null) {
+    if (_myTransactions.isEmpty) {
+      return Center(child: Icon(Icons.edit, size: 60, color: Colors.black38));
+    }
+    if (_myTransactions != null) {
       return ListView.builder(
-          itemCount: myTransactions.length,
+          padding: EdgeInsets.only(bottom: 90),
+          itemCount: _myTransactions.length,
           itemBuilder: (BuildContext context, int index) {
             return Container(
               padding: EdgeInsets.only(bottom: 10, top: 10),
@@ -220,18 +234,18 @@ class _HomeState extends State<Home> {
               child: Row(
                 children: <Widget>[
                   Container(
-                    child: Text(myTransactions[index].description ?? '–', textScaleFactor: 1.2, textAlign: TextAlign.center),
+                    child: Text(_myTransactions[index].description ?? '–', textScaleFactor: 1.2, textAlign: TextAlign.center),
                     width: screenWidth / 3,
                   ),
                   Container(
-                    child: Text(myTransactions[index].category ?? '–', textScaleFactor: 1.2, textAlign: TextAlign.center),
+                    child: Text(_myTransactions[index].category ?? '–', textScaleFactor: 1.2, textAlign: TextAlign.center),
                     width: screenWidth / 3,
                   ),
                   Container(
-                      child: Text(myTransactions[index].amount.toString() ?? '–',
-                          textScaleFactor: 1.2,
+                      child: Text(_myTransactions[index].amount.toString() ?? '–',
+                          textScaleFactor: ((_myTransactions[index].amount.toString() ?? '–').length < 12) ? 1.0 : 0.9,
                           textAlign: TextAlign.center,
-                          style: TextStyle(color: (myTransactions[index].amount < 0.0) ? Colors.red : Colors.lightGreen)),
+                          style: TextStyle(color: (_myTransactions[index].amount < 0.0) ? Colors.red : Colors.lightGreen)),
                       width: screenWidth / 3),
                 ],
               ),
@@ -264,7 +278,8 @@ class _HomeState extends State<Home> {
     final Database db = await database;
 
     // Query the table for all The Dogs.
-    final List<Map<String, dynamic>> maps = await db.query('transactions');
+    final List<Map<String, dynamic>> maps =
+        await db.query('transactions', where: "date = ?", whereArgs: [(_selectedDate ?? DateTime(DateTime.now().year, DateTime.now().month)).toString()]);
 
     return List.generate(maps.length, (i) {
       return MyTransaction(
