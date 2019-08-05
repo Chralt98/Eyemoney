@@ -34,46 +34,52 @@ class _CategoriesState extends State<Categories> {
         backgroundColor: Colors.blueAccent,
       ),
       body: ListView.builder(
-        padding: EdgeInsets.only(bottom: 90, top: 16, left: 16, right: 16),
+        padding: EdgeInsets.only(bottom: 90, top: 26, left: 16, right: 16),
         itemCount: _categories.length,
         itemBuilder: (context, index) {
           final String item = _categories[index] ?? '';
           return Dismissible(
-            key: Key(item),
-            direction: DismissDirection.endToStart,
-            onDismissed: (DismissDirection dir) {
-              if (dir == DismissDirection.endToStart) {
-                setState(() => this._categories.remove(_categories[index]));
-                Scaffold.of(context).showSnackBar(SnackBar(
-                  content: Text('$item removed.'),
-                  action: SnackBarAction(
-                    label: 'UNDO',
-                    onPressed: () {
-                      setState(() => this._categories.insert(index, item));
-                    },
-                  ),
-                ));
-              }
-              this._setCategoryPref(_categories);
-            },
-            secondaryBackground: Container(
-              color: Colors.red,
-              child: Icon(Icons.delete),
-              alignment: Alignment.centerRight,
-            ),
-            background: Container(
-              color: Colors.transparent,
-              child: Icon(Icons.edit),
-              alignment: Alignment.centerLeft,
-            ),
-            child: ListTile(
-              leading: Icon(Icons.dehaze),
-              title: Text(
-                item,
-                style: _biggerFont,
+              key: Key(item),
+              direction: DismissDirection.endToStart,
+              onDismissed: (DismissDirection dir) {
+                if (dir == DismissDirection.endToStart) {
+                  setState(() => this._categories.remove(_categories[index]));
+                  Scaffold.of(context).showSnackBar(SnackBar(
+                    content: Text('$item removed.'),
+                    action: SnackBarAction(
+                      label: 'UNDO',
+                      onPressed: () {
+                        setState(() => this._categories.insert(index, item));
+                      },
+                    ),
+                  ));
+                }
+                this._setCategoryPref(_categories);
+              },
+              secondaryBackground: Container(
+                color: Colors.red,
+                child: Icon(Icons.delete),
+                alignment: Alignment.centerRight,
               ),
-            ),
-          );
+              background: Container(
+                color: Colors.transparent,
+                child: Icon(Icons.edit),
+                alignment: Alignment.centerLeft,
+              ),
+              child: Container(
+                decoration: BoxDecoration(
+                    color: (index % 2 == 0) ? Color.fromARGB(5, 255, 255, 0) : Color.fromARGB(5, 0, 0, 255),
+                    border: Border.fromBorderSide(BorderSide(width: 0.0, color: Colors.black12, style: BorderStyle.solid))),
+                child: ListTile(
+                  leading: Icon(Icons.dehaze),
+                  title: Container(
+                      child: Text(
+                    item,
+                    style: _biggerFont,
+                    textScaleFactor: (item.toString().length > 18) ? 0.65 : 1.0,
+                  )),
+                ),
+              ));
         },
       ),
       floatingActionButton: FloatingActionButton(

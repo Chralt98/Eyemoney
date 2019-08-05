@@ -72,7 +72,9 @@ class _AddingState extends State<Adding> {
   Widget build(BuildContext context) {
     final _listTiles = _categories
         .map((item) => Container(
-            decoration: new BoxDecoration(border: new Border(top: BorderSide(color: Colors.black26, width: 2))),
+            decoration: BoxDecoration(
+                color: (_categories.indexOf(item) % 2 == 0) ? Color.fromARGB(5, 255, 255, 0) : Color.fromARGB(5, 0, 0, 255),
+                border: Border.fromBorderSide(BorderSide(width: 0.0, color: Colors.black12, style: BorderStyle.solid))),
             child: RadioListTile<int>(
                 value: _categories.indexOf(item),
                 groupValue: this._radioVal,
@@ -83,7 +85,7 @@ class _AddingState extends State<Adding> {
                   });
                 },
                 activeColor: Colors.blue,
-                title: Text(item))))
+                title: Container(child: Text(item, textScaleFactor: (item.toString().length > 18) ? 0.65 : 1.0)))))
         .toList();
     return new Scaffold(
         appBar: new AppBar(
@@ -105,7 +107,7 @@ class _AddingState extends State<Adding> {
                       border: UnderlineInputBorder(),
                       filled: true,
                       icon: Icon(Icons.attach_money),
-                      labelText: 'amount',
+                      labelText: 'Amount *',
                     ),
                     validator: (String number) {
                       if (number == '0.00') {
@@ -125,7 +127,7 @@ class _AddingState extends State<Adding> {
                       filled: true,
                       icon: Icon(Icons.info_outline),
                       hintText: 'What is it?',
-                      labelText: 'description',
+                      labelText: 'Description (optional)',
                     ),
                     onChanged: (String text) => this._description = text,
                     maxLength: 50,
