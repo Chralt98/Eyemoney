@@ -57,6 +57,11 @@ class _AddingState extends State<Adding> {
   void _loadCategoryPref() {
     setState(() {
       _categories = this._prefs.getStringList(categoryPrefKey) ?? standard_categories;
+      if (_categories.isEmpty) {
+        _categories.insert(0, '–');
+      } else if (_categories.isNotEmpty && _categories.first != '–') {
+        _categories.insert(0, '–');
+      }
       if (_categories.isNotEmpty) {
         _selectedCategory = _categories.first;
       }
@@ -170,7 +175,7 @@ class _AddingState extends State<Adding> {
                 if (_formKey.currentState.validate()) {
                   this._amount = _moneyController.numberValue.toString();
                   final int sign = _crazySwitch.isChecked() ? 1 : -1;
-                  final double _realAmount = round((sign) * 10 * double.parse(_amount.replaceAll(new RegExp(','), '')), 2);
+                  final double _realAmount = round((sign) * double.parse(_amount.replaceAll(new RegExp(','), '')), 2);
                   final MyTransaction data = MyTransaction(
                     category: _selectedCategory,
                     description: _description,
