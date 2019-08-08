@@ -56,20 +56,20 @@ class _CategoriesState extends State<Categories> {
                 }
                 this._setCategoryPref(_categories);
               },
-              secondaryBackground: Container(
+              background: Container(
                 color: Colors.red,
                 child: Icon(Icons.delete),
                 alignment: Alignment.centerRight,
               ),
-              background: Container(
-                color: Colors.transparent,
-                child: Icon(Icons.edit),
-                alignment: Alignment.centerLeft,
-              ),
               child: Container(
                 decoration: BoxDecoration(
-                    color: (index % 2 == 0) ? Color.fromARGB(5, 255, 255, 0) : Color.fromARGB(5, 0, 0, 255),
-                    border: Border.fromBorderSide(BorderSide(width: 0.0, color: Colors.black12, style: BorderStyle.solid))),
+                    color: (index % 2 == 0)
+                        ? Color.fromARGB(5, 255, 255, 0)
+                        : Color.fromARGB(5, 0, 0, 255),
+                    border: Border.fromBorderSide(BorderSide(
+                        width: 0.0,
+                        color: Colors.black12,
+                        style: BorderStyle.solid))),
                 child: ListTile(
                   leading: Icon(Icons.dehaze),
                   title: Container(
@@ -86,7 +86,10 @@ class _CategoriesState extends State<Categories> {
         child: Icon(Icons.add),
         backgroundColor: Colors.blueAccent,
         onPressed: () async {
-          String category = await Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AddCategory()));
+          String category = await Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => AddCategory()));
           if (category != null) {
             this._categories.add(category);
             this._setCategoryPref(this._categories);
@@ -100,7 +103,8 @@ class _CategoriesState extends State<Categories> {
 
   void _loadCategoryPref() {
     setState(() {
-      this._categories = this._prefs.getStringList(categoryPrefKey) ?? standard_categories;
+      this._categories =
+          this._prefs.getStringList(categoryPrefKey) ?? standard_categories;
     });
   }
 

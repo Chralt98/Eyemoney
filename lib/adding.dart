@@ -9,6 +9,7 @@ import 'package:sqflite/sqflite.dart';
 
 import 'add_category.dart';
 import 'globals.dart';
+import 'my_functions.dart';
 import 'switch.dart';
 import 'transaction.dart';
 
@@ -28,7 +29,8 @@ class _AddingState extends State<Adding> {
   String _amount = '0.00';
   String _selectedCategory;
   CrazySwitch _crazySwitch = new CrazySwitch();
-  var _moneyController = MoneyMaskedTextController(decimalSeparator: '.', thousandSeparator: ',');
+  var _moneyController =
+      MoneyMaskedTextController(decimalSeparator: '.', thousandSeparator: ',');
   int _radioVal = 0;
   final _formKey = GlobalKey<FormState>();
   ScrollController _scrollController;
@@ -56,7 +58,8 @@ class _AddingState extends State<Adding> {
   // only category for shared preferences
   void _loadCategoryPref() {
     setState(() {
-      _categories = this._prefs.getStringList(categoryPrefKey) ?? standard_categories;
+      _categories =
+          this._prefs.getStringList(categoryPrefKey) ?? standard_categories;
       if (_categories.isEmpty) {
         _categories.insert(0, '–');
       } else if (_categories.isNotEmpty && _categories.first != '–') {
@@ -78,8 +81,13 @@ class _AddingState extends State<Adding> {
     final _listTiles = _categories
         .map((item) => Container(
             decoration: BoxDecoration(
-                color: (_categories.indexOf(item) % 2 == 0) ? Color.fromARGB(5, 255, 255, 0) : Color.fromARGB(5, 0, 0, 255),
-                border: Border.fromBorderSide(BorderSide(width: 0.0, color: Colors.black12, style: BorderStyle.solid))),
+                color: (_categories.indexOf(item) % 2 == 0)
+                    ? Color.fromARGB(5, 255, 255, 0)
+                    : Color.fromARGB(5, 0, 0, 255),
+                border: Border.fromBorderSide(BorderSide(
+                    width: 0.0,
+                    color: Colors.black12,
+                    style: BorderStyle.solid))),
             child: RadioListTile<int>(
                 value: _categories.indexOf(item),
                 groupValue: this._radioVal,
@@ -90,16 +98,21 @@ class _AddingState extends State<Adding> {
                   });
                 },
                 activeColor: Colors.blue,
-                title: Container(child: Text(item, textScaleFactor: (item.toString().length > 18) ? 0.65 : 1.0)))))
+                title: Container(
+                    child: Text(item,
+                        textScaleFactor:
+                            (item.toString().length > 18) ? 0.65 : 1.0)))))
         .toList();
     return new Scaffold(
         appBar: new AppBar(
           title: const Text('Add'),
           actions: [],
         ),
-        body: new Stack(alignment: AlignmentDirectional.topCenter, children: <Widget>[
+        body: new Stack(alignment: AlignmentDirectional.topCenter, children: <
+            Widget>[
           new SingleChildScrollView(
-            padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16, top: 0),
+            padding:
+                const EdgeInsets.only(left: 16, right: 16, bottom: 16, top: 0),
             child: Form(
               key: _formKey,
               child: Column(
@@ -107,7 +120,8 @@ class _AddingState extends State<Adding> {
                   SizedBox(height: 40),
                   TextFormField(
                     controller: _moneyController,
-                    keyboardType: TextInputType.numberWithOptions(signed: false, decimal: true),
+                    keyboardType: TextInputType.numberWithOptions(
+                        signed: false, decimal: true),
                     decoration: const InputDecoration(
                       border: UnderlineInputBorder(),
                       filled: true,
@@ -116,7 +130,9 @@ class _AddingState extends State<Adding> {
                     ),
                     validator: (String number) {
                       if (number == '0.00') {
-                        _scrollController.animateTo(0, duration: new Duration(milliseconds: 500), curve: Curves.ease);
+                        _scrollController.animateTo(0,
+                            duration: new Duration(milliseconds: 500),
+                            curve: Curves.ease);
                         return 'Please enter an amount!';
                       }
                       return null;
@@ -140,11 +156,15 @@ class _AddingState extends State<Adding> {
                   SizedBox(height: 26),
                   Row(
                     children: <Widget>[
-                      Text('expenditure', style: TextStyle(color: Colors.red), textScaleFactor: 1.1),
+                      Text('expenditure',
+                          style: TextStyle(color: Colors.red),
+                          textScaleFactor: 1.1),
                       SizedBox(width: 16),
                       _crazySwitch,
                       SizedBox(width: 16),
-                      Text('revenue', style: TextStyle(color: Colors.lightGreen), textScaleFactor: 1.1),
+                      Text('revenue',
+                          style: TextStyle(color: Colors.lightGreen),
+                          textScaleFactor: 1.1),
                     ],
                     mainAxisAlignment: MainAxisAlignment.center,
                   ),
@@ -155,11 +175,16 @@ class _AddingState extends State<Adding> {
                   RaisedButton(
                       child: Icon(Icons.add),
                       onPressed: () async {
-                        String category = await Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AddCategory()));
+                        String category = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    AddCategory()));
                         if (category != null) {
                           this._categories.add(category);
-                          this._setCategoryPref(this._categories);
-                          this._loadCategoryPref();
+                          this._radioVal = this._categories.indexOf(category);
+                          await this._setCategoryPref(this._categories);
+                          this._selectedCategory = _categories.last;
                         }
                       }),
                 ],
@@ -175,12 +200,17 @@ class _AddingState extends State<Adding> {
                 if (_formKey.currentState.validate()) {
                   this._amount = _moneyController.numberValue.toString();
                   final int sign = _crazySwitch.isChecked() ? 1 : -1;
-                  final double _realAmount = round((sign) * double.parse(_amount.replaceAll(new RegExp(','), '')), 2);
+                  final double _realAmount = round(
+                      (sign) *
+                          double.parse(_amount.replaceAll(new RegExp(','), '')),
+                      2);
                   final MyTransaction data = MyTransaction(
                     category: _selectedCategory,
                     description: _description,
                     amount: _realAmount,
-                    date: DateTime((widget.selectedDate ?? DateTime.now()).year, (widget.selectedDate ?? DateTime.now()).month).toString(),
+                    date: DateTime((widget.selectedDate ?? DateTime.now()).year,
+                            (widget.selectedDate ?? DateTime.now()).month)
+                        .toString(),
                   );
                   _insertInDatabase(data);
                   try {
@@ -197,7 +227,7 @@ class _AddingState extends State<Adding> {
         ]));
   }
 
-  void _insertInDatabase(MyTransaction data) async {
+  Future<void> _insertInDatabase(MyTransaction data) async {
     final database = openDatabase(
       // Set the path to the database. Note: Using the `join` function from the
       // `path` package is best practice to ensure the path is correctly
@@ -214,23 +244,17 @@ class _AddingState extends State<Adding> {
       version: 1,
     );
 
-    Future<void> insertTransaction(MyTransaction transaction) async {
-      // Get a reference to the database.
-      final Database db = await database;
+    // Get a reference to the database.
+    final Database db = await database;
 
-      // Insert the Dog into the correct table. Also specify the
-      // `conflictAlgorithm`. In this case, if the same dog is inserted
-      // multiple times, it replaces the previous data.
-      await db.insert(
-        'transactions',
-        transaction.toMap(),
-        conflictAlgorithm: ConflictAlgorithm.replace,
-      );
-    }
-
-    // Insert a transaction into the database.
-    await insertTransaction(data);
-
+    // Insert the Dog into the correct table. Also specify the
+    // `conflictAlgorithm`. In this case, if the same dog is inserted
+    // multiple times, it replaces the previous data.
+    await db.insert(
+      'transactions',
+      data.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
     /*
     Future<void> updateTransaction(Transaction transaction) async {
       // Get a reference to the database.

@@ -8,6 +8,7 @@ import 'package:sqflite/sqflite.dart';
 import 'adding.dart';
 import 'categories.dart';
 import 'globals.dart';
+import 'my_functions.dart';
 import 'settings.dart';
 import 'statistics.dart';
 import 'transaction.dart';
@@ -16,7 +17,8 @@ class Home extends StatefulWidget {
   final DateTime initialDate;
   final String title;
 
-  const Home({Key key, @required this.title, @required this.initialDate}) : super(key: key);
+  const Home({Key key, @required this.title, @required this.initialDate})
+      : super(key: key);
 
   @override
   _HomeState createState() => new _HomeState();
@@ -72,16 +74,21 @@ class _HomeState extends State<Home> {
         backgroundColor: Colors.blueAccent,
         actions: <Widget>[
           Container(
-            child: Text((_selectedDate ?? DateTime.now()).month.toString() + ' / ' + (_selectedDate ?? DateTime.now()).year.toString()),
+            child: Text((_selectedDate ?? DateTime.now()).month.toString() +
+                ' / ' +
+                (_selectedDate ?? DateTime.now()).year.toString()),
             alignment: Alignment.centerRight,
           ),
           IconButton(
               icon: Icon(Icons.date_range),
               onPressed: () {
-                showMonthPicker(context: context, initialDate: _selectedDate ?? widget.initialDate).then((date) => setState(() {
-                      _selectedDate = date;
-                      this._loadDatabase();
-                    }));
+                showMonthPicker(
+                        context: context,
+                        initialDate: _selectedDate ?? widget.initialDate)
+                    .then((date) => setState(() {
+                          _selectedDate = date;
+                          this._loadDatabase();
+                        }));
               }),
         ],
       ),
@@ -93,26 +100,60 @@ class _HomeState extends State<Home> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
                   Container(
-                      child: Text(_getTupleRevenueExpenditure()[0].toString(),
+                      child: Text(
+                          normTwoDecimal(
+                              round(_getTupleRevenueExpenditure()[0], 2)
+                                  .toString()),
                           textAlign: TextAlign.center,
                           style: TextStyle(color: Colors.lightGreen),
-                          textScaleFactor: (_getTupleRevenueExpenditure()[0].toString().length < 12) ? 1.0 : 0.8),
+                          textScaleFactor: (_getTupleRevenueExpenditure()[0]
+                                      .toString()
+                                      .length <
+                                  11)
+                              ? 1.0
+                              : 0.8),
                       width: screenWidth / 3,
-                      decoration: BoxDecoration(border: Border.all(color: Colors.black54))),
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black54))),
                   Container(
-                      child: Text(_getTupleRevenueExpenditure()[1].toString(),
+                      child: Text(
+                          normTwoDecimal(
+                              round(_getTupleRevenueExpenditure()[1], 2)
+                                  .toString()),
                           textAlign: TextAlign.center,
                           style: TextStyle(color: Colors.red),
-                          textScaleFactor: (_getTupleRevenueExpenditure()[1].toString().length < 12) ? 1.0 : 0.8),
+                          textScaleFactor: (_getTupleRevenueExpenditure()[1]
+                                      .toString()
+                                      .length <
+                                  11)
+                              ? 1.0
+                              : 0.8),
                       width: screenWidth / 3,
-                      decoration: BoxDecoration(border: Border.all(color: Colors.black54))),
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black54))),
                   Container(
-                      child: Text(round((_getTupleRevenueExpenditure()[0] + _getTupleRevenueExpenditure()[1]), 2).toString(),
+                      child: Text(
+                          normTwoDecimal(round(
+                                  (_getTupleRevenueExpenditure()[0] +
+                                      _getTupleRevenueExpenditure()[1]),
+                                  2)
+                              .toString()),
                           textAlign: TextAlign.center,
                           style: TextStyle(color: Colors.blue),
-                          textScaleFactor: (round((_getTupleRevenueExpenditure()[0] + _getTupleRevenueExpenditure()[1]), 2).toString().length < 12) ? 1.0 : 0.8),
+                          textScaleFactor: (normTwoDecimal(round(
+                                              (_getTupleRevenueExpenditure()[
+                                                      0] +
+                                                  _getTupleRevenueExpenditure()[
+                                                      1]),
+                                              2)
+                                          .toString())
+                                      .length <
+                                  11)
+                              ? 1.0
+                              : 0.8),
                       width: screenWidth / 3,
-                      decoration: BoxDecoration(border: Border.all(color: Colors.black54))),
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black54))),
                 ],
               ),
             ),
@@ -121,9 +162,21 @@ class _HomeState extends State<Home> {
               color: Colors.black12,
               child: Row(
                 children: <Widget>[
-                  Container(child: Icon(Icons.info_outline), width: screenWidth / 3, decoration: BoxDecoration(border: Border.all(color: Colors.black54))),
-                  Container(child: Icon(Icons.category), width: screenWidth / 3, decoration: BoxDecoration(border: Border.all(color: Colors.black54))),
-                  Container(child: Icon(Icons.attach_money), width: screenWidth / 3, decoration: BoxDecoration(border: Border.all(color: Colors.black54))),
+                  Container(
+                      child: Icon(Icons.info_outline),
+                      width: screenWidth / 3,
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black54))),
+                  Container(
+                      child: Icon(Icons.category),
+                      width: screenWidth / 3,
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black54))),
+                  Container(
+                      child: Icon(Icons.attach_money),
+                      width: screenWidth / 3,
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black54))),
                 ],
               ),
             ),
@@ -149,7 +202,9 @@ class _HomeState extends State<Home> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 textBaseline: TextBaseline.alphabetic,
                 children: <Widget>[
-                  Text(appName, textScaleFactor: 2, style: TextStyle(color: Colors.white)),
+                  Text(appName,
+                      textScaleFactor: 2,
+                      style: TextStyle(color: Colors.white)),
                   Icon(
                     Icons.monetization_on,
                     size: 50,
@@ -178,7 +233,10 @@ class _HomeState extends State<Home> {
                 // Update the state of the app
                 // ...
                 // Then close the drawer
-                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Statistics()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => Statistics()));
               },
             ),
             ListTile(
@@ -188,7 +246,10 @@ class _HomeState extends State<Home> {
                 // Update the state of the app
                 // ...
                 // Then close the drawer
-                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Categories()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => Categories()));
               },
             ),
             ListTile(
@@ -198,7 +259,10 @@ class _HomeState extends State<Home> {
                 // Update the state of the app
                 // ...
                 // Then close the drawer
-                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Settings()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => Settings()));
               },
             ),
           ],
@@ -208,7 +272,11 @@ class _HomeState extends State<Home> {
         child: Icon(Icons.attach_money),
         backgroundColor: Colors.blueAccent,
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Adding(selectedDate: _selectedDate)));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) =>
+                      Adding(selectedDate: _selectedDate)));
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
@@ -222,30 +290,76 @@ class _HomeState extends State<Home> {
           padding: EdgeInsets.only(bottom: 90),
           itemCount: _myTransactions.length,
           itemBuilder: (BuildContext context, int index) {
-            return Container(
-              padding: EdgeInsets.only(bottom: 10, top: 10),
-              decoration: BoxDecoration(
-                  color: (index % 2 == 0) ? Color.fromARGB(5, 255, 255, 0) : Color.fromARGB(5, 0, 0, 255),
-                  border: Border.fromBorderSide(BorderSide(width: 0.0, color: Colors.black12, style: BorderStyle.solid))),
-              child: Row(
-                children: <Widget>[
-                  Container(
-                    child: Text(_myTransactions[index].description ?? '–', textScaleFactor: 1.2, textAlign: TextAlign.center),
-                    width: screenWidth / 3,
+            final MyTransaction item = _myTransactions[index];
+            final String description = item.description;
+            return Dismissible(
+                key: Key(item.toString()),
+                direction: DismissDirection.endToStart,
+                onDismissed: (DismissDirection dir) {
+                  if (dir == DismissDirection.endToStart) {
+                    setState(() {
+                      this._myTransactions.removeAt(index);
+                      this._removeFromDatabase(item);
+                    });
+                    Scaffold.of(context).showSnackBar(SnackBar(
+                      content: Text('"$description" removed.'),
+                      action: SnackBarAction(
+                        label: 'UNDO',
+                        onPressed: () {
+                          setState(() {
+                            this._myTransactions.insert(index, item);
+                            this._insertInDatabase(item);
+                          });
+                        },
+                      ),
+                    ));
+                  }
+                },
+                background: Container(
+                  color: Colors.red,
+                  child: Icon(Icons.delete),
+                  alignment: Alignment.centerRight,
+                ),
+                child: Container(
+                  padding: EdgeInsets.only(bottom: 10, top: 10),
+                  decoration: BoxDecoration(
+                      color: (index % 2 == 0)
+                          ? Color.fromARGB(5, 255, 255, 0)
+                          : Color.fromARGB(5, 0, 0, 255),
+                      border: Border.fromBorderSide(BorderSide(
+                          width: 0.0,
+                          color: Colors.black12,
+                          style: BorderStyle.solid))),
+                  child: Row(
+                    children: <Widget>[
+                      Container(
+                        child: Text(item.description ?? '–',
+                            textScaleFactor: 1.2, textAlign: TextAlign.center),
+                        width: screenWidth / 3,
+                      ),
+                      Container(
+                        child: Text(item.category ?? '–',
+                            textScaleFactor: 1.2, textAlign: TextAlign.center),
+                        width: screenWidth / 3,
+                      ),
+                      Container(
+                          child: Text(
+                              normTwoDecimal(
+                                      round(item.amount, 2).toString()) ??
+                                  '–',
+                              textScaleFactor:
+                                  ((item.amount.toString() ?? '–').length < 12)
+                                      ? 1.0
+                                      : 0.9,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: (item.amount < 0.0)
+                                      ? Colors.red
+                                      : Colors.lightGreen)),
+                          width: screenWidth / 3),
+                    ],
                   ),
-                  Container(
-                    child: Text(_myTransactions[index].category ?? '–', textScaleFactor: 1.2, textAlign: TextAlign.center),
-                    width: screenWidth / 3,
-                  ),
-                  Container(
-                      child: Text(_myTransactions[index].amount.toString() ?? '–',
-                          textScaleFactor: ((_myTransactions[index].amount.toString() ?? '–').length < 12) ? 1.0 : 0.9,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(color: (_myTransactions[index].amount < 0.0) ? Colors.red : Colors.lightGreen)),
-                      width: screenWidth / 3),
-                ],
-              ),
-            );
+                ));
           });
     } else if (_myTransactions == null) {
       return Center(
@@ -277,7 +391,10 @@ class _HomeState extends State<Home> {
 
     // Query the table for all The Dogs.
     final List<Map<String, dynamic>> maps =
-        await db.query('transactions', where: "date = ?", whereArgs: [(_selectedDate ?? DateTime(DateTime.now().year, DateTime.now().month)).toString()]);
+        await db.query('transactions', where: "date = ?", whereArgs: [
+      (_selectedDate ?? DateTime(DateTime.now().year, DateTime.now().month))
+          .toString()
+    ]);
 
     return List.generate(maps.length, (i) {
       return MyTransaction(
@@ -288,5 +405,65 @@ class _HomeState extends State<Home> {
         date: maps[i]['date'],
       );
     });
+  }
+
+  Future<void> _removeFromDatabase(MyTransaction data) async {
+    final database = openDatabase(
+      // Set the path to the database. Note: Using the `join` function from the
+      // `path` package is best practice to ensure the path is correctly
+      // constructed for each platform.
+      join(await getDatabasesPath(), appName + 'Database.db'),
+      // When the database is first created, create a table to store transactions.
+      onCreate: (db, version) {
+        return db.execute(
+          "CREATE TABLE transactions(id INTEGER PRIMARY KEY AUTOINCREMENT, category TEXT, description TEXT, amount REAL, date DATETIME)",
+        );
+      },
+      // Set the version. This executes the onCreate function and provides a
+      // path to perform database upgrades and downgrades.
+      version: 1,
+    );
+
+    // Get a reference to the database.
+    final db = await database;
+
+    // Remove the Transaction from the database.
+    await db.delete(
+      'transactions',
+      // Use a `where` clause to delete a specific transaction.
+      where: "id = ?",
+      // Pass the Transactions's id as a whereArg to prevent SQL injection.
+      whereArgs: [data.id],
+    );
+  }
+
+  Future<void> _insertInDatabase(MyTransaction data) async {
+    final database = openDatabase(
+      // Set the path to the database. Note: Using the `join` function from the
+      // `path` package is best practice to ensure the path is correctly
+      // constructed for each platform.
+      join(await getDatabasesPath(), appName + 'Database.db'),
+      // When the database is first created, create a table to store transactions.
+      onCreate: (db, version) {
+        return db.execute(
+          "CREATE TABLE transactions(id INTEGER PRIMARY KEY AUTOINCREMENT, category TEXT, description TEXT, amount REAL, date DATETIME)",
+        );
+      },
+      // Set the version. This executes the onCreate function and provides a
+      // path to perform database upgrades and downgrades.
+      version: 1,
+    );
+
+    // Get a reference to the database.
+    final Database db = await database;
+
+    // Insert the Dog into the correct table. Also specify the
+    // `conflictAlgorithm`. In this case, if the same dog is inserted
+    // multiple times, it replaces the previous data.
+    await db.insert(
+      'transactions',
+      data.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
   }
 }
