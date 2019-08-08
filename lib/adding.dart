@@ -15,8 +15,10 @@ import 'transaction.dart';
 
 class Adding extends StatefulWidget {
   final DateTime selectedDate;
+  final MyTransaction myTransaction;
 
-  const Adding({Key key, @required this.selectedDate}) : super(key: key);
+  const Adding({Key key, @required this.selectedDate, this.myTransaction})
+      : super(key: key);
 
   @override
   _AddingState createState() => new _AddingState();
@@ -34,6 +36,7 @@ class _AddingState extends State<Adding> {
   int _radioVal = 0;
   final _formKey = GlobalKey<FormState>();
   ScrollController _scrollController;
+  TextEditingController _descriptionController = new TextEditingController();
 
   @override
   void initState() {
@@ -43,7 +46,21 @@ class _AddingState extends State<Adding> {
     SharedPreferences.getInstance()
       ..then((prefs) {
         setState(() => this._prefs = prefs);
-        _loadCategoryPref();
+        this._loadCategoryPref();
+        if (widget.myTransaction != null) {
+          this._amount = ((widget.myTransaction.amount < 0
+                      ? widget.myTransaction.amount * -1
+                      : widget.myTransaction.amount) ??
+                  '0.00')
+              .toString();
+          _moneyController.text = this._amount;
+          _crazySwitch
+              .switchMode(widget.myTransaction.amount >= 0 ? true : false);
+          this._description = widget.myTransaction.description;
+          this._descriptionController.text = this._description;
+          this._selectedCategory = widget.myTransaction.category;
+          this._radioVal = _categories.indexOf(this._selectedCategory);
+        }
       });
   }
 
@@ -51,6 +68,7 @@ class _AddingState extends State<Adding> {
   void dispose() {
     _scrollController.dispose();
     _moneyController.dispose();
+    _descriptionController.dispose();
     super.dispose();
   }
 
@@ -126,7 +144,7 @@ class _AddingState extends State<Adding> {
                       border: UnderlineInputBorder(),
                       filled: true,
                       icon: Icon(Icons.attach_money),
-                      labelText: 'Amount *',
+                      labelText: 'amount *',
                     ),
                     validator: (String number) {
                       if (number == '0.00') {
@@ -143,12 +161,13 @@ class _AddingState extends State<Adding> {
                   SizedBox(height: 26),
                   TextField(
                     textCapitalization: TextCapitalization.words,
+                    controller: _descriptionController,
                     decoration: InputDecoration(
                       border: UnderlineInputBorder(),
                       filled: true,
                       icon: Icon(Icons.info_outline),
                       hintText: 'What is it?',
-                      labelText: 'Description (optional)',
+                      labelText: 'description (optional)',
                     ),
                     onChanged: (String text) => this._description = text,
                     maxLength: 50,

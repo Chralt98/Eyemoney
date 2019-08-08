@@ -9,30 +9,25 @@ class CrazySwitch extends StatefulWidget {
   bool isChecked() {
     return _crazySwitchState.isChecked;
   }
+
+  void switchMode(bool mode) {
+    // TODO: Fix bug, that the dismissible always have to delete the edit record because when leaving the screen everything should be as the beginning
+    // TODO: Fix bug that isChecked runs on false when the state is initially called
+    _crazySwitchState.isChecked = mode;
+  }
 }
 
 class _CrazySwitchState extends State<CrazySwitch>
     with SingleTickerProviderStateMixin {
   bool isChecked = false;
   Duration _duration = Duration(milliseconds: 370);
-  Animation<Alignment> _animation;
   AnimationController _animationController;
 
   @override
   void initState() {
     super.initState();
-
     _animationController =
         AnimationController(vsync: this, duration: _duration);
-
-    _animation =
-        AlignmentTween(begin: Alignment.centerLeft, end: Alignment.centerRight)
-            .animate(
-      CurvedAnimation(
-          parent: _animationController,
-          curve: Curves.bounceOut,
-          reverseCurve: Curves.bounceIn),
-    );
   }
 
   @override
@@ -59,7 +54,8 @@ class _CrazySwitchState extends State<CrazySwitch>
           child: Stack(
             children: <Widget>[
               Align(
-                alignment: _animation.value,
+                alignment:
+                    isChecked ? Alignment.centerRight : Alignment.centerLeft,
                 child: GestureDetector(
                   onTap: () {
                     setState(() {
