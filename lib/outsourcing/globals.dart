@@ -16,4 +16,3 @@ List<String> standard_categories = [
   'car',
   'hairdresser'
 ];
-bool isRevenue = false;

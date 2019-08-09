@@ -8,9 +8,7 @@ class Statistics extends StatelessWidget {
         title: Text('Statistics'),
         backgroundColor: Colors.blueAccent,
       ),
-      body: Container(
-
-      ),
+      body: Container(),
     );
   }
 }

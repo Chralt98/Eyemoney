@@ -1,12 +1,8 @@
-import 'dart:async';
-
 import 'package:Eyemoney/database/transaction.dart';
 import 'package:Eyemoney/screens/adding.dart';
 import 'package:Eyemoney/screens/statistics.dart';
 import 'package:flutter/material.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
-import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
 
 import '../outsourcing/globals.dart';
 import '../outsourcing/my_functions.dart';
@@ -42,7 +38,7 @@ class _HomeState extends State<Home> {
   }
 
   void _loadDatabase() async {
-    List<MyTransaction> temp = await _getDatabase();
+    List<MyTransaction> temp = await getDatabase(_selectedDate);
     // refresh GUI
     setState(() {
       this._myTransactions = temp;
@@ -294,7 +290,7 @@ class _HomeState extends State<Home> {
                       if (dir == DismissDirection.endToStart) {
                         setState(() {
                           this._myTransactions.removeAt(index);
-                          this._removeFromDatabase(item);
+                          removeFromDatabase(item);
                         });
                         Scaffold.of(context).showSnackBar(SnackBar(
                           content: Text('"$description" removed.'),
@@ -303,7 +299,7 @@ class _HomeState extends State<Home> {
                             onPressed: () {
                               setState(() {
                                 this._myTransactions.insert(index, item);
-                                this._insertInDatabase(item);
+                                insertInDatabase(item);
                               });
                             },
                           ),
@@ -370,102 +366,5 @@ class _HomeState extends State<Home> {
         child: CircularProgressIndicator(),
       );
     }
-  }
-
-  Future<List<MyTransaction>> _getDatabase() async {
-    final database = openDatabase(
-      // Set the path to the database. Note: Using the `join` function from the
-      // `path` package is best practice to ensure the path is correctly
-      // constructed for each platform.
-      join(await getDatabasesPath(), appName + 'Database.db'),
-      // When the database is first created, create a table to store transactions.
-      onCreate: (db, version) {
-        return db.execute(
-          "CREATE TABLE transactions(id INTEGER PRIMARY KEY AUTOINCREMENT, category TEXT, description TEXT, amount REAL, date DATETIME)",
-        );
-      },
-      // Set the version. This executes the onCreate function and provides a
-      // path to perform database upgrades and downgrades.
-      version: 1,
-    );
-
-    final Database db = await database;
-
-    // Query the table for all The Dogs.
-    final List<Map<String, dynamic>> maps =
-        await db.query('transactions', where: "date = ?", whereArgs: [
-      (_selectedDate ?? DateTime(DateTime.now().year, DateTime.now().month))
-          .toString()
-    ]);
-
-    return List.generate(maps.length, (i) {
-      return MyTransaction(
-        id: maps[i]['id'],
-        category: maps[i]['category'],
-        description: maps[i]['description'],
-        amount: maps[i]['amount'],
-        date: maps[i]['date'],
-      );
-    });
-  }
-
-  Future<void> _removeFromDatabase(MyTransaction data) async {
-    final database = openDatabase(
-      // Set the path to the database. Note: Using the `join` function from the
-      // `path` package is best practice to ensure the path is correctly
-      // constructed for each platform.
-      join(await getDatabasesPath(), appName + 'Database.db'),
-      // When the database is first created, create a table to store transactions.
-      onCreate: (db, version) {
-        return db.execute(
-          "CREATE TABLE transactions(id INTEGER PRIMARY KEY AUTOINCREMENT, category TEXT, description TEXT, amount REAL, date DATETIME)",
-        );
-      },
-      // Set the version. This executes the onCreate function and provides a
-      // path to perform database upgrades and downgrades.
-      version: 1,
-    );
-
-    // Get a reference to the database.
-    final db = await database;
-
-    // Remove the Transaction from the database.
-    await db.delete(
-      'transactions',
-      // Use a `where` clause to delete a specific transaction.
-      where: "id = ?",
-      // Pass the Transactions's id as a whereArg to prevent SQL injection.
-      whereArgs: [data.id],
-    );
-  }
-
-  Future<void> _insertInDatabase(MyTransaction data) async {
-    final database = openDatabase(
-      // Set the path to the database. Note: Using the `join` function from the
-      // `path` package is best practice to ensure the path is correctly
-      // constructed for each platform.
-      join(await getDatabasesPath(), appName + 'Database.db'),
-      // When the database is first created, create a table to store transactions.
-      onCreate: (db, version) {
-        return db.execute(
-          "CREATE TABLE transactions(id INTEGER PRIMARY KEY AUTOINCREMENT, category TEXT, description TEXT, amount REAL, date DATETIME)",
-        );
-      },
-      // Set the version. This executes the onCreate function and provides a
-      // path to perform database upgrades and downgrades.
-      version: 1,
-    );
-
-    // Get a reference to the database.
-    final Database db = await database;
-
-    // Insert the Dog into the correct table. Also specify the
-    // `conflictAlgorithm`. In this case, if the same dog is inserted
-    // multiple times, it replaces the previous data.
-    await db.insert(
-      'transactions',
-      data.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
   }
 }

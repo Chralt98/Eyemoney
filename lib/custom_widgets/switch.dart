@@ -2,19 +2,14 @@ import 'package:flutter/material.dart';
 
 class CrazySwitch extends StatefulWidget {
   bool isChecked;
-  _CrazySwitchState _crazySwitchState = new _CrazySwitchState();
 
   CrazySwitch({Key key, @required this.isChecked}) : super(key: key);
 
   @override
-  _CrazySwitchState createState() => _crazySwitchState;
+  _CrazySwitchState createState() => new _CrazySwitchState();
 
   bool getChecked() {
     return isChecked;
-  }
-
-  void switchMode(bool mode) {
-    isChecked = mode;
   }
 }
 
@@ -35,7 +30,7 @@ class _CrazySwitchState extends State<CrazySwitch>
     return GestureDetector(
         onTap: () {
           setState(() {
-            widget.switchMode(!widget.getChecked());
+            widget.isChecked = !widget.isChecked;
           });
         },
         child: Container(

@@ -5,9 +5,7 @@ import 'package:Eyemoney/database/transaction.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
-import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sqflite/sqflite.dart';
 
 import '../outsourcing/globals.dart';
 import '../outsourcing/my_functions.dart';
@@ -40,7 +38,6 @@ class _AddingState extends State<Adding> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     this._scrollController = new ScrollController();
     this._descriptionController = new TextEditingController();
@@ -76,7 +73,6 @@ class _AddingState extends State<Adding> {
     super.dispose();
   }
 
-  // TODO: use a sqflite database for saving the user data on device
   // only category for shared preferences
   void _loadCategoryPref() {
     setState(() {
@@ -198,8 +194,7 @@ class _AddingState extends State<Adding> {
                       OutlineButton(
                           onPressed: () {
                             setState(() {
-                              this._crazySwitch =
-                                  new CrazySwitch(isChecked: false);
+                              this._crazySwitch = CrazySwitch(isChecked: false);
                             });
                           },
                           child: Text('expenditure',
@@ -211,8 +206,7 @@ class _AddingState extends State<Adding> {
                       OutlineButton(
                           onPressed: () {
                             setState(() {
-                              this._crazySwitch =
-                                  new CrazySwitch(isChecked: true);
+                              this._crazySwitch = CrazySwitch(isChecked: true);
                             });
                           },
                           child: Text('revenue',
@@ -289,7 +283,7 @@ class _AddingState extends State<Adding> {
                               (widget.selectedDate ?? DateTime.now()).month)
                           .toString(),
                     );
-                    this._updateTransaction(data);
+                    updateTransaction(data);
                   } else {
                     final MyTransaction data = MyTransaction(
                       category: _selectedCategory,
@@ -300,7 +294,7 @@ class _AddingState extends State<Adding> {
                               (widget.selectedDate ?? DateTime.now()).month)
                           .toString(),
                     );
-                    this._insertInDatabase(data);
+                    insertInDatabase(data);
                   }
                   try {
                     Navigator.pop(context);
@@ -314,65 +308,5 @@ class _AddingState extends State<Adding> {
             margin: EdgeInsets.all(16),
           )
         ]));
-  }
-
-  Future<void> _updateTransaction(MyTransaction transaction) async {
-    final database = openDatabase(
-      // Set the path to the database. Note: Using the `join` function from the
-      // `path` package is best practice to ensure the path is correctly
-      // constructed for each platform.
-      join(await getDatabasesPath(), appName + 'Database.db'),
-      // When the database is first created, create a table to store transactions.
-      onCreate: (db, version) {
-        return db.execute(
-          "CREATE TABLE transactions(id INTEGER PRIMARY KEY AUTOINCREMENT, category TEXT, description TEXT, amount REAL, date DATETIME)",
-        );
-      },
-      // Set the version. This executes the onCreate function and provides a
-      // path to perform database upgrades and downgrades.
-      version: 1,
-    );
-    // Get a reference to the database.
-    final db = await database;
-
-    // Update the given Dog.
-    await db.update(
-      'transactions',
-      transaction.toMap(),
-      // Ensure that the Dog has a matching id.
-      where: "id = ?",
-      // Pass the Dog's id as a whereArg to prevent SQL injection.
-      whereArgs: [transaction.id],
-    );
-  }
-
-  Future<void> _insertInDatabase(MyTransaction data) async {
-    final database = openDatabase(
-      // Set the path to the database. Note: Using the `join` function from the
-      // `path` package is best practice to ensure the path is correctly
-      // constructed for each platform.
-      join(await getDatabasesPath(), appName + 'Database.db'),
-      // When the database is first created, create a table to store transactions.
-      onCreate: (db, version) {
-        return db.execute(
-          "CREATE TABLE transactions(id INTEGER PRIMARY KEY AUTOINCREMENT, category TEXT, description TEXT, amount REAL, date DATETIME)",
-        );
-      },
-      // Set the version. This executes the onCreate function and provides a
-      // path to perform database upgrades and downgrades.
-      version: 1,
-    );
-
-    // Get a reference to the database.
-    final Database db = await database;
-
-    // Insert the Dog into the correct table. Also specify the
-    // `conflictAlgorithm`. In this case, if the same dog is inserted
-    // multiple times, it replaces the previous data.
-    await db.insert(
-      'transactions',
-      data.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
   }
 }
