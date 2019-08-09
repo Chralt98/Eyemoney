@@ -195,15 +195,29 @@ class _AddingState extends State<Adding> {
                   SizedBox(height: 13),
                   Row(
                     children: <Widget>[
-                      Text('expenditure',
-                          style: TextStyle(color: Colors.red),
-                          textScaleFactor: 1.1),
+                      OutlineButton(
+                          onPressed: () {
+                            setState(() {
+                              this._crazySwitch =
+                                  new CrazySwitch(isChecked: false);
+                            });
+                          },
+                          child: Text('expenditure',
+                              style: TextStyle(color: Colors.red),
+                              textScaleFactor: 1.1)),
                       SizedBox(width: 16),
                       this._crazySwitch ?? CrazySwitch(isChecked: false),
                       SizedBox(width: 16),
-                      Text('revenue',
-                          style: TextStyle(color: Colors.lightGreen),
-                          textScaleFactor: 1.1),
+                      OutlineButton(
+                          onPressed: () {
+                            setState(() {
+                              this._crazySwitch =
+                                  new CrazySwitch(isChecked: true);
+                            });
+                          },
+                          child: Text('revenue',
+                              style: TextStyle(color: Colors.lightGreen),
+                              textScaleFactor: 1.1)),
                     ],
                     mainAxisAlignment: MainAxisAlignment.center,
                   ),
