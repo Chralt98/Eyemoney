@@ -1,17 +1,17 @@
 import 'dart:async';
 
+import 'package:Eyemoney/database/transaction.dart';
+import 'package:Eyemoney/screens/adding.dart';
+import 'package:Eyemoney/screens/statistics.dart';
 import 'package:flutter/material.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-import 'adding.dart';
+import '../outsourcing/globals.dart';
+import '../outsourcing/my_functions.dart';
 import 'categories.dart';
-import 'globals.dart';
-import 'my_functions.dart';
 import 'settings.dart';
-import 'statistics.dart';
-import 'transaction.dart';
 
 class Home extends StatefulWidget {
   final DateTime initialDate;
@@ -378,7 +378,7 @@ class _HomeState extends State<Home> {
         child: CircularProgressIndicator(),
       );
     } else if (_myTransactions.isEmpty) {
-      return Center(child: Icon(Icons.edit, size: 60, color: Colors.black38));
+      return Center(child: Icon(Icons.edit, size: 60, color: Colors.black12));
     } else {
       return Center(
         child: CircularProgressIndicator(),

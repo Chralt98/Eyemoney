@@ -1,8 +1,7 @@
+import 'package:Eyemoney/outsourcing/globals.dart';
+import 'package:Eyemoney/screens/add_category.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'add_category.dart';
-import 'globals.dart';
 
 class Categories extends StatefulWidget {
   @override

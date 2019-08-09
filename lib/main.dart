@@ -1,7 +1,7 @@
+import 'package:Eyemoney/screens/home.dart';
 import 'package:flutter/material.dart';
 
-import 'globals.dart';
-import 'home.dart';
+import 'outsourcing/globals.dart';
 
 void main() {
   runApp(new MaterialApp(

@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:Eyemoney/custom_widgets/switch.dart';
+import 'package:Eyemoney/database/transaction.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
@@ -7,11 +9,9 @@ import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 
+import '../outsourcing/globals.dart';
+import '../outsourcing/my_functions.dart';
 import 'add_category.dart';
-import 'globals.dart';
-import 'my_functions.dart';
-import 'switch.dart';
-import 'transaction.dart';
 
 class Adding extends StatefulWidget {
   final DateTime selectedDate;
@@ -49,7 +49,6 @@ class _AddingState extends State<Adding> {
         setState(() => this._prefs = prefs);
         this._loadCategoryPref();
         if (widget.myTransaction != null) {
-          print(widget.myTransaction.amount);
           double temp = ((widget.myTransaction.amount < 0
               ? widget.myTransaction.amount * -1
               : widget.myTransaction.amount));
