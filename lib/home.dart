@@ -117,6 +117,22 @@ class _HomeState extends State<Home> {
                           border: Border.all(color: Colors.black54))),
                   Container(
                       child: Text(
+                          normTwoDecimal(
+                              round(_getTupleRevenueExpenditure()[1], 2)
+                                  .toString()),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Colors.red),
+                          textScaleFactor: (_getTupleRevenueExpenditure()[1]
+                                      .toString()
+                                      .length <
+                                  11)
+                              ? 1.0
+                              : 0.8),
+                      width: screenWidth / 3,
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black54))),
+                  Container(
+                      child: Text(
                           normTwoDecimal(round(
                                   (_getTupleRevenueExpenditure()[0] +
                                       _getTupleRevenueExpenditure()[1]),
@@ -138,28 +154,12 @@ class _HomeState extends State<Home> {
                       width: screenWidth / 3,
                       decoration: BoxDecoration(
                           border: Border.all(color: Colors.black54))),
-                  Container(
-                      child: Text(
-                          normTwoDecimal(
-                              round(_getTupleRevenueExpenditure()[1], 2)
-                                  .toString()),
-                          textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.red),
-                          textScaleFactor: (_getTupleRevenueExpenditure()[1]
-                                      .toString()
-                                      .length <
-                                  11)
-                              ? 1.0
-                              : 0.8),
-                      width: screenWidth / 3,
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black54))),
                 ],
               ),
             ),
             Container(
               height: 27,
-              color: Colors.black12,
+              color: Colors.white,
               child: Row(
                 children: <Widget>[
                   Container(

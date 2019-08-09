@@ -49,12 +49,12 @@ class _AddingState extends State<Adding> {
         setState(() => this._prefs = prefs);
         this._loadCategoryPref();
         if (widget.myTransaction != null) {
-          this._amount = ((widget.myTransaction.amount < 0
-                      ? widget.myTransaction.amount * -1
-                      : widget.myTransaction.amount) ??
-                  '0.00')
-              .toString();
-          _moneyController.text = this._amount;
+          print(widget.myTransaction.amount);
+          double temp = ((widget.myTransaction.amount < 0
+              ? widget.myTransaction.amount * -1
+              : widget.myTransaction.amount));
+          this._amount = temp.toString() ?? '0.00';
+          _moneyController.updateValue(temp);
           this._crazySwitch = new CrazySwitch(
               isChecked: widget.myTransaction.amount >= 0 ? true : false);
           this._description = widget.myTransaction.description;
