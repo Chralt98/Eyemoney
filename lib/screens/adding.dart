@@ -150,7 +150,7 @@ class _AddingState extends State<Adding> {
             Widget>[
           new SingleChildScrollView(
             padding:
-                const EdgeInsets.only(left: 16, right: 16, bottom: 90, top: 0),
+                const EdgeInsets.only(left: 16, right: 16, bottom: 120, top: 0),
             child: Form(
               key: _formKey,
               child: Column(
@@ -192,7 +192,7 @@ class _AddingState extends State<Adding> {
                     onChanged: (String text) => this._description = text,
                     maxLength: 50,
                   ),
-                  SizedBox(height: 26),
+                  SizedBox(height: 13),
                   Row(
                     children: <Widget>[
                       Text('expenditure',
@@ -242,7 +242,7 @@ class _AddingState extends State<Adding> {
             child: new FloatingActionButton(
               child: Icon(Icons.check),
               backgroundColor: Colors.blueAccent,
-              onPressed: () {
+              onPressed: () async {
                 if (_formKey.currentState.validate()) {
                   this._amount = _moneyController.numberValue.toString();
                   final int sign = _crazySwitch.getChecked() ? 1 : -1;
@@ -250,6 +250,15 @@ class _AddingState extends State<Adding> {
                       (sign) *
                           double.parse(_amount.replaceAll(new RegExp(','), '')),
                       2);
+                  if (this._addCategoryController.text != '') {
+                    this._categories.add(this._addCategoryController.text);
+                    this._radioVal = this
+                        ._categories
+                        .indexOf(this._addCategoryController.text);
+                    await this._setCategoryPref(this._categories);
+                    this._selectedCategory = this._categories.last;
+                    this._addCategoryController.text = '';
+                  }
                   if (widget.myTransaction != null) {
                     final MyTransaction data = MyTransaction(
                       id: widget.myTransaction.id,
@@ -346,52 +355,5 @@ class _AddingState extends State<Adding> {
       data.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
-    /*
-    Future<void> updateTransaction(Transaction transaction) async {
-      // Get a reference to the database.
-      final db = await database;
-
-      // Update the given Dog.
-      await db.update(
-        'transactions',
-        transaction.toMap(),
-        // Ensure that the Dog has a matching id.
-        where: "amount = ?",
-        // Pass the Dog's id as a whereArg to prevent SQL injection.
-        whereArgs: [transaction.amount],
-      );
-    }
-
-    Future<void> deleteTransaction(int id) async {
-      // Get a reference to the database.
-      final db = await database;
-
-      // Remove the Dog from the database.
-      await db.delete(
-        'transactions',
-        // Use a `where` clause to delete a specific dog.
-        where: "id = ?",
-        // Pass the Dog's id as a whereArg to prevent SQL injection.
-        whereArgs: [id],
-      );
-    }
-
-    // Update Fido's age and save it to the database.
-    data = Transaction(
-        category: data.category,
-        description: data.description,
-        amount: data.amount + 69.0,
-        date: data.date);
-    await updateTransaction(data);
-
-    // Print Fido's updated information.
-    print(await transactions());
-
-    // Delete Fido from the database.
-    await deleteTransaction(data.id);
-
-    // Print the list of dogs (empty).
-    print(await transactions());
-     */
   }
 }
