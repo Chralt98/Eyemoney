@@ -224,10 +224,12 @@ class _AddingState extends State<Adding> {
                       labelText: 'add category',
                     ),
                     onSubmitted: (String category) async {
-                      this._categories.add(category);
+                      if (!_categories.contains(category)) {
+                        this._categories.add(category);
+                      }
                       this._radioVal = this._categories.indexOf(category);
                       await this._setCategoryPref(this._categories);
-                      this._selectedCategory = _categories.last;
+                      this._selectedCategory = category;
                       this._addCategoryController.text = '';
                     },
                     keyboardType: TextInputType.text,
@@ -251,12 +253,15 @@ class _AddingState extends State<Adding> {
                           double.parse(_amount.replaceAll(new RegExp(','), '')),
                       2);
                   if (this._addCategoryController.text != '') {
-                    this._categories.add(this._addCategoryController.text);
+                    if (!_categories
+                        .contains(this._addCategoryController.text)) {
+                      this._categories.add(this._addCategoryController.text);
+                    }
                     this._radioVal = this
                         ._categories
                         .indexOf(this._addCategoryController.text);
                     await this._setCategoryPref(this._categories);
-                    this._selectedCategory = this._categories.last;
+                    this._selectedCategory = this._addCategoryController.text;
                     this._addCategoryController.text = '';
                   }
                   if (widget.myTransaction != null) {
