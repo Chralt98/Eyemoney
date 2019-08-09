@@ -11,7 +11,6 @@ import 'package:sqflite/sqflite.dart';
 
 import '../outsourcing/globals.dart';
 import '../outsourcing/my_functions.dart';
-import 'add_category.dart';
 
 class Adding extends StatefulWidget {
   final DateTime selectedDate;
@@ -37,6 +36,7 @@ class _AddingState extends State<Adding> {
   final _formKey = GlobalKey<FormState>();
   ScrollController _scrollController;
   TextEditingController _descriptionController;
+  TextEditingController _addCategoryController;
 
   @override
   void initState() {
@@ -44,6 +44,7 @@ class _AddingState extends State<Adding> {
     super.initState();
     this._scrollController = new ScrollController();
     this._descriptionController = new TextEditingController();
+    this._addCategoryController = new TextEditingController();
     SharedPreferences.getInstance()
       ..then((prefs) {
         setState(() => this._prefs = prefs);
@@ -68,6 +69,7 @@ class _AddingState extends State<Adding> {
 
   @override
   void dispose() {
+    this._addCategoryController.dispose();
     this._scrollController.dispose();
     this._moneyController.dispose();
     this._descriptionController.dispose();
@@ -99,29 +101,45 @@ class _AddingState extends State<Adding> {
   @override
   Widget build(BuildContext context) {
     final _listTiles = _categories
-        .map((item) => Container(
-            decoration: BoxDecoration(
-                color: (_categories.indexOf(item) % 2 == 0)
-                    ? Color.fromARGB(5, 255, 255, 0)
-                    : Color.fromARGB(5, 0, 0, 255),
-                border: Border.fromBorderSide(BorderSide(
-                    width: 0.0,
-                    color: Colors.black12,
-                    style: BorderStyle.solid))),
-            child: RadioListTile<int>(
-                value: _categories.indexOf(item),
-                groupValue: this._radioVal,
-                onChanged: (int value) {
-                  setState(() {
-                    this._radioVal = value;
-                    _selectedCategory = item;
-                  });
-                },
-                activeColor: Colors.blue,
-                title: Container(
-                    child: Text(item,
-                        textScaleFactor:
-                            (item.toString().length > 18) ? 0.65 : 1.0)))))
+        .map((item) => Dismissible(
+            key: Key(item.toString()),
+            direction: DismissDirection.endToStart,
+            onDismissed: (DismissDirection dir) {
+              if (dir == DismissDirection.endToStart) {
+                setState(() {
+                  this._categories.removeAt(_categories.indexOf(item));
+                  this._setCategoryPref(this._categories);
+                });
+              }
+            },
+            background: Container(
+              color: Colors.red,
+              child: Icon(Icons.delete),
+              alignment: Alignment.centerRight,
+            ),
+            child: Container(
+                decoration: BoxDecoration(
+                    color: (_categories.indexOf(item) % 2 == 0)
+                        ? Color.fromARGB(5, 255, 255, 0)
+                        : Color.fromARGB(5, 0, 0, 255),
+                    border: Border.fromBorderSide(BorderSide(
+                        width: 0.0,
+                        color: Colors.black12,
+                        style: BorderStyle.solid))),
+                child: RadioListTile<int>(
+                    value: _categories.indexOf(item),
+                    groupValue: this._radioVal,
+                    onChanged: (int value) {
+                      setState(() {
+                        this._radioVal = value;
+                        _selectedCategory = item;
+                      });
+                    },
+                    activeColor: Colors.blue,
+                    title: Container(
+                        child: Text(item,
+                            textScaleFactor:
+                                (item.toString().length > 18) ? 0.65 : 1.0))))))
         .toList();
     return new Scaffold(
         appBar: new AppBar(
@@ -132,7 +150,7 @@ class _AddingState extends State<Adding> {
             Widget>[
           new SingleChildScrollView(
             padding:
-                const EdgeInsets.only(left: 16, right: 16, bottom: 16, top: 0),
+                const EdgeInsets.only(left: 16, right: 16, bottom: 90, top: 0),
             child: Form(
               key: _formKey,
               child: Column(
@@ -193,21 +211,28 @@ class _AddingState extends State<Adding> {
                   Column(
                     children: _listTiles,
                   ),
-                  RaisedButton(
-                      child: Icon(Icons.add),
-                      onPressed: () async {
-                        String category = await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    AddCategory()));
-                        if (category != null) {
-                          this._categories.add(category);
-                          this._radioVal = this._categories.indexOf(category);
-                          await this._setCategoryPref(this._categories);
-                          this._selectedCategory = _categories.last;
-                        }
-                      }),
+                  SizedBox(height: 26),
+                  Center(
+                      child: TextField(
+                    textCapitalization: TextCapitalization.words,
+                    controller: _addCategoryController,
+                    decoration: InputDecoration(
+                      border: UnderlineInputBorder(),
+                      filled: true,
+                      icon: Icon(Icons.category),
+                      hintText: 'Which should be added?',
+                      labelText: 'add category',
+                    ),
+                    onSubmitted: (String category) async {
+                      this._categories.add(category);
+                      this._radioVal = this._categories.indexOf(category);
+                      await this._setCategoryPref(this._categories);
+                      this._selectedCategory = _categories.last;
+                      this._addCategoryController.text = '';
+                    },
+                    keyboardType: TextInputType.text,
+                    maxLength: 25,
+                  )),
                 ],
               ),
             ),

@@ -10,7 +10,6 @@ import 'package:sqflite/sqflite.dart';
 
 import '../outsourcing/globals.dart';
 import '../outsourcing/my_functions.dart';
-import 'categories.dart';
 import 'settings.dart';
 
 class Home extends StatefulWidget {
@@ -237,19 +236,6 @@ class _HomeState extends State<Home> {
                     context,
                     MaterialPageRoute(
                         builder: (BuildContext context) => Statistics()));
-              },
-            ),
-            ListTile(
-              title: Text('Categories'),
-              leading: Icon(Icons.category),
-              onTap: () {
-                // Update the state of the app
-                // ...
-                // Then close the drawer
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) => Categories()));
               },
             ),
             ListTile(
