@@ -292,89 +292,86 @@ class _HomeState extends State<Home> {
           itemBuilder: (BuildContext context, int index) {
             final MyTransaction item = _myTransactions[index];
             final String description = item.description;
-            return Dismissible(
-                key: Key(item.toString()),
-                onDismissed: (DismissDirection dir) {
-                  if (dir == DismissDirection.endToStart) {
-                    setState(() {
-                      this._myTransactions.removeAt(index);
-                      this._removeFromDatabase(item);
-                    });
-                    Scaffold.of(context).showSnackBar(SnackBar(
-                      content: Text('"$description" removed.'),
-                      action: SnackBarAction(
-                        label: 'UNDO',
-                        onPressed: () {
-                          setState(() {
-                            this._myTransactions.insert(index, item);
-                            this._insertInDatabase(item);
-                          });
-                        },
-                      ),
-                    ));
-                  } else if (dir == DismissDirection.startToEnd) {
-                    setState(() {
-                      this._myTransactions.removeAt(index);
-                      this._removeFromDatabase(item);
-                    });
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (BuildContext context) => Adding(
-                                selectedDate: _selectedDate,
-                                myTransaction: item)));
-                  }
+            return GestureDetector(
+                onLongPress: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => Adding(
+                              selectedDate: _selectedDate,
+                              myTransaction: item)));
                 },
-                background: Container(
-                  color: Colors.lightGreen,
-                  child: Icon(Icons.edit),
-                  alignment: Alignment.centerLeft,
-                ),
-                secondaryBackground: Container(
-                  color: Colors.red,
-                  child: Icon(Icons.delete),
-                  alignment: Alignment.centerRight,
-                ),
-                child: Container(
-                  padding: EdgeInsets.only(bottom: 10, top: 10),
-                  decoration: BoxDecoration(
-                      color: (index % 2 == 0)
-                          ? Color.fromARGB(5, 255, 255, 0)
-                          : Color.fromARGB(5, 0, 0, 255),
-                      border: Border.fromBorderSide(BorderSide(
-                          width: 0.0,
-                          color: Colors.black12,
-                          style: BorderStyle.solid))),
-                  child: Row(
-                    children: <Widget>[
-                      Container(
-                        child: Text(item.description ?? '–',
-                            textScaleFactor: 1.2, textAlign: TextAlign.center),
-                        width: screenWidth / 3,
+                child: Dismissible(
+                    key: Key(item.toString()),
+                    direction: DismissDirection.endToStart,
+                    onDismissed: (DismissDirection dir) {
+                      if (dir == DismissDirection.endToStart) {
+                        setState(() {
+                          this._myTransactions.removeAt(index);
+                          this._removeFromDatabase(item);
+                        });
+                        Scaffold.of(context).showSnackBar(SnackBar(
+                          content: Text('"$description" removed.'),
+                          action: SnackBarAction(
+                            label: 'UNDO',
+                            onPressed: () {
+                              setState(() {
+                                this._myTransactions.insert(index, item);
+                                this._insertInDatabase(item);
+                              });
+                            },
+                          ),
+                        ));
+                      }
+                    },
+                    background: Container(
+                      color: Colors.red,
+                      child: Icon(Icons.delete),
+                      alignment: Alignment.centerRight,
+                    ),
+                    child: Container(
+                      padding: EdgeInsets.only(bottom: 10, top: 10),
+                      decoration: BoxDecoration(
+                          color: (index % 2 == 0)
+                              ? Color.fromARGB(5, 255, 255, 0)
+                              : Color.fromARGB(5, 0, 0, 255),
+                          border: Border.fromBorderSide(BorderSide(
+                              width: 0.0,
+                              color: Colors.black12,
+                              style: BorderStyle.solid))),
+                      child: Row(
+                        children: <Widget>[
+                          Container(
+                            child: Text(item.description ?? '–',
+                                textScaleFactor: 1.2,
+                                textAlign: TextAlign.center),
+                            width: screenWidth / 3,
+                          ),
+                          Container(
+                            child: Text(item.category ?? '–',
+                                textScaleFactor: 1.2,
+                                textAlign: TextAlign.center),
+                            width: screenWidth / 3,
+                          ),
+                          Container(
+                              child: Text(
+                                  normTwoDecimal(
+                                          round(item.amount, 2).toString()) ??
+                                      '–',
+                                  textScaleFactor:
+                                      ((item.amount.toString() ?? '–').length <
+                                              12)
+                                          ? 1.0
+                                          : 0.9,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: (item.amount < 0.0)
+                                          ? Colors.red
+                                          : Colors.lightGreen)),
+                              width: screenWidth / 3),
+                        ],
                       ),
-                      Container(
-                        child: Text(item.category ?? '–',
-                            textScaleFactor: 1.2, textAlign: TextAlign.center),
-                        width: screenWidth / 3,
-                      ),
-                      Container(
-                          child: Text(
-                              normTwoDecimal(
-                                      round(item.amount, 2).toString()) ??
-                                  '–',
-                              textScaleFactor:
-                                  ((item.amount.toString() ?? '–').length < 12)
-                                      ? 1.0
-                                      : 0.9,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: (item.amount < 0.0)
-                                      ? Colors.red
-                                      : Colors.lightGreen)),
-                          width: screenWidth / 3),
-                    ],
-                  ),
-                ));
+                    )));
           });
     } else if (_myTransactions == null) {
       return Center(

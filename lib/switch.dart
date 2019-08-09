@@ -1,25 +1,28 @@
 import 'package:flutter/material.dart';
 
 class CrazySwitch extends StatefulWidget {
+  bool isChecked;
   _CrazySwitchState _crazySwitchState = new _CrazySwitchState();
+
+  CrazySwitch({Key key, @required this.isChecked}) : super(key: key);
 
   @override
   _CrazySwitchState createState() => _crazySwitchState;
 
-  bool isChecked() {
-    return _crazySwitchState.isChecked;
+  bool getChecked() {
+    return isChecked;
   }
 
   void switchMode(bool mode) {
     // TODO: Fix bug, that the dismissible always have to delete the edit record because when leaving the screen everything should be as the beginning
     // TODO: Fix bug that isChecked runs on false when the state is initially called
-    _crazySwitchState.isChecked = mode;
+    isChecked = mode;
   }
 }
 
 class _CrazySwitchState extends State<CrazySwitch>
     with SingleTickerProviderStateMixin {
-  bool isChecked = false;
+  // bool isChecked = false;
   Duration _duration = Duration(milliseconds: 370);
   AnimationController _animationController;
 
@@ -46,7 +49,7 @@ class _CrazySwitchState extends State<CrazySwitch>
           height: 30,
           padding: EdgeInsets.fromLTRB(0, 3, 0, 3),
           decoration: BoxDecoration(
-            color: isChecked ? Colors.lightGreen : Colors.red,
+            color: (widget.isChecked ?? false) ? Colors.lightGreen : Colors.red,
             borderRadius: BorderRadius.all(
               Radius.circular(40),
             ),
@@ -54,8 +57,9 @@ class _CrazySwitchState extends State<CrazySwitch>
           child: Stack(
             children: <Widget>[
               Align(
-                alignment:
-                    isChecked ? Alignment.centerRight : Alignment.centerLeft,
+                alignment: (widget.isChecked ?? false)
+                    ? Alignment.centerRight
+                    : Alignment.centerLeft,
                 child: GestureDetector(
                   onTap: () {
                     setState(() {
@@ -64,8 +68,7 @@ class _CrazySwitchState extends State<CrazySwitch>
                       } else {
                         _animationController.forward();
                       }
-
-                      isChecked = !isChecked;
+                      widget.switchMode(!(widget.isChecked ?? true));
                     });
                   },
                   child: Container(

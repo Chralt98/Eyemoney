@@ -30,19 +30,20 @@ class _AddingState extends State<Adding> {
   String _description;
   String _amount = '0.00';
   String _selectedCategory;
-  CrazySwitch _crazySwitch = new CrazySwitch();
+  CrazySwitch _crazySwitch;
   var _moneyController =
       MoneyMaskedTextController(decimalSeparator: '.', thousandSeparator: ',');
   int _radioVal = 0;
   final _formKey = GlobalKey<FormState>();
   ScrollController _scrollController;
-  TextEditingController _descriptionController = new TextEditingController();
+  TextEditingController _descriptionController;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _scrollController = new ScrollController();
+    this._scrollController = new ScrollController();
+    this._descriptionController = new TextEditingController();
     SharedPreferences.getInstance()
       ..then((prefs) {
         setState(() => this._prefs = prefs);
@@ -54,21 +55,23 @@ class _AddingState extends State<Adding> {
                   '0.00')
               .toString();
           _moneyController.text = this._amount;
-          _crazySwitch
-              .switchMode(widget.myTransaction.amount >= 0 ? true : false);
+          this._crazySwitch = new CrazySwitch(
+              isChecked: widget.myTransaction.amount >= 0 ? true : false);
           this._description = widget.myTransaction.description;
           this._descriptionController.text = this._description;
           this._selectedCategory = widget.myTransaction.category;
           this._radioVal = _categories.indexOf(this._selectedCategory);
+        } else {
+          this._crazySwitch = new CrazySwitch(isChecked: false);
         }
       });
   }
 
   @override
   void dispose() {
-    _scrollController.dispose();
-    _moneyController.dispose();
-    _descriptionController.dispose();
+    this._scrollController.dispose();
+    this._moneyController.dispose();
+    this._descriptionController.dispose();
     super.dispose();
   }
 
@@ -179,7 +182,7 @@ class _AddingState extends State<Adding> {
                           style: TextStyle(color: Colors.red),
                           textScaleFactor: 1.1),
                       SizedBox(width: 16),
-                      _crazySwitch,
+                      this._crazySwitch ?? CrazySwitch(isChecked: false),
                       SizedBox(width: 16),
                       Text('revenue',
                           style: TextStyle(color: Colors.lightGreen),
@@ -218,20 +221,35 @@ class _AddingState extends State<Adding> {
               onPressed: () {
                 if (_formKey.currentState.validate()) {
                   this._amount = _moneyController.numberValue.toString();
-                  final int sign = _crazySwitch.isChecked() ? 1 : -1;
+                  final int sign = _crazySwitch.getChecked() ? 1 : -1;
                   final double _realAmount = round(
                       (sign) *
                           double.parse(_amount.replaceAll(new RegExp(','), '')),
                       2);
-                  final MyTransaction data = MyTransaction(
-                    category: _selectedCategory,
-                    description: _description,
-                    amount: _realAmount,
-                    date: DateTime((widget.selectedDate ?? DateTime.now()).year,
-                            (widget.selectedDate ?? DateTime.now()).month)
-                        .toString(),
-                  );
-                  _insertInDatabase(data);
+                  if (widget.myTransaction != null) {
+                    final MyTransaction data = MyTransaction(
+                      id: widget.myTransaction.id,
+                      category: _selectedCategory,
+                      description: _description,
+                      amount: _realAmount,
+                      date: DateTime(
+                              (widget.selectedDate ?? DateTime.now()).year,
+                              (widget.selectedDate ?? DateTime.now()).month)
+                          .toString(),
+                    );
+                    this._updateTransaction(data);
+                  } else {
+                    final MyTransaction data = MyTransaction(
+                      category: _selectedCategory,
+                      description: _description,
+                      amount: _realAmount,
+                      date: DateTime(
+                              (widget.selectedDate ?? DateTime.now()).year,
+                              (widget.selectedDate ?? DateTime.now()).month)
+                          .toString(),
+                    );
+                    this._insertInDatabase(data);
+                  }
                   try {
                     Navigator.pop(context);
                   } catch (e) {
@@ -244,6 +262,36 @@ class _AddingState extends State<Adding> {
             margin: EdgeInsets.all(16),
           )
         ]));
+  }
+
+  Future<void> _updateTransaction(MyTransaction transaction) async {
+    final database = openDatabase(
+      // Set the path to the database. Note: Using the `join` function from the
+      // `path` package is best practice to ensure the path is correctly
+      // constructed for each platform.
+      join(await getDatabasesPath(), appName + 'Database.db'),
+      // When the database is first created, create a table to store transactions.
+      onCreate: (db, version) {
+        return db.execute(
+          "CREATE TABLE transactions(id INTEGER PRIMARY KEY AUTOINCREMENT, category TEXT, description TEXT, amount REAL, date DATETIME)",
+        );
+      },
+      // Set the version. This executes the onCreate function and provides a
+      // path to perform database upgrades and downgrades.
+      version: 1,
+    );
+    // Get a reference to the database.
+    final db = await database;
+
+    // Update the given Dog.
+    await db.update(
+      'transactions',
+      transaction.toMap(),
+      // Ensure that the Dog has a matching id.
+      where: "id = ?",
+      // Pass the Dog's id as a whereArg to prevent SQL injection.
+      whereArgs: [transaction.id],
+    );
   }
 
   Future<void> _insertInDatabase(MyTransaction data) async {
