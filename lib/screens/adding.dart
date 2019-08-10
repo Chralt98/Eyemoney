@@ -279,11 +279,11 @@ class _AddingState extends State<Adding> {
             Icons.category,
             color: Colors.grey,
           ),
-          SizedBox(width: 28),
+          SizedBox(width: 26),
           Text(
             'category',
-            style: TextStyle(color: Colors.black45),
-            textScaleFactor: 1.1,
+            style: TextStyle(color: Colors.black54),
+            textScaleFactor: 1.5,
           ),
         ],
       ),
@@ -291,6 +291,7 @@ class _AddingState extends State<Adding> {
   }
 
   Widget _getAddCategoryTextField(BuildContext context) {
+    final double screenHeight = MediaQuery.of(context).size.height;
     return Center(
       child: TextField(
         textCapitalization: TextCapitalization.words,
@@ -302,6 +303,10 @@ class _AddingState extends State<Adding> {
           hintText: 'Which should be added?',
           labelText: 'add category',
         ),
+        onChanged: (String text) => _scrollController.animateTo(
+            _scrollController.position.maxScrollExtent,
+            duration: new Duration(milliseconds: 500),
+            curve: Curves.ease),
         onSubmitted: (String category) async {
           if (!_categories.contains(category)) {
             this._categories.add(category);

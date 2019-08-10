@@ -255,7 +255,7 @@ class _HomeState extends State<Home> {
                 child: Row(
                   children: <Widget>[
                     Container(
-                      child: Text(item.description ?? emptyCategory,
+                      child: Text(item.description ?? '–',
                           textScaleFactor: 1.2, textAlign: TextAlign.center),
                       width: screenWidth / 3,
                     ),
@@ -268,12 +268,10 @@ class _HomeState extends State<Home> {
                         child: Text(
                           normTwoDecimal(
                               round((item.amount ?? 0.0), 2).toString()),
-                          textScaleFactor: ((item.amount ?? emptyCategory)
-                                      .toString()
-                                      .length <
-                                  12)
-                              ? 1.0
-                              : 0.9,
+                          textScaleFactor:
+                              ((item.amount ?? 0.0).toString().length < 12)
+                                  ? 1.0
+                                  : 0.9,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               color: (item.amount < 0.0)
