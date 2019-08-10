@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:Eyemoney/custom_widgets/switch.dart';
 import 'package:Eyemoney/database/transaction.dart';
+import 'package:Eyemoney/outsourcing/localization/localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
@@ -46,7 +47,7 @@ class _AddingState extends State<Adding> {
       ..then(
         (prefs) {
           setState(() => this._prefs = prefs);
-          this._loadCategoryPref();
+          this._loadCategoryPref(context);
           if (widget.myTransaction != null) {
             double temp = ((widget.myTransaction.amount < 0
                 ? widget.myTransaction.amount * -1
@@ -130,7 +131,7 @@ class _AddingState extends State<Adding> {
         .toList();
     return new Scaffold(
       appBar: new AppBar(
-        title: const Text('Add'),
+        title: Text(AppLocalizations.of(context).add),
         actions: [],
       ),
       body: new Stack(
@@ -179,16 +180,16 @@ class _AddingState extends State<Adding> {
   }
 
   // only category for shared preferences
-  void _loadCategoryPref() {
+  void _loadCategoryPref(BuildContext context) {
     setState(
       () {
-        _categories =
-            this._prefs.getStringList(categoryPrefKey) ?? standardCategories;
+        _categories = this._prefs.getStringList(categoryPrefKey) ??
+            getStandardCategories(context);
         if (_categories.isEmpty) {
-          _categories.insert(0, emptyCategory);
+          _categories.insert(0, AppLocalizations.of(context).other);
         } else if (_categories.isNotEmpty &&
-            _categories.first != emptyCategory) {
-          _categories.insert(0, emptyCategory);
+            _categories.first != AppLocalizations.of(context).other) {
+          _categories.insert(0, AppLocalizations.of(context).other);
         }
         if (_categories.isNotEmpty) {
           _selectedCategory = _categories.first;
@@ -199,7 +200,7 @@ class _AddingState extends State<Adding> {
 
   Future<Null> _setCategoryPref(List<String> categories) async {
     await this._prefs.setStringList(categoryPrefKey, categories);
-    _loadCategoryPref();
+    _loadCategoryPref(context);
   }
 
   Widget _getAmountTextField(BuildContext context) {
@@ -207,17 +208,17 @@ class _AddingState extends State<Adding> {
       controller: _moneyController,
       keyboardType:
           TextInputType.numberWithOptions(signed: false, decimal: true),
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
         border: UnderlineInputBorder(),
         filled: true,
         icon: Icon(Icons.attach_money),
-        labelText: 'amount *',
+        labelText: AppLocalizations.of(context).amount,
       ),
       validator: (String number) {
         if (number == '0.00') {
           _scrollController.animateTo(0,
               duration: new Duration(milliseconds: 500), curve: Curves.ease);
-          return 'Please enter an amount!';
+          return AppLocalizations.of(context).amountDescription;
         }
         return null;
       },
@@ -234,8 +235,8 @@ class _AddingState extends State<Adding> {
         border: UnderlineInputBorder(),
         filled: true,
         icon: Icon(Icons.info_outline),
-        hintText: 'What is it?',
-        labelText: 'description',
+        hintText: AppLocalizations.of(context).descriptionQuestion,
+        labelText: AppLocalizations.of(context).description,
       ),
       onChanged: (String text) => this._description = text,
       maxLength: 50,
@@ -251,7 +252,7 @@ class _AddingState extends State<Adding> {
                 this._crazySwitch = CrazySwitch(isChecked: false);
               });
             },
-            child: Text('expenditure',
+            child: Text(AppLocalizations.of(context).expenditure,
                 style: TextStyle(color: Colors.red), textScaleFactor: 1.1)),
         SizedBox(width: 16),
         this._crazySwitch ?? CrazySwitch(isChecked: false),
@@ -262,7 +263,7 @@ class _AddingState extends State<Adding> {
                 this._crazySwitch = CrazySwitch(isChecked: true);
               });
             },
-            child: Text('revenue',
+            child: Text(AppLocalizations.of(context).revenue,
                 style: TextStyle(color: Colors.lightGreen),
                 textScaleFactor: 1.1)),
       ],
@@ -281,7 +282,7 @@ class _AddingState extends State<Adding> {
           ),
           SizedBox(width: 26),
           Text(
-            'category',
+            AppLocalizations.of(context).category,
             style: TextStyle(color: Colors.black54),
             textScaleFactor: 1.5,
           ),
@@ -291,7 +292,6 @@ class _AddingState extends State<Adding> {
   }
 
   Widget _getAddCategoryTextField(BuildContext context) {
-    final double screenHeight = MediaQuery.of(context).size.height;
     return Center(
       child: TextField(
         textCapitalization: TextCapitalization.words,
@@ -300,15 +300,15 @@ class _AddingState extends State<Adding> {
           border: UnderlineInputBorder(),
           filled: true,
           icon: Icon(Icons.category),
-          hintText: 'Which should be added?',
-          labelText: 'add category',
+          hintText: AppLocalizations.of(context).addCategoryDescription,
+          labelText: AppLocalizations.of(context).addCategory,
         ),
         onChanged: (String text) => _scrollController.animateTo(
             _scrollController.position.maxScrollExtent,
             duration: new Duration(milliseconds: 500),
             curve: Curves.ease),
         onSubmitted: (String category) async {
-          if (!_categories.contains(category)) {
+          if (!_categories.contains(category) && category != '') {
             this._categories.add(category);
           }
           this._radioVal = this._categories.indexOf(category);
@@ -329,7 +329,8 @@ class _AddingState extends State<Adding> {
       final double _realAmount = round(
           (sign) * double.parse(_amount.replaceAll(new RegExp(','), '')), 2);
       if (this._addCategoryController.text != '') {
-        if (!_categories.contains(this._addCategoryController.text)) {
+        if (!_categories.contains(this._addCategoryController.text) &&
+            this._addCategoryController.text != '') {
           this._categories.add(this._addCategoryController.text);
         }
         this._radioVal =

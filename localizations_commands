@@ -1,0 +1,3 @@
+flutter pub pub run intl_translation:extract_to_arb --output-dir=lib/outsourcing/l10n lib/outsourcing/localization/localizations.dart
+
+flutter pub pub run intl_translation:generate_from_arb --output-dir=lib/outsourcing/l10n --no-use-deferred-loading lib/outsourcing/l10n/intl_de.arb lib/outsourcing/l10n/intl_en.arb lib/outsourcing/l10n/intl_messages.arb lib/outsourcing/localization/localizations.dart

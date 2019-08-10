@@ -1,4 +1,5 @@
 import 'package:Eyemoney/database/transaction.dart';
+import 'package:Eyemoney/outsourcing/localization/localizations.dart';
 import 'package:Eyemoney/screens/adding.dart';
 import 'package:Eyemoney/screens/statistics.dart';
 import 'package:flutter/material.dart';
@@ -136,7 +137,7 @@ class _HomeState extends State<Home> {
               ),
             ),
             ListTile(
-              title: Text('Home'),
+              title: Text(AppLocalizations.of(context).home),
               leading: Icon(Icons.home),
               onTap: () {
                 // Update the state of the app
@@ -146,7 +147,7 @@ class _HomeState extends State<Home> {
               },
             ),
             ListTile(
-              title: Text('Statistics'),
+              title: Text(AppLocalizations.of(context).statistics),
               leading: Icon(Icons.assessment),
               onTap: () {
                 // Update the state of the app
@@ -160,7 +161,7 @@ class _HomeState extends State<Home> {
               },
             ),
             ListTile(
-              title: Text('Settings'),
+              title: Text(AppLocalizations.of(context).settings),
               leading: Icon(Icons.settings),
               onTap: () {
                 // Update the state of the app
@@ -221,9 +222,10 @@ class _HomeState extends State<Home> {
                   });
                   Scaffold.of(context).showSnackBar(
                     SnackBar(
-                      content: Text('"$description" removed.'),
+                      content: Text('"$description" ' +
+                          AppLocalizations.of(context).removed),
                       action: SnackBarAction(
-                        label: 'UNDO',
+                        label: AppLocalizations.of(context).undo,
                         onPressed: () {
                           setState(
                             () {
@@ -260,8 +262,10 @@ class _HomeState extends State<Home> {
                       width: screenWidth / 3,
                     ),
                     Container(
-                      child: Text(item.category ?? emptyCategory,
-                          textScaleFactor: 1.2, textAlign: TextAlign.center),
+                      child: Text(
+                          item.category ?? AppLocalizations.of(context).other,
+                          textScaleFactor: 1.2,
+                          textAlign: TextAlign.center),
                       width: screenWidth / 3,
                     ),
                     Container(
