@@ -2,7 +2,7 @@ library flutter_app.globals;
 
 const String appName = 'Eyemoney';
 const String categoryPrefKey = 'category_pref';
-List<String> standard_categories = [
+List<String> standardCategories = [
   'foods',
   'salary',
   'rent',

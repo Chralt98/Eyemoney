@@ -43,25 +43,27 @@ class _AddingState extends State<Adding> {
     this._descriptionController = new TextEditingController();
     this._addCategoryController = new TextEditingController();
     SharedPreferences.getInstance()
-      ..then((prefs) {
-        setState(() => this._prefs = prefs);
-        this._loadCategoryPref();
-        if (widget.myTransaction != null) {
-          double temp = ((widget.myTransaction.amount < 0
-              ? widget.myTransaction.amount * -1
-              : widget.myTransaction.amount));
-          this._amount = temp.toString() ?? '0.00';
-          _moneyController.updateValue(temp);
-          this._crazySwitch = new CrazySwitch(
-              isChecked: widget.myTransaction.amount >= 0 ? true : false);
-          this._description = widget.myTransaction.description;
-          this._descriptionController.text = this._description;
-          this._selectedCategory = widget.myTransaction.category;
-          this._radioVal = _categories.indexOf(this._selectedCategory);
-        } else {
-          this._crazySwitch = new CrazySwitch(isChecked: false);
-        }
-      });
+      ..then(
+        (prefs) {
+          setState(() => this._prefs = prefs);
+          this._loadCategoryPref();
+          if (widget.myTransaction != null) {
+            double temp = ((widget.myTransaction.amount < 0
+                ? widget.myTransaction.amount * -1
+                : widget.myTransaction.amount));
+            this._amount = temp.toString() ?? '0.00';
+            _moneyController.updateValue(temp);
+            this._crazySwitch = new CrazySwitch(
+                isChecked: widget.myTransaction.amount >= 0 ? true : false);
+            this._description = widget.myTransaction.description;
+            this._descriptionController.text = this._description;
+            this._selectedCategory = widget.myTransaction.category;
+            this._radioVal = _categories.indexOf(this._selectedCategory);
+          } else {
+            this._crazySwitch = new CrazySwitch(isChecked: false);
+          }
+        },
+      );
   }
 
   @override
@@ -75,18 +77,20 @@ class _AddingState extends State<Adding> {
 
   // only category for shared preferences
   void _loadCategoryPref() {
-    setState(() {
-      _categories =
-          this._prefs.getStringList(categoryPrefKey) ?? standard_categories;
-      if (_categories.isEmpty) {
-        _categories.insert(0, '–');
-      } else if (_categories.isNotEmpty && _categories.first != '–') {
-        _categories.insert(0, '–');
-      }
-      if (_categories.isNotEmpty) {
-        _selectedCategory = _categories.first;
-      }
-    });
+    setState(
+      () {
+        _categories =
+            this._prefs.getStringList(categoryPrefKey) ?? standardCategories;
+        if (_categories.isEmpty) {
+          _categories.insert(0, '–');
+        } else if (_categories.isNotEmpty && _categories.first != '–') {
+          _categories.insert(0, '–');
+        }
+        if (_categories.isNotEmpty) {
+          _selectedCategory = _categories.first;
+        }
+      },
+    );
   }
 
   Future<Null> _setCategoryPref(List<String> categories) async {
@@ -97,15 +101,18 @@ class _AddingState extends State<Adding> {
   @override
   Widget build(BuildContext context) {
     final _listTiles = _categories
-        .map((item) => Dismissible(
+        .map(
+          (item) => Dismissible(
             key: Key(item.toString()),
             direction: DismissDirection.endToStart,
             onDismissed: (DismissDirection dir) {
               if (dir == DismissDirection.endToStart) {
-                setState(() {
-                  this._categories.removeAt(_categories.indexOf(item));
-                  this._setCategoryPref(this._categories);
-                });
+                setState(
+                  () {
+                    this._categories.removeAt(_categories.indexOf(item));
+                    this._setCategoryPref(this._categories);
+                  },
+                );
               }
             },
             background: Container(
@@ -114,36 +121,44 @@ class _AddingState extends State<Adding> {
               alignment: Alignment.centerRight,
             ),
             child: Container(
-                decoration: BoxDecoration(
-                    color: (_categories.indexOf(item) % 2 == 0)
-                        ? Color.fromARGB(5, 255, 255, 0)
-                        : Color.fromARGB(5, 0, 0, 255),
-                    border: Border.fromBorderSide(BorderSide(
-                        width: 0.0,
-                        color: Colors.black12,
-                        style: BorderStyle.solid))),
-                child: RadioListTile<int>(
-                    value: _categories.indexOf(item),
-                    groupValue: this._radioVal,
-                    onChanged: (int value) {
-                      setState(() {
-                        this._radioVal = value;
-                        _selectedCategory = item;
-                      });
+              decoration: BoxDecoration(
+                  color: (_categories.indexOf(item) % 2 == 0)
+                      ? Color.fromARGB(5, 255, 255, 0)
+                      : Color.fromARGB(5, 0, 0, 255),
+                  border: Border.fromBorderSide(BorderSide(
+                      width: 0.0,
+                      color: Colors.black12,
+                      style: BorderStyle.solid))),
+              child: RadioListTile<int>(
+                value: _categories.indexOf(item),
+                groupValue: this._radioVal,
+                onChanged: (int value) {
+                  setState(
+                    () {
+                      this._radioVal = value;
+                      _selectedCategory = item;
                     },
-                    activeColor: Colors.blue,
-                    title: Container(
-                        child: Text(item,
-                            textScaleFactor:
-                                (item.toString().length > 18) ? 0.65 : 1.0))))))
+                  );
+                },
+                activeColor: Colors.blue,
+                title: Container(
+                  child: Text(item,
+                      textScaleFactor:
+                          (item.toString().length > 18) ? 0.65 : 1.0),
+                ),
+              ),
+            ),
+          ),
+        )
         .toList();
     return new Scaffold(
-        appBar: new AppBar(
-          title: const Text('Add'),
-          actions: [],
-        ),
-        body: new Stack(alignment: AlignmentDirectional.topCenter, children: <
-            Widget>[
+      appBar: new AppBar(
+        title: const Text('Add'),
+        actions: [],
+      ),
+      body: new Stack(
+        alignment: AlignmentDirectional.topCenter,
+        children: <Widget>[
           new SingleChildScrollView(
             padding:
                 const EdgeInsets.only(left: 16, right: 16, bottom: 120, top: 0),
@@ -221,28 +236,29 @@ class _AddingState extends State<Adding> {
                   ),
                   SizedBox(height: 26),
                   Center(
-                      child: TextField(
-                    textCapitalization: TextCapitalization.words,
-                    controller: _addCategoryController,
-                    decoration: InputDecoration(
-                      border: UnderlineInputBorder(),
-                      filled: true,
-                      icon: Icon(Icons.category),
-                      hintText: 'Which should be added?',
-                      labelText: 'add category',
+                    child: TextField(
+                      textCapitalization: TextCapitalization.words,
+                      controller: _addCategoryController,
+                      decoration: InputDecoration(
+                        border: UnderlineInputBorder(),
+                        filled: true,
+                        icon: Icon(Icons.category),
+                        hintText: 'Which should be added?',
+                        labelText: 'add category',
+                      ),
+                      onSubmitted: (String category) async {
+                        if (!_categories.contains(category)) {
+                          this._categories.add(category);
+                        }
+                        this._radioVal = this._categories.indexOf(category);
+                        await this._setCategoryPref(this._categories);
+                        this._selectedCategory = category;
+                        this._addCategoryController.text = '';
+                      },
+                      keyboardType: TextInputType.text,
+                      maxLength: 25,
                     ),
-                    onSubmitted: (String category) async {
-                      if (!_categories.contains(category)) {
-                        this._categories.add(category);
-                      }
-                      this._radioVal = this._categories.indexOf(category);
-                      await this._setCategoryPref(this._categories);
-                      this._selectedCategory = category;
-                      this._addCategoryController.text = '';
-                    },
-                    keyboardType: TextInputType.text,
-                    maxLength: 25,
-                  )),
+                  ),
                 ],
               ),
             ),
@@ -307,6 +323,8 @@ class _AddingState extends State<Adding> {
             alignment: Alignment.bottomRight,
             margin: EdgeInsets.all(16),
           )
-        ]));
+        ],
+      ),
+    );
   }
 }

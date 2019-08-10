@@ -40,9 +40,11 @@ class _HomeState extends State<Home> {
   void _loadDatabase() async {
     List<MyTransaction> temp = await getDatabase(_selectedDate);
     // refresh GUI
-    setState(() {
-      this._myTransactions = temp;
-    });
+    setState(
+      () {
+        this._myTransactions = temp;
+      },
+    );
   }
 
   List<double> _getTupleRevenueExpenditure() {
@@ -75,16 +77,21 @@ class _HomeState extends State<Home> {
             alignment: Alignment.centerRight,
           ),
           IconButton(
-              icon: Icon(Icons.date_range),
-              onPressed: () {
-                showMonthPicker(
-                        context: context,
-                        initialDate: _selectedDate ?? widget.initialDate)
-                    .then((date) => setState(() {
-                          _selectedDate = date;
-                          this._loadDatabase();
-                        }));
-              }),
+            icon: Icon(Icons.date_range),
+            onPressed: () {
+              showMonthPicker(
+                      context: context,
+                      initialDate: _selectedDate ?? widget.initialDate)
+                  .then(
+                (date) => setState(
+                  () {
+                    _selectedDate = date;
+                    this._loadDatabase();
+                  },
+                ),
+              );
+            },
+          ),
         ],
       ),
       body: Container(
@@ -109,6 +116,7 @@ class _HomeState extends State<Home> {
                               : 0.8),
                       width: screenWidth / 3,
                       decoration: BoxDecoration(
+                          color: Colors.white,
                           border: Border.all(color: Colors.black54))),
                   Container(
                       child: Text(
@@ -125,30 +133,33 @@ class _HomeState extends State<Home> {
                               : 0.8),
                       width: screenWidth / 3,
                       decoration: BoxDecoration(
+                          color: Colors.white,
                           border: Border.all(color: Colors.black54))),
                   Container(
-                      child: Text(
-                          normTwoDecimal(round(
-                                  (_getTupleRevenueExpenditure()[0] +
-                                      _getTupleRevenueExpenditure()[1]),
-                                  2)
-                              .toString()),
-                          textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.blue),
-                          textScaleFactor: (normTwoDecimal(round(
-                                              (_getTupleRevenueExpenditure()[
-                                                      0] +
-                                                  _getTupleRevenueExpenditure()[
-                                                      1]),
-                                              2)
-                                          .toString())
-                                      .length <
-                                  11)
-                              ? 1.0
-                              : 0.8),
-                      width: screenWidth / 3,
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black54))),
+                    child: Text(
+                        normTwoDecimal(round(
+                                (_getTupleRevenueExpenditure()[0] +
+                                    _getTupleRevenueExpenditure()[1]),
+                                2)
+                            .toString()),
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.blue),
+                        textScaleFactor: (normTwoDecimal(round(
+                                            (_getTupleRevenueExpenditure()[0] +
+                                                _getTupleRevenueExpenditure()[
+                                                    1]),
+                                            2)
+                                        .toString())
+                                    .length <
+                                11)
+                            ? 1.0
+                            : 0.8),
+                    width: screenWidth / 3,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(color: Colors.black54),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -158,27 +169,34 @@ class _HomeState extends State<Home> {
               child: Row(
                 children: <Widget>[
                   Container(
-                      child: Icon(Icons.info_outline),
-                      width: screenWidth / 3,
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black54))),
+                    child: Icon(Icons.info_outline),
+                    width: screenWidth / 3,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black54),
+                    ),
+                  ),
                   Container(
-                      child: Icon(Icons.category),
-                      width: screenWidth / 3,
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black54))),
+                    child: Icon(Icons.category),
+                    width: screenWidth / 3,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black54),
+                    ),
+                  ),
                   Container(
-                      child: Icon(Icons.attach_money),
-                      width: screenWidth / 3,
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black54))),
+                    child: Icon(Icons.attach_money),
+                    width: screenWidth / 3,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black54),
+                    ),
+                  ),
                 ],
               ),
             ),
             Expanded(
-                child: Container(
-              child: _getList(context),
-            )),
+              child: Container(
+                child: _getList(context),
+              ),
+            ),
           ],
         ),
       ),
@@ -229,9 +247,10 @@ class _HomeState extends State<Home> {
                 // ...
                 // Then close the drawer
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) => Statistics()));
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => Statistics()),
+                );
               },
             ),
             ListTile(
@@ -242,9 +261,10 @@ class _HomeState extends State<Home> {
                 // ...
                 // Then close the drawer
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) => Settings()));
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => Settings()),
+                );
               },
             ),
           ],
@@ -255,10 +275,12 @@ class _HomeState extends State<Home> {
         backgroundColor: Colors.blueAccent,
         onPressed: () {
           Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (BuildContext context) =>
-                      Adding(selectedDate: _selectedDate)));
+            context,
+            MaterialPageRoute(
+              builder: (BuildContext context) =>
+                  Adding(selectedDate: _selectedDate),
+            ),
+          );
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
@@ -269,92 +291,95 @@ class _HomeState extends State<Home> {
     final double screenWidth = MediaQuery.of(context).size.width;
     if (_myTransactions != null && _myTransactions.isNotEmpty) {
       return ListView.builder(
-          padding: EdgeInsets.only(bottom: 90),
-          itemCount: _myTransactions.length,
-          itemBuilder: (BuildContext context, int index) {
-            final MyTransaction item = _myTransactions[index];
-            final String description = item.description;
-            return GestureDetector(
-                onLongPress: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => Adding(
-                              selectedDate: _selectedDate,
-                              myTransaction: item)));
-                },
-                child: Dismissible(
-                    key: Key(item.toString()),
-                    direction: DismissDirection.endToStart,
-                    onDismissed: (DismissDirection dir) {
-                      if (dir == DismissDirection.endToStart) {
-                        setState(() {
-                          this._myTransactions.removeAt(index);
-                          removeFromDatabase(item);
-                        });
-                        Scaffold.of(context).showSnackBar(SnackBar(
-                          content: Text('"$description" removed.'),
-                          action: SnackBarAction(
-                            label: 'UNDO',
-                            onPressed: () {
-                              setState(() {
-                                this._myTransactions.insert(index, item);
-                                insertInDatabase(item);
-                              });
+        padding: EdgeInsets.only(bottom: 90),
+        itemCount: _myTransactions.length,
+        itemBuilder: (BuildContext context, int index) {
+          final MyTransaction item = _myTransactions[index];
+          final String description = item.description;
+          return GestureDetector(
+            onLongPress: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => Adding(
+                          selectedDate: _selectedDate, myTransaction: item)));
+            },
+            child: Dismissible(
+              key: Key(item.toString()),
+              direction: DismissDirection.endToStart,
+              onDismissed: (DismissDirection dir) {
+                if (dir == DismissDirection.endToStart) {
+                  setState(() {
+                    this._myTransactions.removeAt(index);
+                    removeFromDatabase(item);
+                  });
+                  Scaffold.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('"$description" removed.'),
+                      action: SnackBarAction(
+                        label: 'UNDO',
+                        onPressed: () {
+                          setState(
+                            () {
+                              this._myTransactions.insert(index, item);
+                              insertInDatabase(item);
                             },
-                          ),
-                        ));
-                      }
-                    },
-                    background: Container(
-                      color: Colors.red,
-                      child: Icon(Icons.delete),
-                      alignment: Alignment.centerRight,
-                    ),
-                    child: Container(
-                      padding: EdgeInsets.only(bottom: 10, top: 10),
-                      decoration: BoxDecoration(
-                          color: (index % 2 == 0)
-                              ? Color.fromARGB(5, 255, 255, 0)
-                              : Color.fromARGB(5, 0, 0, 255),
-                          border: Border.fromBorderSide(BorderSide(
-                              width: 0.0,
-                              color: Colors.black12,
-                              style: BorderStyle.solid))),
-                      child: Row(
-                        children: <Widget>[
-                          Container(
-                            child: Text(item.description ?? '–',
-                                textScaleFactor: 1.2,
-                                textAlign: TextAlign.center),
-                            width: screenWidth / 3,
-                          ),
-                          Container(
-                            child: Text(item.category ?? '–',
-                                textScaleFactor: 1.2,
-                                textAlign: TextAlign.center),
-                            width: screenWidth / 3,
-                          ),
-                          Container(
-                              child: Text(
-                                  normTwoDecimal(
-                                          round(item.amount, 2).toString()) ??
-                                      '–',
-                                  textScaleFactor:
-                                      ((item.amount.toString() ?? '–').length <
-                                              12)
-                                          ? 1.0
-                                          : 0.9,
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: (item.amount < 0.0)
-                                          ? Colors.red
-                                          : Colors.lightGreen)),
-                              width: screenWidth / 3),
-                        ],
+                          );
+                        },
                       ),
-                    )));
-          });
+                    ),
+                  );
+                }
+              },
+              background: Container(
+                color: Colors.red,
+                child: Icon(Icons.delete),
+                alignment: Alignment.centerRight,
+              ),
+              child: Container(
+                padding: EdgeInsets.only(bottom: 10, top: 10),
+                decoration: BoxDecoration(
+                    color: (index % 2 == 0)
+                        ? Color.fromARGB(5, 255, 255, 0)
+                        : Color.fromARGB(5, 0, 0, 255),
+                    border: Border.fromBorderSide(BorderSide(
+                        width: 0.0,
+                        color: Colors.black12,
+                        style: BorderStyle.solid))),
+                child: Row(
+                  children: <Widget>[
+                    Container(
+                      child: Text(item.description ?? '–',
+                          textScaleFactor: 1.2, textAlign: TextAlign.center),
+                      width: screenWidth / 3,
+                    ),
+                    Container(
+                      child: Text(item.category ?? '–',
+                          textScaleFactor: 1.2, textAlign: TextAlign.center),
+                      width: screenWidth / 3,
+                    ),
+                    Container(
+                        child: Text(
+                          normTwoDecimal(round(item.amount, 2).toString()) ??
+                              '–',
+                          textScaleFactor:
+                              ((item.amount.toString() ?? '–').length < 12)
+                                  ? 1.0
+                                  : 0.9,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: (item.amount < 0.0)
+                                  ? Colors.red
+                                  : Colors.lightGreen),
+                        ),
+                        width: screenWidth / 3),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+      );
     } else if (_myTransactions == null) {
       return Center(
         child: CircularProgressIndicator(),
