@@ -37,34 +37,8 @@ class _HomeState extends State<Home> {
     this._loadDatabase();
   }
 
-  void _loadDatabase() async {
-    List<MyTransaction> temp = await getDatabase(_selectedDate);
-    // refresh GUI
-    setState(
-      () {
-        this._myTransactions = temp;
-      },
-    );
-  }
-
-  List<double> _getTupleRevenueExpenditure() {
-    double sumRevenue = 0.0;
-    double sumExpenditure = 0.0;
-    if (this._myTransactions != null) {
-      for (int i = 0; i < this._myTransactions.length; i++) {
-        if (this._myTransactions[i].amount > 0) {
-          sumRevenue += this._myTransactions[i].amount;
-        } else if (this._myTransactions[i].amount < 0) {
-          sumExpenditure += this._myTransactions[i].amount;
-        }
-      }
-    }
-    return [round(sumRevenue, 2), round(sumExpenditure, 2)];
-  }
-
   @override
   Widget build(BuildContext context) {
-    final double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -101,65 +75,15 @@ class _HomeState extends State<Home> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
-                  Container(
-                      child: Text(
-                          normTwoDecimal(
-                              round(_getTupleRevenueExpenditure()[0], 2)
-                                  .toString()),
-                          textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.lightGreen),
-                          textScaleFactor: (_getTupleRevenueExpenditure()[0]
-                                      .toString()
-                                      .length <
-                                  11)
-                              ? 1.0
-                              : 0.8),
-                      width: screenWidth / 3,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(color: Colors.black54))),
-                  Container(
-                      child: Text(
-                          normTwoDecimal(
-                              round(_getTupleRevenueExpenditure()[1], 2)
-                                  .toString()),
-                          textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.red),
-                          textScaleFactor: (_getTupleRevenueExpenditure()[1]
-                                      .toString()
-                                      .length <
-                                  11)
-                              ? 1.0
-                              : 0.8),
-                      width: screenWidth / 3,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(color: Colors.black54))),
-                  Container(
-                    child: Text(
-                        normTwoDecimal(round(
-                                (_getTupleRevenueExpenditure()[0] +
-                                    _getTupleRevenueExpenditure()[1]),
-                                2)
-                            .toString()),
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.blue),
-                        textScaleFactor: (normTwoDecimal(round(
-                                            (_getTupleRevenueExpenditure()[0] +
-                                                _getTupleRevenueExpenditure()[
-                                                    1]),
-                                            2)
-                                        .toString())
-                                    .length <
-                                11)
-                            ? 1.0
-                            : 0.8),
-                    width: screenWidth / 3,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(color: Colors.black54),
-                    ),
-                  ),
+                  this._getSum(context, _getTupleRevenueExpenditure()[0],
+                      Colors.lightGreen),
+                  this._getSum(
+                      context, _getTupleRevenueExpenditure()[1], Colors.red),
+                  this._getSum(
+                      context,
+                      _getTupleRevenueExpenditure()[0] +
+                          _getTupleRevenueExpenditure()[1],
+                      Colors.blue),
                 ],
               ),
             ),
@@ -168,27 +92,9 @@ class _HomeState extends State<Home> {
               color: Colors.white,
               child: Row(
                 children: <Widget>[
-                  Container(
-                    child: Icon(Icons.info_outline),
-                    width: screenWidth / 3,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black54),
-                    ),
-                  ),
-                  Container(
-                    child: Icon(Icons.category),
-                    width: screenWidth / 3,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black54),
-                    ),
-                  ),
-                  Container(
-                    child: Icon(Icons.attach_money),
-                    width: screenWidth / 3,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black54),
-                    ),
-                  ),
+                  this._getSymbol(context, Icons.info_outline),
+                  this._getSymbol(context, Icons.category),
+                  this._getSymbol(context, Icons.attach_money),
                 ],
               ),
             ),
@@ -271,7 +177,7 @@ class _HomeState extends State<Home> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.attach_money),
+        child: Icon(Icons.add),
         backgroundColor: Colors.blueAccent,
         onPressed: () {
           Navigator.push(
@@ -291,13 +197,13 @@ class _HomeState extends State<Home> {
     final double screenWidth = MediaQuery.of(context).size.width;
     if (_myTransactions != null && _myTransactions.isNotEmpty) {
       return ListView.builder(
-        padding: EdgeInsets.only(bottom: 90),
+        padding: EdgeInsets.only(bottom: 120),
         itemCount: _myTransactions.length,
         itemBuilder: (BuildContext context, int index) {
           final MyTransaction item = _myTransactions[index];
           final String description = item.description;
           return GestureDetector(
-            onLongPress: () {
+            onTap: () {
               Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -349,23 +255,25 @@ class _HomeState extends State<Home> {
                 child: Row(
                   children: <Widget>[
                     Container(
-                      child: Text(item.description ?? '–',
+                      child: Text(item.description ?? emptyCategory,
                           textScaleFactor: 1.2, textAlign: TextAlign.center),
                       width: screenWidth / 3,
                     ),
                     Container(
-                      child: Text(item.category ?? '–',
+                      child: Text(item.category ?? emptyCategory,
                           textScaleFactor: 1.2, textAlign: TextAlign.center),
                       width: screenWidth / 3,
                     ),
                     Container(
                         child: Text(
-                          normTwoDecimal(round(item.amount, 2).toString()) ??
-                              '–',
-                          textScaleFactor:
-                              ((item.amount.toString() ?? '–').length < 12)
-                                  ? 1.0
-                                  : 0.9,
+                          normTwoDecimal(
+                              round((item.amount ?? 0.0), 2).toString()),
+                          textScaleFactor: ((item.amount ?? emptyCategory)
+                                      .toString()
+                                      .length <
+                                  12)
+                              ? 1.0
+                              : 0.9,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               color: (item.amount < 0.0)
@@ -391,5 +299,57 @@ class _HomeState extends State<Home> {
         child: CircularProgressIndicator(),
       );
     }
+  }
+
+  void _loadDatabase() async {
+    List<MyTransaction> temp = await getDatabase(_selectedDate);
+    // refresh GUI
+    setState(
+      () {
+        this._myTransactions = temp;
+      },
+    );
+  }
+
+  List<double> _getTupleRevenueExpenditure() {
+    double sumRevenue = 0.0;
+    double sumExpenditure = 0.0;
+    if (this._myTransactions != null) {
+      for (int i = 0; i < this._myTransactions.length; i++) {
+        if (this._myTransactions[i].amount > 0) {
+          sumRevenue += this._myTransactions[i].amount;
+        } else if (this._myTransactions[i].amount < 0) {
+          sumExpenditure += this._myTransactions[i].amount;
+        }
+      }
+    }
+    return [round(sumRevenue, 2), round(sumExpenditure, 2)];
+  }
+
+  Widget _getSum(BuildContext context, double amount, Color color) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final stringAmount = normTwoDecimal(round(amount, 2).toString());
+    return Container(
+      child: Text(stringAmount,
+          textAlign: TextAlign.center,
+          style: TextStyle(color: color),
+          textScaleFactor: (stringAmount.length < 11) ? 1.0 : 0.8),
+      width: screenWidth / 3,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: Colors.black54),
+      ),
+    );
+  }
+
+  Widget _getSymbol(BuildContext context, IconData symbol) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+    return Container(
+      child: Icon(symbol),
+      width: screenWidth / 3,
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.black54),
+      ),
+    );
   }
 }
