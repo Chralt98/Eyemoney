@@ -13,8 +13,7 @@ class Home extends StatefulWidget {
   final DateTime initialDate;
   final String title;
 
-  const Home({Key key, @required this.title, @required this.initialDate})
-      : super(key: key);
+  const Home({Key key, @required this.title, @required this.initialDate}) : super(key: key);
 
   @override
   _HomeState createState() => new _HomeState();
@@ -46,18 +45,13 @@ class _HomeState extends State<Home> {
         backgroundColor: Colors.blueAccent,
         actions: <Widget>[
           Container(
-            child: Text((_selectedDate ?? DateTime.now()).month.toString() +
-                ' / ' +
-                (_selectedDate ?? DateTime.now()).year.toString()),
+            child: Text((_selectedDate ?? DateTime.now()).month.toString() + ' / ' + (_selectedDate ?? DateTime.now()).year.toString()),
             alignment: Alignment.centerRight,
           ),
           IconButton(
             icon: Icon(Icons.date_range),
             onPressed: () {
-              showMonthPicker(
-                      context: context,
-                      initialDate: _selectedDate ?? widget.initialDate)
-                  .then(
+              showMonthPicker(context: context, initialDate: _selectedDate ?? widget.initialDate).then(
                 (date) => setState(
                   () {
                     _selectedDate = date;
@@ -76,15 +70,19 @@ class _HomeState extends State<Home> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
-                  this._getSum(context, _getTupleRevenueExpenditure()[0],
-                      Colors.lightGreen),
-                  this._getSum(
-                      context, _getTupleRevenueExpenditure()[1], Colors.red),
-                  this._getSum(
-                      context,
-                      _getTupleRevenueExpenditure()[0] +
-                          _getTupleRevenueExpenditure()[1],
-                      Colors.blue),
+                  this._getSum(context, _getTupleRevenueExpenditure()[0], Colors.lightGreen),
+                  this._getSum(context, _getTupleRevenueExpenditure()[1], Colors.red),
+                  this._getSum(context, _getTupleRevenueExpenditure()[0] + _getTupleRevenueExpenditure()[1], Colors.blue),
+                ],
+              ),
+            ),
+            Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  this._getLabel(AppLocalizations.of(context).description),
+                  this._getLabel(AppLocalizations.of(context).category),
+                  this._getLabel(AppLocalizations.of(context).amount),
                 ],
               ),
             ),
@@ -122,9 +120,7 @@ class _HomeState extends State<Home> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 textBaseline: TextBaseline.alphabetic,
                 children: <Widget>[
-                  Text(appName,
-                      textScaleFactor: 2,
-                      style: TextStyle(color: Colors.white)),
+                  Text(appName, textScaleFactor: 2, style: TextStyle(color: Colors.white)),
                   Icon(
                     Icons.fiber_smart_record,
                     size: 50,
@@ -155,8 +151,7 @@ class _HomeState extends State<Home> {
                 // Then close the drawer
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (BuildContext context) => Statistics()),
+                  MaterialPageRoute(builder: (BuildContext context) => Statistics()),
                 );
               },
             ),
@@ -169,8 +164,7 @@ class _HomeState extends State<Home> {
                 // Then close the drawer
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (BuildContext context) => Settings()),
+                  MaterialPageRoute(builder: (BuildContext context) => Settings()),
                 );
               },
             ),
@@ -184,8 +178,7 @@ class _HomeState extends State<Home> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (BuildContext context) =>
-                  Adding(selectedDate: _selectedDate),
+              builder: (BuildContext context) => Adding(selectedDate: _selectedDate),
             ),
           );
         },
@@ -205,11 +198,7 @@ class _HomeState extends State<Home> {
           final String description = item.description;
           return GestureDetector(
             onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (BuildContext context) => Adding(
-                          selectedDate: _selectedDate, myTransaction: item)));
+              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Adding(selectedDate: _selectedDate, myTransaction: item)));
             },
             child: Dismissible(
               key: Key(item.toString()),
@@ -222,8 +211,7 @@ class _HomeState extends State<Home> {
                   });
                   Scaffold.of(context).showSnackBar(
                     SnackBar(
-                      content: Text('"$description" ' +
-                          AppLocalizations.of(context).removed),
+                      content: Text('"$description" ' + AppLocalizations.of(context).removed),
                       action: SnackBarAction(
                         label: AppLocalizations.of(context).undo,
                         onPressed: () {
@@ -247,40 +235,24 @@ class _HomeState extends State<Home> {
               child: Container(
                 padding: EdgeInsets.only(bottom: 10, top: 10),
                 decoration: BoxDecoration(
-                    color: (index % 2 == 0)
-                        ? Color.fromARGB(5, 255, 255, 0)
-                        : Color.fromARGB(5, 0, 0, 255),
-                    border: Border.fromBorderSide(BorderSide(
-                        width: 0.0,
-                        color: Colors.black12,
-                        style: BorderStyle.solid))),
+                    color: (index % 2 == 0) ? Color.fromARGB(5, 255, 255, 0) : Color.fromARGB(5, 0, 0, 255),
+                    border: Border.fromBorderSide(BorderSide(width: 0.0, color: Colors.black12, style: BorderStyle.solid))),
                 child: Row(
                   children: <Widget>[
                     Container(
-                      child: Text(item.description ?? '–',
-                          textScaleFactor: 1.2, textAlign: TextAlign.center),
+                      child: Text(item.description ?? '–', textScaleFactor: 1.2, textAlign: TextAlign.center),
                       width: screenWidth / 3,
                     ),
                     Container(
-                      child: Text(
-                          item.category ?? AppLocalizations.of(context).other,
-                          textScaleFactor: 1.2,
-                          textAlign: TextAlign.center),
+                      child: Text(item.category ?? AppLocalizations.of(context).other, textScaleFactor: 1.2, textAlign: TextAlign.center),
                       width: screenWidth / 3,
                     ),
                     Container(
                         child: Text(
-                          normTwoDecimal(
-                              round((item.amount ?? 0.0), 2).toString()),
-                          textScaleFactor:
-                              ((item.amount ?? 0.0).toString().length < 12)
-                                  ? 1.0
-                                  : 0.9,
+                          normTwoDecimal(round((item.amount ?? 0.0), 2).toString()),
+                          textScaleFactor: ((item.amount ?? 0.0).toString().length < 12) ? 1.0 : 0.9,
                           textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: (item.amount < 0.0)
-                                  ? Colors.red
-                                  : Colors.lightGreen),
+                          style: TextStyle(color: (item.amount < 0.0) ? Colors.red : Colors.lightGreen),
                         ),
                         width: screenWidth / 3),
                   ],
@@ -332,13 +304,22 @@ class _HomeState extends State<Home> {
     final double screenWidth = MediaQuery.of(context).size.width;
     final stringAmount = normTwoDecimal(round(amount, 2).toString());
     return Container(
-      child: Text(stringAmount,
-          textAlign: TextAlign.center,
-          style: TextStyle(color: color),
-          textScaleFactor: (stringAmount.length < 11) ? 1.0 : 0.8),
+      child: Text(stringAmount, textAlign: TextAlign.center, style: TextStyle(color: color), textScaleFactor: (stringAmount.length < 11) ? 1.0 : 0.8),
       width: screenWidth / 3,
       decoration: BoxDecoration(
         color: Colors.white,
+        border: Border.all(color: Colors.black54),
+      ),
+    );
+  }
+
+  Widget _getLabel(String label) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+    return Container(
+      alignment: Alignment.center,
+      child: Text(label),
+      width: screenWidth / 3,
+      decoration: BoxDecoration(
         border: Border.all(color: Colors.black54),
       ),
     );

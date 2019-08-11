@@ -15,8 +15,7 @@ class Adding extends StatefulWidget {
   final DateTime selectedDate;
   final MyTransaction myTransaction;
 
-  const Adding({Key key, @required this.selectedDate, this.myTransaction})
-      : super(key: key);
+  const Adding({Key key, @required this.selectedDate, this.myTransaction}) : super(key: key);
 
   @override
   _AddingState createState() => new _AddingState();
@@ -29,8 +28,7 @@ class _AddingState extends State<Adding> {
   String _amount = '0.00';
   String _selectedCategory;
   CrazySwitch _crazySwitch;
-  var _moneyController =
-      MoneyMaskedTextController(decimalSeparator: '.', thousandSeparator: ',');
+  var _moneyController = MoneyMaskedTextController(decimalSeparator: '.', thousandSeparator: ',');
   int _radioVal = 0;
   final _formKey = GlobalKey<FormState>();
   ScrollController _scrollController;
@@ -49,13 +47,10 @@ class _AddingState extends State<Adding> {
           setState(() => this._prefs = prefs);
           this._loadCategoryPref(context);
           if (widget.myTransaction != null) {
-            double temp = ((widget.myTransaction.amount < 0
-                ? widget.myTransaction.amount * -1
-                : widget.myTransaction.amount));
+            double temp = ((widget.myTransaction.amount < 0 ? widget.myTransaction.amount * -1 : widget.myTransaction.amount));
             this._amount = temp.toString() ?? '0.00';
             _moneyController.updateValue(temp);
-            this._crazySwitch = new CrazySwitch(
-                isChecked: widget.myTransaction.amount >= 0 ? true : false);
+            this._crazySwitch = new CrazySwitch(isChecked: widget.myTransaction.amount >= 0 ? true : false);
             this._description = widget.myTransaction.description;
             this._descriptionController.text = this._description;
             this._selectedCategory = widget.myTransaction.category;
@@ -100,13 +95,8 @@ class _AddingState extends State<Adding> {
             ),
             child: Container(
               decoration: BoxDecoration(
-                  color: (_categories.indexOf(item) % 2 == 0)
-                      ? Color.fromARGB(5, 255, 255, 0)
-                      : Color.fromARGB(5, 0, 0, 255),
-                  border: Border.fromBorderSide(BorderSide(
-                      width: 0.0,
-                      color: Colors.black12,
-                      style: BorderStyle.solid))),
+                  color: (_categories.indexOf(item) % 2 == 0) ? Color.fromARGB(5, 255, 255, 0) : Color.fromARGB(5, 0, 0, 255),
+                  border: Border.fromBorderSide(BorderSide(width: 0.0, color: Colors.black12, style: BorderStyle.solid))),
               child: RadioListTile<int>(
                 value: _categories.indexOf(item),
                 groupValue: this._radioVal,
@@ -120,9 +110,7 @@ class _AddingState extends State<Adding> {
                 },
                 activeColor: Colors.blue,
                 title: Container(
-                  child: Text(item,
-                      textScaleFactor:
-                          (item.toString().length > 18) ? 0.65 : 1.0),
+                  child: Text(item, textScaleFactor: (item.toString().length > 18) ? 0.65 : 1.0),
                 ),
               ),
             ),
@@ -138,8 +126,7 @@ class _AddingState extends State<Adding> {
         alignment: AlignmentDirectional.topCenter,
         children: <Widget>[
           new SingleChildScrollView(
-            padding:
-                const EdgeInsets.only(left: 16, right: 16, bottom: 120, top: 0),
+            padding: const EdgeInsets.only(left: 16, right: 16, bottom: 120, top: 0),
             child: Form(
               key: _formKey,
               child: Column(
@@ -183,12 +170,10 @@ class _AddingState extends State<Adding> {
   void _loadCategoryPref(BuildContext context) {
     setState(
       () {
-        _categories = this._prefs.getStringList(categoryPrefKey) ??
-            getStandardCategories(context);
+        _categories = this._prefs.getStringList(categoryPrefKey) ?? getStandardCategories(context);
         if (_categories.isEmpty) {
           _categories.insert(0, AppLocalizations.of(context).other);
-        } else if (_categories.isNotEmpty &&
-            _categories.first != AppLocalizations.of(context).other) {
+        } else if (_categories.isNotEmpty && _categories.first != AppLocalizations.of(context).other) {
           _categories.insert(0, AppLocalizations.of(context).other);
         }
         if (_categories.isNotEmpty) {
@@ -206,8 +191,7 @@ class _AddingState extends State<Adding> {
   Widget _getAmountTextField(BuildContext context) {
     return TextFormField(
       controller: _moneyController,
-      keyboardType:
-          TextInputType.numberWithOptions(signed: false, decimal: true),
+      keyboardType: TextInputType.numberWithOptions(signed: false, decimal: true),
       decoration: InputDecoration(
         border: UnderlineInputBorder(),
         filled: true,
@@ -216,8 +200,7 @@ class _AddingState extends State<Adding> {
       ),
       validator: (String number) {
         if (number == '0.00') {
-          _scrollController.animateTo(0,
-              duration: new Duration(milliseconds: 500), curve: Curves.ease);
+          _scrollController.animateTo(0, duration: new Duration(milliseconds: 500), curve: Curves.ease);
           return AppLocalizations.of(context).amountDescription;
         }
         return null;
@@ -244,7 +227,8 @@ class _AddingState extends State<Adding> {
   }
 
   Widget _getSignSelection(BuildContext context) {
-    return Row(
+    return Container(
+        child: Wrap(
       children: <Widget>[
         OutlineButton(
             onPressed: () {
@@ -252,8 +236,7 @@ class _AddingState extends State<Adding> {
                 this._crazySwitch = CrazySwitch(isChecked: false);
               });
             },
-            child: Text(AppLocalizations.of(context).expenditure,
-                style: TextStyle(color: Colors.red), textScaleFactor: 1.1)),
+            child: Text(AppLocalizations.of(context).expenditure, style: TextStyle(color: Colors.red), textScaleFactor: 1.1)),
         SizedBox(width: 16),
         this._crazySwitch ?? CrazySwitch(isChecked: false),
         SizedBox(width: 16),
@@ -263,12 +246,11 @@ class _AddingState extends State<Adding> {
                 this._crazySwitch = CrazySwitch(isChecked: true);
               });
             },
-            child: Text(AppLocalizations.of(context).revenue,
-                style: TextStyle(color: Colors.lightGreen),
-                textScaleFactor: 1.1)),
+            child: Text(AppLocalizations.of(context).revenue, style: TextStyle(color: Colors.lightGreen), textScaleFactor: 1.1)),
       ],
-      mainAxisAlignment: MainAxisAlignment.center,
-    );
+      crossAxisAlignment: WrapCrossAlignment.center,
+      direction: Axis.horizontal,
+    ));
   }
 
   Widget _getCategoryField(BuildContext context) {
@@ -303,10 +285,8 @@ class _AddingState extends State<Adding> {
           hintText: AppLocalizations.of(context).addCategoryDescription,
           labelText: AppLocalizations.of(context).addCategory,
         ),
-        onChanged: (String text) => _scrollController.animateTo(
-            _scrollController.position.maxScrollExtent,
-            duration: new Duration(milliseconds: 500),
-            curve: Curves.ease),
+        onChanged: (String text) =>
+            _scrollController.animateTo(_scrollController.position.maxScrollExtent, duration: new Duration(milliseconds: 500), curve: Curves.ease),
         onSubmitted: (String category) async {
           if (!_categories.contains(category) && category != '') {
             this._categories.add(category);
@@ -326,15 +306,12 @@ class _AddingState extends State<Adding> {
     if (_formKey.currentState.validate()) {
       this._amount = _moneyController.numberValue.toString();
       final int sign = _crazySwitch.getChecked() ? 1 : -1;
-      final double _realAmount = round(
-          (sign) * double.parse(_amount.replaceAll(new RegExp(','), '')), 2);
+      final double _realAmount = round((sign) * double.parse(_amount.replaceAll(new RegExp(','), '')), 2);
       if (this._addCategoryController.text != '') {
-        if (!_categories.contains(this._addCategoryController.text) &&
-            this._addCategoryController.text != '') {
+        if (!_categories.contains(this._addCategoryController.text) && this._addCategoryController.text != '') {
           this._categories.add(this._addCategoryController.text);
         }
-        this._radioVal =
-            this._categories.indexOf(this._addCategoryController.text);
+        this._radioVal = this._categories.indexOf(this._addCategoryController.text);
         await this._setCategoryPref(this._categories);
         this._selectedCategory = this._addCategoryController.text;
         this._addCategoryController.text = '';
@@ -345,9 +322,7 @@ class _AddingState extends State<Adding> {
           category: _selectedCategory,
           description: _description,
           amount: _realAmount,
-          date: DateTime((widget.selectedDate ?? DateTime.now()).year,
-                  (widget.selectedDate ?? DateTime.now()).month)
-              .toString(),
+          date: DateTime((widget.selectedDate ?? DateTime.now()).year, (widget.selectedDate ?? DateTime.now()).month).toString(),
         );
         updateTransaction(data);
       } else {
@@ -355,9 +330,7 @@ class _AddingState extends State<Adding> {
           category: _selectedCategory,
           description: _description,
           amount: _realAmount,
-          date: DateTime((widget.selectedDate ?? DateTime.now()).year,
-                  (widget.selectedDate ?? DateTime.now()).month)
-              .toString(),
+          date: DateTime((widget.selectedDate ?? DateTime.now()).year, (widget.selectedDate ?? DateTime.now()).month).toString(),
         );
         insertInDatabase(data);
       }
