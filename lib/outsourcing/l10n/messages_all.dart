@@ -6,24 +6,23 @@ import 'dart:async';
 
 import 'package:intl/intl.dart';
 import 'package:intl/message_lookup_by_library.dart';
-// ignore: implementation_imports
 import 'package:intl/src/intl_helpers.dart';
 
 import 'messages_ae.dart' as messages_ae;
-import 'messages_cn.dart' as messages_cn;
 import 'messages_de.dart' as messages_de;
 import 'messages_en.dart' as messages_en;
 import 'messages_es.dart' as messages_es;
 import 'messages_fr.dart' as messages_fr;
 import 'messages_messages.dart' as messages_messages;
 import 'messages_ru.dart' as messages_ru;
+import 'messages_zh.dart' as messages_zh;
 
 typedef Future<dynamic> LibraryLoader();
 Map<String, LibraryLoader> _deferredLibraries = {
 // ignore: unnecessary_new
   'ae': () => new Future.value(null),
 // ignore: unnecessary_new
-  'cn': () => new Future.value(null),
+  'zh': () => new Future.value(null),
 // ignore: unnecessary_new
   'de': () => new Future.value(null),
 // ignore: unnecessary_new
@@ -42,8 +41,8 @@ MessageLookupByLibrary _findExact(localeName) {
   switch (localeName) {
     case 'ae':
       return messages_ae.messages;
-    case 'cn':
-      return messages_cn.messages;
+    case 'zh':
+      return messages_zh.messages;
     case 'de':
       return messages_de.messages;
     case 'en':
@@ -64,9 +63,8 @@ MessageLookupByLibrary _findExact(localeName) {
 /// User programs should call this before using [localeName] for messages.
 Future<bool> initializeMessages(String localeName) async {
   var availableLocale = Intl.verifiedLocale(
-    localeName,
-    (locale) => _deferredLibraries[locale] != null,
-    onFailure: (_) => null);
+      localeName, (locale) => _deferredLibraries[locale] != null,
+      onFailure: (_) => null);
   if (availableLocale == null) {
     // ignore: unnecessary_new
     return new Future.value(false);
@@ -90,8 +88,8 @@ bool _messagesExistFor(String locale) {
 }
 
 MessageLookupByLibrary _findGeneratedMessagesFor(locale) {
-  var actualLocale = Intl.verifiedLocale(locale, _messagesExistFor,
-      onFailure: (_) => null);
+  var actualLocale =
+      Intl.verifiedLocale(locale, _messagesExistFor, onFailure: (_) => null);
   if (actualLocale == null) return null;
   return _findExact(actualLocale);
 }

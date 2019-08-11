@@ -15,7 +15,12 @@ void main() {
       ],
       supportedLocales: [
         const Locale('en', ''), // English
-        const Locale('de', ''), // German
+        const Locale('de', ''),
+        const Locale('ae', ''),
+        const Locale('zh', ''),
+        const Locale('es', ''),
+        const Locale('fr', ''),
+        const Locale('ru', ''),
       ],
       debugShowCheckedModeBanner: false,
       theme:
