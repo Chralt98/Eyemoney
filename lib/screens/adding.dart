@@ -110,7 +110,11 @@ class _AddingState extends State<Adding> {
                 },
                 activeColor: Colors.blue,
                 title: Container(
-                  child: Text(item, textScaleFactor: (item.toString().length > 18) ? 0.65 : 1.0),
+                  height: 48,
+                  child: FittedBox(
+                    child: Text(item),
+                    fit: BoxFit.scaleDown,
+                  ),
                 ),
               ),
             ),
