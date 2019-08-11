@@ -6,6 +6,7 @@ import 'package:Eyemoney/outsourcing/localization/localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../outsourcing/globals.dart';
@@ -86,6 +87,14 @@ class _AddingState extends State<Adding> {
                     this._setCategoryPref(this._categories);
                   },
                 );
+
+                Fluttertoast.showToast(
+                  msg: item + ' ' + AppLocalizations.of(context).removed,
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.BOTTOM,
+                  timeInSecForIos: 1,
+                  fontSize: 16.0,
+                );
               }
             },
             background: Container(
@@ -147,9 +156,7 @@ class _AddingState extends State<Adding> {
                   SizedBox(height: 26),
                   this._getCategoryField(context),
                   SizedBox(height: 26),
-                  Column(
-                    children: _listTiles,
-                  ),
+                  Column(children: _listTiles),
                   SizedBox(height: 26),
                   this._getAddCategoryTextField(context),
                 ],
