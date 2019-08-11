@@ -71,7 +71,7 @@ class _HomeState extends State<Home> {
                 children: <Widget>[
                   this._getSum(context, _getTupleRevenueExpenditure()[0], Colors.lightGreen),
                   this._getSum(context, _getTupleRevenueExpenditure()[1], Colors.red),
-                  this._getSum(context, _getTupleRevenueExpenditure()[0] + _getTupleRevenueExpenditure()[1], Colors.blue),
+                  this._getSum(context, _getTupleRevenueExpenditure()[0] + _getTupleRevenueExpenditure()[1], Color.fromARGB(255, 0, 0, 50)),
                 ],
               ),
             ),
@@ -248,6 +248,7 @@ class _HomeState extends State<Home> {
                       width: screenWidth / 3,
                     ),
                     Container(
+                        height: 38,
                         child: FittedBox(
                           child: Text(
                             normTwoDecimal(round((item.amount ?? 0.0), 2).toString()),
@@ -306,6 +307,7 @@ class _HomeState extends State<Home> {
     final double screenWidth = MediaQuery.of(context).size.width;
     final stringAmount = normTwoDecimal(round(amount, 2).toString());
     return Container(
+      height: 26,
       width: screenWidth / 3,
       child: FittedBox(
         child: Text(stringAmount, textAlign: TextAlign.center, style: TextStyle(color: color)),
@@ -319,7 +321,10 @@ class _HomeState extends State<Home> {
     return Container(
       alignment: Alignment.center,
       child: FittedBox(
-        child: Text(label),
+        child: Text(
+          label,
+          style: TextStyle(color: Color.fromARGB(255, 0, 0, 50)),
+        ),
         fit: BoxFit.scaleDown,
       ),
       width: screenWidth / 3,

@@ -112,7 +112,10 @@ class _AddingState extends State<Adding> {
                 title: Container(
                   height: 48,
                   child: FittedBox(
-                    child: Text(item),
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      item,
+                    ),
                     fit: BoxFit.scaleDown,
                   ),
                 ),
@@ -232,29 +235,33 @@ class _AddingState extends State<Adding> {
 
   Widget _getSignSelection(BuildContext context) {
     return Container(
+        alignment: Alignment.centerLeft,
         child: Wrap(
-      children: <Widget>[
-        OutlineButton(
-            onPressed: () {
-              setState(() {
-                this._crazySwitch = CrazySwitch(isChecked: false);
-              });
-            },
-            child: Text(AppLocalizations.of(context).expenditure, style: TextStyle(color: Colors.red), textScaleFactor: 1.1)),
-        SizedBox(width: 16),
-        this._crazySwitch ?? CrazySwitch(isChecked: false),
-        SizedBox(width: 16),
-        OutlineButton(
-            onPressed: () {
-              setState(() {
-                this._crazySwitch = CrazySwitch(isChecked: true);
-              });
-            },
-            child: Text(AppLocalizations.of(context).revenue, style: TextStyle(color: Colors.lightGreen), textScaleFactor: 1.1)),
-      ],
-      crossAxisAlignment: WrapCrossAlignment.center,
-      direction: Axis.horizontal,
-    ));
+          children: <Widget>[
+            SizedBox(
+              width: 40,
+            ),
+            OutlineButton(
+                onPressed: () {
+                  setState(() {
+                    this._crazySwitch = CrazySwitch(isChecked: false);
+                  });
+                },
+                child: Text(AppLocalizations.of(context).expenditure, style: TextStyle(color: Colors.red))),
+            SizedBox(width: 5),
+            this._crazySwitch ?? CrazySwitch(isChecked: false),
+            SizedBox(width: 5),
+            OutlineButton(
+                onPressed: () {
+                  setState(() {
+                    this._crazySwitch = CrazySwitch(isChecked: true);
+                  });
+                },
+                child: Text(AppLocalizations.of(context).revenue, style: TextStyle(color: Colors.lightGreen))),
+          ],
+          crossAxisAlignment: WrapCrossAlignment.center,
+          direction: Axis.horizontal,
+        ));
   }
 
   Widget _getCategoryField(BuildContext context) {
@@ -266,7 +273,7 @@ class _AddingState extends State<Adding> {
             Icons.category,
             color: Colors.grey,
           ),
-          SizedBox(width: 26),
+          SizedBox(width: 15),
           Text(
             AppLocalizations.of(context).category,
             style: TextStyle(color: Colors.black54),
