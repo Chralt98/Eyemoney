@@ -24,7 +24,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static _notInlinedMessages(_) => <String, Function> {
     "add" : MessageLookupByLibrary.simpleMessage("Hinzufügen"),
     "addCategory" : MessageLookupByLibrary.simpleMessage("Kategorie hinzufügen"),
-    "addCategoryDescription" : MessageLookupByLibrary.simpleMessage("Welche soll hinzugefügt werden?"),
+    "addCategoryDescription" : MessageLookupByLibrary.simpleMessage("Welche ist es?"),
     "amount" : MessageLookupByLibrary.simpleMessage("Betrag"),
     "amountDescription" : MessageLookupByLibrary.simpleMessage("Bitte gib einen Betrag an!"),
     "car" : MessageLookupByLibrary.simpleMessage("Auto"),

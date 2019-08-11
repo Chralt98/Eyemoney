@@ -229,7 +229,8 @@ class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
 
   @override
   bool isSupported(Locale locale) {
-    return ['en', 'de'].contains(locale.languageCode);
+    return ['en', 'de', 'cn', 'es', 'fr', 'ru', 'ae']
+        .contains(locale.languageCode);
   }
 
   @override

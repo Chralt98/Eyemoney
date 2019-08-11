@@ -115,7 +115,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "addCategoryDescription": "Welche soll hinzugefügt werden?",
+  "addCategoryDescription": "Welche ist es?",
   "@addCategoryDescription": {
     "type": "text",
     "placeholders": {}

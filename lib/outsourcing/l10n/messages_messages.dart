@@ -26,7 +26,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "addCategory" : MessageLookupByLibrary.simpleMessage("add category"),
     "addCategoryDescription" : MessageLookupByLibrary.simpleMessage("Which should be added?"),
     "amount" : MessageLookupByLibrary.simpleMessage("amount"),
-    "amountDescription" : MessageLookupByLibrary.simpleMessage("Please enter an amount!"),
+    "amountDescription" : MessageLookupByLibrary.simpleMessage("Please enter an amount"),
     "car" : MessageLookupByLibrary.simpleMessage("car"),
     "category" : MessageLookupByLibrary.simpleMessage("category"),
     "clothing" : MessageLookupByLibrary.simpleMessage("clothing"),

@@ -211,7 +211,7 @@ class _AddingState extends State<Adding> {
       decoration: InputDecoration(
         border: UnderlineInputBorder(),
         filled: true,
-        icon: Icon(Icons.attach_money),
+        icon: Icon(Icons.fiber_smart_record),
         labelText: AppLocalizations.of(context).amount,
       ),
       validator: (String number) {

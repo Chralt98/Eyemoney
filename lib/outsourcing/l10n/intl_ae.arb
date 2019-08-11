@@ -1,146 +1,146 @@
 {
   "@@last_modified": "2019-08-10T19:15:37.806958",
-  "home": "Home",
+  "home": "الصفحة الرئيسية",
   "@home": {
     "type": "text",
     "placeholders": {}
   },
-  "statistics": "Statistics",
+  "statistics": "الإحصاء",
   "@statistics": {
     "type": "text",
     "placeholders": {}
   },
-  "settings": "Settings",
+  "settings": "الإعدادات",
   "@settings": {
     "type": "text",
     "placeholders": {}
   },
-  "amount": "amount",
+  "amount": "كمية",
   "@amount": {
     "type": "text",
     "placeholders": {}
   },
-  "description": "description",
+  "description": "وصف",
   "@description": {
     "type": "text",
     "placeholders": {}
   },
-  "descriptionQuestion": "What is it?",
+  "descriptionQuestion": "ما هذا؟",
   "@descriptionQuestion": {
     "type": "text",
     "placeholders": {}
   },
-  "expenditure": "expenditure",
+  "expenditure": "المصروفات",
   "@expenditure": {
     "type": "text",
     "placeholders": {}
   },
-  "revenue": "revenue",
+  "revenue": "إيرادات",
   "@revenue": {
     "type": "text",
     "placeholders": {}
   },
-  "category": "category",
+  "category": "الفئة",
   "@category": {
     "type": "text",
     "placeholders": {}
   },
-  "emptyCategory": "other",
+  "emptyCategory": "آخر",
   "@emptyCategory": {
     "type": "text",
     "placeholders": {}
   },
-  "foods": "foods",
+  "foods": "الأطعمة",
   "@foods": {
     "type": "text",
     "placeholders": {}
   },
-  "salary": "salary",
+  "salary": "راتب",
   "@salary": {
     "type": "text",
     "placeholders": {}
   },
-  "rent": "rent",
+  "rent": "تأجير",
   "@rent": {
     "type": "text",
     "placeholders": {}
   },
-  "household": "household",
+  "household": "منزلي",
   "@household": {
     "type": "text",
     "placeholders": {}
   },
-  "clothing": "clothing",
+  "clothing": "ملابس",
   "@clothing": {
     "type": "text",
     "placeholders": {}
   },
-  "education": "education",
+  "education": "التعليم",
   "@education": {
     "type": "text",
     "placeholders": {}
   },
-  "electronics": "electronics",
+  "electronics": "إلكترونيات",
   "@electronics": {
     "type": "text",
     "placeholders": {}
   },
-  "gift": "gift",
+  "gift": "هدية مجانية",
   "@gift": {
     "type": "text",
     "placeholders": {}
   },
-  "car": "car",
+  "car": "سيارة",
   "@car": {
     "type": "text",
     "placeholders": {}
   },
-  "haircut": "haircut",
+  "haircut": "حلاقة شعر",
   "@haircut": {
     "type": "text",
     "placeholders": {}
   },
-  "contract": "contract",
+  "contract": "عقد",
   "@contract": {
     "type": "text",
     "placeholders": {}
   },
-  "addCategory": "add category",
+  "addCategory": "إضافة فئة",
   "@addCategory": {
     "type": "text",
     "placeholders": {}
   },
-  "add": "Add",
+  "add": "إضافة",
   "@add": {
     "type": "text",
     "placeholders": {}
   },
-  "addCategoryDescription": "Which is it?",
+  "addCategoryDescription": "والذي هو؟",
   "@addCategoryDescription": {
     "type": "text",
     "placeholders": {}
   },
-  "removed": "removed",
+  "removed": "إزالة",
   "@removed": {
     "type": "text",
     "placeholders": {}
   },
-  "undo": "UNDO",
+  "undo": "فك",
   "@undo": {
     "type": "text",
     "placeholders": {}
   },
-  "other": "other",
+  "other": "آخر",
   "@other": {
     "type": "text",
     "placeholders": {}
   },
-  "amountDescription": "Please enter an amount!",
+  "amountDescription": "الرجاء إدخال مبلغ!",
   "@amountDescription": {
     "type": "text",
     "placeholders": {}
   },
-  "health": "health",
+  "health": "الصحة",
   "@health": {
     "type": "text",
     "placeholders": {}

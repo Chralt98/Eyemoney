@@ -1,146 +1,146 @@
 {
   "@@last_modified": "2019-08-10T19:15:37.806958",
-  "home": "Home",
+  "home": "家",
   "@home": {
     "type": "text",
     "placeholders": {}
   },
-  "statistics": "Statistics",
+  "statistics": "统计",
   "@statistics": {
     "type": "text",
     "placeholders": {}
   },
-  "settings": "Settings",
+  "settings": "设置",
   "@settings": {
     "type": "text",
     "placeholders": {}
   },
-  "amount": "amount",
+  "amount": "量",
   "@amount": {
     "type": "text",
     "placeholders": {}
   },
-  "description": "description",
+  "description": "描述",
   "@description": {
     "type": "text",
     "placeholders": {}
   },
-  "descriptionQuestion": "What is it?",
+  "descriptionQuestion": "它是什么？",
   "@descriptionQuestion": {
     "type": "text",
     "placeholders": {}
   },
-  "expenditure": "expenditure",
+  "expenditure": "支出",
   "@expenditure": {
     "type": "text",
     "placeholders": {}
   },
-  "revenue": "revenue",
+  "revenue": "收入",
   "@revenue": {
     "type": "text",
     "placeholders": {}
   },
-  "category": "category",
+  "category": "类别",
   "@category": {
     "type": "text",
     "placeholders": {}
   },
-  "emptyCategory": "other",
+  "emptyCategory": "其他",
   "@emptyCategory": {
     "type": "text",
     "placeholders": {}
   },
-  "foods": "foods",
+  "foods": "食品",
   "@foods": {
     "type": "text",
     "placeholders": {}
   },
-  "salary": "salary",
+  "salary": "薪水",
   "@salary": {
     "type": "text",
     "placeholders": {}
   },
-  "rent": "rent",
+  "rent": "出租",
   "@rent": {
     "type": "text",
     "placeholders": {}
   },
-  "household": "household",
+  "household": "家庭",
   "@household": {
     "type": "text",
     "placeholders": {}
   },
-  "clothing": "clothing",
+  "clothing": "服装",
   "@clothing": {
     "type": "text",
     "placeholders": {}
   },
-  "education": "education",
+  "education": "教育",
   "@education": {
     "type": "text",
     "placeholders": {}
   },
-  "electronics": "electronics",
+  "electronics": "电子产品",
   "@electronics": {
     "type": "text",
     "placeholders": {}
   },
-  "gift": "gift",
+  "gift": "礼品",
   "@gift": {
     "type": "text",
     "placeholders": {}
   },
-  "car": "car",
+  "car": "汽车",
   "@car": {
     "type": "text",
     "placeholders": {}
   },
-  "haircut": "haircut",
+  "haircut": "理发",
   "@haircut": {
     "type": "text",
     "placeholders": {}
   },
-  "contract": "contract",
+  "contract": "合同",
   "@contract": {
     "type": "text",
     "placeholders": {}
   },
-  "addCategory": "add category",
+  "addCategory": "添加类别",
   "@addCategory": {
     "type": "text",
     "placeholders": {}
   },
-  "add": "Add",
+  "add": "加",
   "@add": {
     "type": "text",
     "placeholders": {}
   },
-  "addCategoryDescription": "Which is it?",
+  "addCategoryDescription": "这是什么？",
   "@addCategoryDescription": {
     "type": "text",
     "placeholders": {}
   },
-  "removed": "removed",
+  "removed": "去除",
   "@removed": {
     "type": "text",
     "placeholders": {}
   },
-  "undo": "UNDO",
+  "undo": "解开",
   "@undo": {
     "type": "text",
     "placeholders": {}
   },
-  "other": "other",
+  "other": "其他",
   "@other": {
     "type": "text",
     "placeholders": {}
   },
-  "amountDescription": "Please enter an amount!",
+  "amountDescription": "请输入金额！",
   "@amountDescription": {
     "type": "text",
     "placeholders": {}
   },
-  "health": "health",
+  "health": "健康",
   "@health": {
     "type": "text",
     "placeholders": {}

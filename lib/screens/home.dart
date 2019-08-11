@@ -95,7 +95,7 @@ class _HomeState extends State<Home> {
                 children: <Widget>[
                   this._getSymbol(context, Icons.info_outline),
                   this._getSymbol(context, Icons.category),
-                  this._getSymbol(context, Icons.attach_money),
+                  this._getSymbol(context, Icons.fiber_smart_record),
                 ],
               ),
             ),
@@ -126,7 +126,7 @@ class _HomeState extends State<Home> {
                       textScaleFactor: 2,
                       style: TextStyle(color: Colors.white)),
                   Icon(
-                    Icons.monetization_on,
+                    Icons.fiber_smart_record,
                     size: 50,
                     color: Colors.white,
                   ),
