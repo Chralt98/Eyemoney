@@ -1,0 +1,148 @@
+{
+  "@@last_modified": "2019-08-10T19:15:37.806958",
+  "home": "家",
+  "@home": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "statistics": "统计",
+  "@statistics": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "settings": "设置",
+  "@settings": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "amount": "量",
+  "@amount": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "description": "描述",
+  "@description": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "descriptionQuestion": "它是什么？",
+  "@descriptionQuestion": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "expenditure": "支出",
+  "@expenditure": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "revenue": "收入",
+  "@revenue": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "category": "类别",
+  "@category": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "emptyCategory": "其他",
+  "@emptyCategory": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "foods": "食品",
+  "@foods": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "salary": "薪水",
+  "@salary": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "rent": "出租",
+  "@rent": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "household": "家庭",
+  "@household": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "clothing": "服装",
+  "@clothing": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "education": "教育",
+  "@education": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "electronics": "电子产品",
+  "@electronics": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "gift": "礼品",
+  "@gift": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "car": "汽车",
+  "@car": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "haircut": "理发",
+  "@haircut": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "contract": "合同",
+  "@contract": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "addCategory": "添加类别",
+  "@addCategory": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "add": "加",
+  "@add": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "addCategoryDescription": "这是什么？",
+  "@addCategoryDescription": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "removed": "去除",
+  "@removed": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "undo": "解开",
+  "@undo": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "other": "其他",
+  "@other": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "amountDescription": "请输入金额！",
+  "@amountDescription": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "health": "健康",
+  "@health": {
+    "type": "text",
+    "placeholders": {}
+  }
+}

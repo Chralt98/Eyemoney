@@ -1,12 +1,12 @@
+import 'package:Eyemoney/outsourcing/localization/localizations.dart';
 import 'package:flutter/material.dart';
 
 class Settings extends StatelessWidget {
-  // TODO: find the difference of stateless and stateful and why stateless necessary?
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Settings'),
+        title: Text(AppLocalizations.of(context).settings),
         backgroundColor: Colors.blueAccent,
       ),
       body: Container(),

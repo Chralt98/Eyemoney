@@ -1,0 +1,148 @@
+{
+  "@@last_modified": "2019-08-10T19:15:37.806958",
+  "home": "casa",
+  "@home": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "statistics": "estadística",
+  "@statistics": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "settings": "ajustes",
+  "@settings": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "amount": "cantidad",
+  "@amount": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "description": "descripción",
+  "@description": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "descriptionQuestion": "¿Qué es?",
+  "@descriptionQuestion": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "expenditure": "gasto",
+  "@expenditure": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "revenue": "ingresos",
+  "@revenue": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "category": "categoría",
+  "@category": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "emptyCategory": "otra",
+  "@emptyCategory": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "foods": "comidas",
+  "@foods": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "salary": "salario",
+  "@salary": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "rent": "alquilar",
+  "@rent": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "household": "casa",
+  "@household": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "clothing": "ropa",
+  "@clothing": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "education": "educación",
+  "@education": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "electronics": "electrónica",
+  "@electronics": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "gift": "regalo",
+  "@gift": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "car": "coche",
+  "@car": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "haircut": "corte de pelo",
+  "@haircut": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "contract": "contrato",
+  "@contract": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "addCategory": "añadir categoría",
+  "@addCategory": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "add": "añadir",
+  "@add": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "addCategoryDescription": "Cual es",
+  "@addCategoryDescription": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "removed": "eliminado",
+  "@removed": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "undo": "deshacer",
+  "@undo": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "other": "otra",
+  "@other": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "amountDescription": "Por favor ingrese una cantidad!",
+  "@amountDescription": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "health": "salud",
+  "@health": {
+    "type": "text",
+    "placeholders": {}
+  }
+}

@@ -1,0 +1,148 @@
+{
+  "@@last_modified": "2019-08-10T19:15:37.806958",
+  "home": "Home",
+  "@home": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "statistics": "Statistics",
+  "@statistics": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "settings": "Settings",
+  "@settings": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "amount": "amount",
+  "@amount": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "description": "description",
+  "@description": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "descriptionQuestion": "What is it?",
+  "@descriptionQuestion": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "expenditure": "expenditure",
+  "@expenditure": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "revenue": "revenue",
+  "@revenue": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "category": "category",
+  "@category": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "emptyCategory": "other",
+  "@emptyCategory": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "foods": "foods",
+  "@foods": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "salary": "salary",
+  "@salary": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "rent": "rent",
+  "@rent": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "household": "household",
+  "@household": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "clothing": "clothing",
+  "@clothing": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "education": "education",
+  "@education": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "electronics": "electronics",
+  "@electronics": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "gift": "gift",
+  "@gift": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "car": "car",
+  "@car": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "haircut": "haircut",
+  "@haircut": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "contract": "contract",
+  "@contract": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "addCategory": "add category",
+  "@addCategory": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "add": "Add",
+  "@add": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "addCategoryDescription": "Which is it?",
+  "@addCategoryDescription": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "removed": "removed",
+  "@removed": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "undo": "UNDO",
+  "@undo": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "other": "other",
+  "@other": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "amountDescription": "Please enter an amount!",
+  "@amountDescription": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "health": "health",
+  "@health": {
+    "type": "text",
+    "placeholders": {}
+  }
+}

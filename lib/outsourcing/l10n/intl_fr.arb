@@ -1,0 +1,148 @@
+{
+  "@@last_modified": "2019-08-10T19:15:37.806958",
+  "home": "maison",
+  "@home": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "statistics": "statistiques",
+  "@statistics": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "settings": "réglages",
+  "@settings": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "amount": "montant",
+  "@amount": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "description": "la description",
+  "@description": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "descriptionQuestion": "Qu'Est-ce que c'est?",
+  "@descriptionQuestion": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "expenditure": "dépense",
+  "@expenditure": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "revenue": "revenu",
+  "@revenue": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "category": "catégorie",
+  "@category": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "emptyCategory": "autre",
+  "@emptyCategory": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "foods": "nourriture",
+  "@foods": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "salary": "un salaire",
+  "@salary": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "rent": "location",
+  "@rent": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "household": "ménage",
+  "@household": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "clothing": "vêtements",
+  "@clothing": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "education": "éducation",
+  "@education": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "electronics": "électronique",
+  "@electronics": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "gift": "cadeau",
+  "@gift": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "car": "voiture",
+  "@car": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "haircut": "la coupe de cheveux",
+  "@haircut": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "contract": "contrat",
+  "@contract": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "addCategory": "ajouter une catégorie",
+  "@addCategory": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "add": "ajouter",
+  "@add": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "addCategoryDescription": "Lequel est-ce?",
+  "@addCategoryDescription": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "removed": "enlevé",
+  "@removed": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "undo": "annuler",
+  "@undo": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "other": "autre",
+  "@other": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "amountDescription": "S'il vous plaît entrer un montant!",
+  "@amountDescription": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "health": "santé",
+  "@health": {
+    "type": "text",
+    "placeholders": {}
+  }
+}

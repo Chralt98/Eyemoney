@@ -1,0 +1,148 @@
+{
+  "@@last_modified": "2019-08-10T19:15:37.806958",
+  "home": "Главная",
+  "@home": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "statistics": "статистика",
+  "@statistics": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "settings": "настройки",
+  "@settings": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "amount": "количество",
+  "@amount": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "description": "описание",
+  "@description": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "descriptionQuestion": "Что это?",
+  "@descriptionQuestion": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "expenditure": "статьи расходов",
+  "@expenditure": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "revenue": "доход",
+  "@revenue": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "category": "категория",
+  "@category": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "emptyCategory": "Другой",
+  "@emptyCategory": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "foods": "продукты",
+  "@foods": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "salary": "оплата труда",
+  "@salary": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "rent": "арендная плата",
+  "@rent": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "household": "домашнее хозяйство",
+  "@household": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "clothing": "одежда",
+  "@clothing": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "education": "образование",
+  "@education": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "electronics": "электроника",
+  "@electronics": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "gift": "подарок",
+  "@gift": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "car": "автомобиль",
+  "@car": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "haircut": "стрижка",
+  "@haircut": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "contract": "контракт",
+  "@contract": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "addCategory": "добавить категорию",
+  "@addCategory": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "add": "добавлять",
+  "@add": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "addCategoryDescription": "Что он?",
+  "@addCategoryDescription": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "removed": "удален",
+  "@removed": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "undo": "расстегивать",
+  "@undo": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "other": "Другой",
+  "@other": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "amountDescription": "Пожалуйста, введите сумму!",
+  "@amountDescription": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "health": "здоровье",
+  "@health": {
+    "type": "text",
+    "placeholders": {}
+  }
+}

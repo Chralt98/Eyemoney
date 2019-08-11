@@ -1,0 +1,148 @@
+{
+  "@@last_modified": "2019-08-10T19:15:37.806958",
+  "home": "Start",
+  "@home": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "statistics": "Statistik",
+  "@statistics": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "settings": "Einstellungen",
+  "@settings": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "amount": "Betrag",
+  "@amount": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "description": "Beschreibung",
+  "@description": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "descriptionQuestion": "Was ist es?",
+  "@descriptionQuestion": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "expenditure": "Ausgabe",
+  "@expenditure": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "revenue": "Einnahme",
+  "@revenue": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "category": "Kategorie",
+  "@category": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "emptyCategory": "Sonstiges",
+  "@emptyCategory": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "foods": "Essen",
+  "@foods": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "salary": "Gehalt",
+  "@salary": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "rent": "Miete",
+  "@rent": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "household": "Haushalt",
+  "@household": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "clothing": "Kleidung",
+  "@clothing": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "education": "Bildung",
+  "@education": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "electronics": "Elektronik",
+  "@electronics": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "gift": "Geschenk",
+  "@gift": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "car": "Auto",
+  "@car": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "haircut": "Friseur",
+  "@haircut": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "contract": "Vertrag",
+  "@contract": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "addCategory": "Kategorie hinzufügen",
+  "@addCategory": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "add": "Hinzufügen",
+  "@add": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "addCategoryDescription": "Welche ist es?",
+  "@addCategoryDescription": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "removed": "entfernt",
+  "@removed": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "undo": "Rückgängig",
+  "@undo": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "other": "Sonstiges",
+  "@other": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "amountDescription": "Bitte gib einen Betrag an!",
+  "@amountDescription": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "health": "Gesundheit",
+  "@health": {
+    "type": "text",
+    "placeholders": {}
+  }
+}

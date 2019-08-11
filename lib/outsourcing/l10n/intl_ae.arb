@@ -1,0 +1,148 @@
+{
+  "@@last_modified": "2019-08-10T19:15:37.806958",
+  "home": "الصفحة الرئيسية",
+  "@home": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "statistics": "الإحصاء",
+  "@statistics": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "settings": "الإعدادات",
+  "@settings": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "amount": "كمية",
+  "@amount": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "description": "وصف",
+  "@description": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "descriptionQuestion": "ما هذا؟",
+  "@descriptionQuestion": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "expenditure": "المصروفات",
+  "@expenditure": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "revenue": "إيرادات",
+  "@revenue": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "category": "الفئة",
+  "@category": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "emptyCategory": "آخر",
+  "@emptyCategory": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "foods": "الأطعمة",
+  "@foods": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "salary": "راتب",
+  "@salary": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "rent": "تأجير",
+  "@rent": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "household": "منزلي",
+  "@household": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "clothing": "ملابس",
+  "@clothing": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "education": "التعليم",
+  "@education": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "electronics": "إلكترونيات",
+  "@electronics": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "gift": "هدية مجانية",
+  "@gift": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "car": "سيارة",
+  "@car": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "haircut": "حلاقة شعر",
+  "@haircut": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "contract": "عقد",
+  "@contract": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "addCategory": "إضافة فئة",
+  "@addCategory": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "add": "إضافة",
+  "@add": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "addCategoryDescription": "والذي هو؟",
+  "@addCategoryDescription": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "removed": "إزالة",
+  "@removed": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "undo": "فك",
+  "@undo": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "other": "آخر",
+  "@other": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "amountDescription": "الرجاء إدخال مبلغ!",
+  "@amountDescription": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "health": "الصحة",
+  "@health": {
+    "type": "text",
+    "placeholders": {}
+  }
+}
