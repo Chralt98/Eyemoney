@@ -45,7 +45,7 @@ class _HomeState extends State<Home> {
         backgroundColor: Colors.blueAccent,
         actions: <Widget>[
           Container(
-            child: Text((_selectedDate ?? DateTime.now()).month.toString() + ' / ' + (_selectedDate ?? DateTime.now()).year.toString()),
+            child: Text((_selectedDate ?? DateTime.now()).month.toString() + ' - ' + (_selectedDate ?? DateTime.now()).year.toString()),
             alignment: Alignment.centerRight,
           ),
           IconButton(

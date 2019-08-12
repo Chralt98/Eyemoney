@@ -55,6 +55,9 @@ class _AddingState extends State<Adding> {
             this._description = widget.myTransaction.description;
             this._descriptionController.text = this._description;
             this._selectedCategory = widget.myTransaction.category;
+            if (!_categories.contains(this._selectedCategory)) {
+              this.setCategory(this._selectedCategory);
+            }
             this._radioVal = _categories.indexOf(this._selectedCategory);
           } else {
             this._crazySwitch = new CrazySwitch(isChecked: false);
@@ -306,13 +309,7 @@ class _AddingState extends State<Adding> {
         onChanged: (String text) =>
             _scrollController.animateTo(_scrollController.position.maxScrollExtent, duration: new Duration(milliseconds: 500), curve: Curves.ease),
         onSubmitted: (String category) async {
-          if (!_categories.contains(category) && category != '') {
-            this._categories.add(category);
-          }
-          this._radioVal = this._categories.indexOf(category);
-          await this._setCategoryPref(this._categories);
-          this._selectedCategory = category;
-          this._addCategoryController.text = '';
+          this.setCategory(category);
         },
         keyboardType: TextInputType.text,
         maxLength: 25,
@@ -320,20 +317,30 @@ class _AddingState extends State<Adding> {
     );
   }
 
-  void _onCheck() async {
+  void setCategory(String category) async {
+    if (category.length == category.split(' ').length - 1) {
+      category = category.replaceAll(' ', '');
+    }
+    if (!_categories.contains(category) && category.isNotEmpty) {
+      this._categories.add(category);
+      this._selectedCategory = category;
+      this._radioVal = this._categories.indexOf(category);
+    } else {
+      this._selectedCategory = _categories.first ?? AppLocalizations.of(context).other;
+      this._radioVal = 0;
+    }
+    await this._setCategoryPref(this._categories);
+    this._addCategoryController.text = '';
+  }
+
+  void _onCheck() {
+    if (this._addCategoryController.text != '') {
+      this.setCategory(this._addCategoryController.text);
+    }
     if (_formKey.currentState.validate()) {
       this._amount = _moneyController.numberValue.toString();
       final int sign = _crazySwitch.getChecked() ? 1 : -1;
       final double _realAmount = round((sign) * double.parse(_amount.replaceAll(new RegExp(','), '')), 2);
-      if (this._addCategoryController.text != '') {
-        if (!_categories.contains(this._addCategoryController.text) && this._addCategoryController.text != '') {
-          this._categories.add(this._addCategoryController.text);
-        }
-        this._radioVal = this._categories.indexOf(this._addCategoryController.text);
-        await this._setCategoryPref(this._categories);
-        this._selectedCategory = this._addCategoryController.text;
-        this._addCategoryController.text = '';
-      }
       if (widget.myTransaction != null) {
         final MyTransaction data = MyTransaction(
           id: widget.myTransaction.id,
