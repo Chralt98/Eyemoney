@@ -1,13 +1,13 @@
+import 'package:Eyemoney/custom_widgets/drawer.dart';
+import 'package:Eyemoney/custom_widgets/list_info_icon.dart';
+import 'package:Eyemoney/custom_widgets/list_info_label.dart';
 import 'package:Eyemoney/database/transaction.dart';
 import 'package:Eyemoney/outsourcing/localization/localizations.dart';
 import 'package:Eyemoney/screens/adding.dart';
-import 'package:Eyemoney/screens/statistics.dart';
 import 'package:flutter/material.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
 
-import '../outsourcing/globals.dart';
 import '../outsourcing/my_functions.dart';
-import 'settings.dart';
 
 class Home extends StatefulWidget {
   final DateTime initialDate;
@@ -75,27 +75,8 @@ class _HomeState extends State<Home> {
                 ],
               ),
             ),
-            Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  this._getLabel(AppLocalizations.of(context).description),
-                  this._getLabel(AppLocalizations.of(context).category),
-                  this._getLabel(AppLocalizations.of(context).amount),
-                ],
-              ),
-            ),
-            Container(
-              height: 27,
-              color: Colors.white,
-              child: Row(
-                children: <Widget>[
-                  this._getSymbol(context, Icons.info_outline),
-                  this._getSymbol(context, Icons.category),
-                  this._getSymbol(context, Icons.fiber_smart_record),
-                ],
-              ),
-            ),
+            ListInfoLabel(),
+            ListInfoIcon(),
             Expanded(
               child: Container(
                 child: _getList(context),
@@ -104,72 +85,7 @@ class _HomeState extends State<Home> {
           ],
         ),
       ),
-      drawer: Drawer(
-        // Add a ListView to the drawer. This ensures the user can scroll
-        // through the options in the drawer if there isn't enough vertical
-        // space to fit everything.
-        child: ListView(
-          // Important: Remove any padding from the ListView.
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            DrawerHeader(
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                textBaseline: TextBaseline.alphabetic,
-                children: <Widget>[
-                  Text(appName, textScaleFactor: 2, style: TextStyle(color: Colors.white)),
-                  Icon(
-                    Icons.fiber_smart_record,
-                    size: 50,
-                    color: Colors.white,
-                  ),
-                ],
-              ),
-              decoration: BoxDecoration(
-                color: Colors.blueAccent,
-              ),
-            ),
-            ListTile(
-              title: Text(AppLocalizations.of(context).home),
-              leading: Icon(Icons.home),
-              onTap: () {
-                // Update the state of the app
-                // ...
-                // Then close the drawer
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: Text(AppLocalizations.of(context).statistics),
-              leading: Icon(Icons.assessment),
-              onTap: () {
-                // Update the state of the app
-                // ...
-                // Then close the drawer
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (BuildContext context) => Statistics()),
-                );
-              },
-            ),
-            ListTile(
-              title: Text(AppLocalizations.of(context).settings),
-              leading: Icon(Icons.settings),
-              onTap: () {
-                // Update the state of the app
-                // ...
-                // Then close the drawer
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (BuildContext context) => Settings()),
-                );
-              },
-            ),
-          ],
-        ),
-      ),
+      drawer: MyDrawer(),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         backgroundColor: Colors.blueAccent,
@@ -312,35 +228,6 @@ class _HomeState extends State<Home> {
       child: FittedBox(
         child: Text(stringAmount, textAlign: TextAlign.center, style: TextStyle(color: color)),
         fit: BoxFit.scaleDown,
-      ),
-    );
-  }
-
-  Widget _getLabel(String label) {
-    final double screenWidth = MediaQuery.of(context).size.width;
-    return Container(
-      alignment: Alignment.center,
-      child: FittedBox(
-        child: Text(
-          label,
-          style: TextStyle(color: Color.fromARGB(255, 0, 0, 50)),
-        ),
-        fit: BoxFit.scaleDown,
-      ),
-      width: screenWidth / 3,
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.black54),
-      ),
-    );
-  }
-
-  Widget _getSymbol(BuildContext context, IconData symbol) {
-    final double screenWidth = MediaQuery.of(context).size.width;
-    return Container(
-      child: Icon(symbol),
-      width: screenWidth / 3,
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.black54),
       ),
     );
   }
