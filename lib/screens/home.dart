@@ -91,7 +91,8 @@ class _HomeState extends State<Home> {
           final String description = item.description;
           return GestureDetector(
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Adding(selectedDate: _selectedDate, myTransaction: item)));
+              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Adding(selectedDate: _selectedDate, myTransaction: item)))
+                  .then((response) => setState(() => this._loadDatabase()));
             },
             child: Dismissible(
               key: Key(item.toString()),

@@ -326,14 +326,14 @@ class _AddingState extends State<Adding> {
       this._selectedCategory = category;
       this._radioVal = this._categories.indexOf(category);
     } else {
-      this._selectedCategory = _categories.first ?? AppLocalizations.of(context).other;
+      this._selectedCategory = AppLocalizations.of(context).other;
       this._radioVal = 0;
     }
     await this._setCategoryPref(this._categories);
     this._addCategoryController.text = '';
   }
 
-  void _onCheck() {
+  void _onCheck() async {
     if (this._addCategoryController.text != '' && this._addCategoryController.text != this._selectedCategory) {
       this._setCategory(this._addCategoryController.text);
     }
@@ -344,12 +344,12 @@ class _AddingState extends State<Adding> {
       if (widget.myTransaction != null) {
         final MyTransaction data = MyTransaction(
           id: widget.myTransaction.id,
-          category: _selectedCategory,
-          description: _description,
+          category: this._selectedCategory,
+          description: this._description,
           amount: _realAmount,
           date: DateTime((widget.selectedDate ?? DateTime.now()).year, (widget.selectedDate ?? DateTime.now()).month).toString(),
         );
-        updateTransaction(data);
+        await updateTransaction(data);
       } else {
         final MyTransaction data = MyTransaction(
           category: _selectedCategory,
@@ -357,7 +357,7 @@ class _AddingState extends State<Adding> {
           amount: _realAmount,
           date: DateTime((widget.selectedDate ?? DateTime.now()).year, (widget.selectedDate ?? DateTime.now()).month).toString(),
         );
-        insertInDatabase(data);
+        await insertInDatabase(data);
       }
       try {
         Navigator.pop(context);
