@@ -46,6 +46,7 @@ class _AddingState extends State<Adding> {
       ..then(
         (prefs) {
           setState(() => this._prefs = prefs);
+          _selectedCategory = AppLocalizations.of(context).other;
           this._loadCategoryPref(context);
           if (widget.myTransaction != null) {
             double temp = ((widget.myTransaction.amount < 0 ? widget.myTransaction.amount * -1 : widget.myTransaction.amount));
@@ -55,10 +56,7 @@ class _AddingState extends State<Adding> {
             this._description = widget.myTransaction.description;
             this._descriptionController.text = this._description;
             this._selectedCategory = widget.myTransaction.category;
-            if (!_categories.contains(this._selectedCategory)) {
-              this.setCategory(this._selectedCategory);
-            }
-            this._radioVal = _categories.indexOf(this._selectedCategory);
+            this._setCategory(this._selectedCategory);
           } else {
             this._crazySwitch = new CrazySwitch(isChecked: false);
           }
@@ -88,6 +86,8 @@ class _AddingState extends State<Adding> {
                   () {
                     this._categories.removeAt(_categories.indexOf(item));
                     this._setCategoryPref(this._categories);
+                    this._radioVal = 0;
+                    this._selectedCategory = AppLocalizations.of(context).other;
                   },
                 );
 
@@ -192,9 +192,6 @@ class _AddingState extends State<Adding> {
           _categories.insert(0, AppLocalizations.of(context).other);
         } else if (_categories.isNotEmpty && _categories.first != AppLocalizations.of(context).other) {
           _categories.insert(0, AppLocalizations.of(context).other);
-        }
-        if (_categories.isNotEmpty) {
-          _selectedCategory = _categories.first;
         }
       },
     );
@@ -309,7 +306,7 @@ class _AddingState extends State<Adding> {
         onChanged: (String text) =>
             _scrollController.animateTo(_scrollController.position.maxScrollExtent, duration: new Duration(milliseconds: 500), curve: Curves.ease),
         onSubmitted: (String category) async {
-          this.setCategory(category);
+          this._setCategory(category);
         },
         keyboardType: TextInputType.text,
         maxLength: 25,
@@ -317,11 +314,14 @@ class _AddingState extends State<Adding> {
     );
   }
 
-  void setCategory(String category) async {
+  void _setCategory(String category) async {
     if (category.length == category.split(' ').length - 1) {
       category = category.replaceAll(' ', '');
     }
-    if (!_categories.contains(category) && category.isNotEmpty) {
+    if (_categories.contains(category)) {
+      this._selectedCategory = category;
+      this._radioVal = this._categories.indexOf(category);
+    } else if (!_categories.contains(category) && category.isNotEmpty) {
       this._categories.add(category);
       this._selectedCategory = category;
       this._radioVal = this._categories.indexOf(category);
@@ -334,8 +334,8 @@ class _AddingState extends State<Adding> {
   }
 
   void _onCheck() {
-    if (this._addCategoryController.text != '') {
-      this.setCategory(this._addCategoryController.text);
+    if (this._addCategoryController.text != '' && this._addCategoryController.text != this._selectedCategory) {
+      this._setCategory(this._addCategoryController.text);
     }
     if (_formKey.currentState.validate()) {
       this._amount = _moneyController.numberValue.toString();
