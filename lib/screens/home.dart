@@ -34,12 +34,6 @@ class _HomeState extends State<Home> {
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    this._loadDatabase();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -92,7 +86,7 @@ class _HomeState extends State<Home> {
           return GestureDetector(
             onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Adding(selectedDate: _selectedDate, myTransaction: item)))
-                  .then((response) => setState(() => this._loadDatabase()));
+                  .then((response) => this._loadDatabase());
             },
             child: Dismissible(
               key: Key(item.toString()),

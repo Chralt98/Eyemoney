@@ -1,10 +1,14 @@
 import 'dart:async';
 
-import 'package:Eyemoney/custom_widgets/switch.dart';
+import 'package:Eyemoney/custom_widgets/add_category_textfield.dart';
+import 'package:Eyemoney/custom_widgets/amount_textfield.dart';
+import 'package:Eyemoney/custom_widgets/btn_adding_check.dart';
+import 'package:Eyemoney/custom_widgets/category_field.dart';
+import 'package:Eyemoney/custom_widgets/description_textfield.dart';
+import 'package:Eyemoney/custom_widgets/sign_selector.dart';
 import 'package:Eyemoney/database/transaction.dart';
 import 'package:Eyemoney/outsourcing/localization/localizations.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -28,13 +32,14 @@ class _AddingState extends State<Adding> {
   String _description;
   String _amount = '0.00';
   String _selectedCategory;
-  CrazySwitch _crazySwitch;
+  Widget _crazySwitch;
   var _moneyController = MoneyMaskedTextController(decimalSeparator: '.', thousandSeparator: ',');
   int _radioVal = 0;
   final _formKey = GlobalKey<FormState>();
   ScrollController _scrollController;
   TextEditingController _descriptionController;
   TextEditingController _addCategoryController;
+  bool isRevenue;
 
   @override
   void initState() {
@@ -52,13 +57,16 @@ class _AddingState extends State<Adding> {
             double temp = ((widget.myTransaction.amount < 0 ? widget.myTransaction.amount * -1 : widget.myTransaction.amount));
             this._amount = temp.toString() ?? '0.00';
             _moneyController.updateValue(temp);
-            this._crazySwitch = new CrazySwitch(isChecked: widget.myTransaction.amount >= 0 ? true : false);
+            bool transactionSign = widget.myTransaction.amount >= 0 ? true : false;
+            this.isRevenue = transactionSign;
+            this._crazySwitch = _getSwitch(this.isRevenue);
             this._description = widget.myTransaction.description;
             this._descriptionController.text = this._description;
             this._selectedCategory = widget.myTransaction.category;
             this._setCategory(this._selectedCategory);
           } else {
-            this._crazySwitch = new CrazySwitch(isChecked: false);
+            this.isRevenue = false;
+            this._crazySwitch = _getSwitch(isRevenue);
           }
         },
       );
@@ -151,33 +159,32 @@ class _AddingState extends State<Adding> {
               child: Column(
                 children: <Widget>[
                   SizedBox(height: 40),
-                  this._getAmountTextField(context),
+                  AmountTextField(moneyController: _moneyController, submitCallback: _onSubmitAmount, validatorCallback: _onValidateAmount),
                   SizedBox(height: 26),
-                  this._getDescriptionTextField(context),
+                  DescriptionTextField(
+                    onChanged: _descriptionTextFieldChanged,
+                    descriptionController: _descriptionController,
+                  ),
                   SizedBox(height: 13),
-                  this._getSignSelection(context),
+                  SignSelector(
+                    mySwitch: _crazySwitch ?? _getSwitch(false),
+                  ),
                   SizedBox(height: 26),
-                  this._getCategoryField(context),
+                  CategoryField(),
                   SizedBox(height: 26),
                   Column(children: _listTiles),
                   SizedBox(height: 26),
-                  this._getAddCategoryTextField(context),
+                  AddCategoryTextField(
+                    onChanged: _addCategoryTextFieldChanged,
+                    onSubmitted: _addCategoryTextFieldOnSubmitted,
+                    addCategoryController: _addCategoryController,
+                  ),
                 ],
               ),
             ),
             controller: _scrollController,
           ),
-          Container(
-            child: new FloatingActionButton(
-              child: Icon(Icons.check),
-              backgroundColor: Colors.blueAccent,
-              onPressed: () async {
-                this._onCheck();
-              },
-            ),
-            alignment: Alignment.bottomRight,
-            margin: EdgeInsets.all(16),
-          )
+          AddingCheck(onPressed: () => this._onCheck()),
         ],
       ),
     );
@@ -202,116 +209,47 @@ class _AddingState extends State<Adding> {
     _loadCategoryPref(context);
   }
 
-  Widget _getAmountTextField(BuildContext context) {
-    return TextFormField(
-      controller: _moneyController,
-      keyboardType: TextInputType.numberWithOptions(signed: false, decimal: true),
-      decoration: InputDecoration(
-        border: UnderlineInputBorder(),
-        filled: true,
-        icon: Icon(Icons.fiber_smart_record),
-        labelText: AppLocalizations.of(context).amount,
-      ),
-      validator: (String number) {
-        if (number == '0.00') {
-          _scrollController.animateTo(0, duration: new Duration(milliseconds: 500), curve: Curves.ease);
-          return AppLocalizations.of(context).amountDescription;
-        }
-        return null;
-      },
-      onFieldSubmitted: (String number) => this._amount = number,
-      // onChanged: (String number) => this._amount = number,
-    );
+  String _onValidateAmount(String number) {
+    if (number == '0.00') {
+      _scrollController.animateTo(0, duration: new Duration(milliseconds: 500), curve: Curves.ease);
+      return AppLocalizations.of(context).amountDescription;
+    }
+    return null;
   }
 
-  Widget _getDescriptionTextField(BuildContext context) {
-    return TextField(
-      textCapitalization: TextCapitalization.words,
-      controller: _descriptionController,
-      decoration: InputDecoration(
-        border: UnderlineInputBorder(),
-        filled: true,
-        icon: Icon(Icons.info_outline),
-        hintText: AppLocalizations.of(context).descriptionQuestion,
-        labelText: AppLocalizations.of(context).description,
-      ),
-      onChanged: (String text) => this._description = text,
-      maxLength: 50,
-    );
+  void _onSubmitAmount(String text) {
+    this._amount = text;
   }
 
-  Widget _getSignSelection(BuildContext context) {
+  Widget _getSwitch(bool value) {
     return Container(
-        alignment: Alignment.centerLeft,
-        child: Wrap(
-          children: <Widget>[
-            SizedBox(
-              width: 40,
-            ),
-            OutlineButton(
-                onPressed: () {
-                  setState(() {
-                    this._crazySwitch = CrazySwitch(isChecked: false);
-                  });
-                },
-                child: Text(AppLocalizations.of(context).expenditure, style: TextStyle(color: Colors.red))),
-            SizedBox(width: 5),
-            this._crazySwitch ?? CrazySwitch(isChecked: false),
-            SizedBox(width: 5),
-            OutlineButton(
-                onPressed: () {
-                  setState(() {
-                    this._crazySwitch = CrazySwitch(isChecked: true);
-                  });
-                },
-                child: Text(AppLocalizations.of(context).revenue, style: TextStyle(color: Colors.lightGreen))),
-          ],
-          crossAxisAlignment: WrapCrossAlignment.center,
-          direction: Axis.horizontal,
-        ));
-  }
-
-  Widget _getCategoryField(BuildContext context) {
-    return Container(
-      alignment: Alignment.centerLeft,
-      child: Row(
-        children: <Widget>[
-          Icon(
-            Icons.category,
-            color: Colors.grey,
-          ),
-          SizedBox(width: 15),
-          Text(
-            AppLocalizations.of(context).category,
-            style: TextStyle(color: Colors.black54),
-            textScaleFactor: 1.5,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _getAddCategoryTextField(BuildContext context) {
-    return Center(
-      child: TextField(
-        textCapitalization: TextCapitalization.words,
-        controller: _addCategoryController,
-        decoration: InputDecoration(
-          border: UnderlineInputBorder(),
-          filled: true,
-          icon: Icon(Icons.category),
-          hintText: AppLocalizations.of(context).addCategoryDescription,
-          labelText: AppLocalizations.of(context).addCategory,
+      child: Transform.scale(
+        scale: 1.5,
+        child: Switch(
+          value: value,
+          onChanged: _setIsRevenue,
+          activeColor: Colors.lightGreen,
+          inactiveThumbColor: Colors.red,
+          inactiveTrackColor: Colors.redAccent,
         ),
-        onChanged: (String text) =>
-            _scrollController.animateTo(_scrollController.position.maxScrollExtent, duration: new Duration(milliseconds: 500), curve: Curves.ease),
-        onSubmitted: (String category) async {
-          this._setCategory(category);
-        },
-        keyboardType: TextInputType.text,
-        maxLength: 25,
       ),
     );
+  }
+
+  void _setIsRevenue(bool value) {
+    this.isRevenue = value;
+  }
+
+  void _addCategoryTextFieldChanged(String text) {
+    _scrollController.animateTo(_scrollController.position.maxScrollExtent, duration: new Duration(milliseconds: 500), curve: Curves.ease);
+  }
+
+  void _descriptionTextFieldChanged(String text) {
+    this._description = text;
+  }
+
+  void _addCategoryTextFieldOnSubmitted(String text) {
+    this._setCategory(text);
   }
 
   void _setCategory(String category) async {
@@ -339,8 +277,8 @@ class _AddingState extends State<Adding> {
     }
     if (_formKey.currentState.validate()) {
       this._amount = _moneyController.numberValue.toString();
-      final int sign = _crazySwitch.getChecked() ? 1 : -1;
-      final double _realAmount = round((sign) * double.parse(_amount.replaceAll(new RegExp(','), '')), 2);
+      final int sign = isRevenue ? 1 : -1;
+      final double _realAmount = round((sign) * double.parse(_amount), 2);
       if (widget.myTransaction != null) {
         final MyTransaction data = MyTransaction(
           id: widget.myTransaction.id,
