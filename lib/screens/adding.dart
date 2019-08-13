@@ -32,14 +32,13 @@ class _AddingState extends State<Adding> {
   String _description;
   String _amount = '0.00';
   String _selectedCategory;
-  Widget _crazySwitch;
   var _moneyController = MoneyMaskedTextController(decimalSeparator: '.', thousandSeparator: ',');
   int _radioVal = 0;
   final _formKey = GlobalKey<FormState>();
   ScrollController _scrollController;
   TextEditingController _descriptionController;
   TextEditingController _addCategoryController;
-  bool isRevenue;
+  bool isRevenue = false;
 
   @override
   void initState() {
@@ -59,14 +58,12 @@ class _AddingState extends State<Adding> {
             _moneyController.updateValue(temp);
             bool transactionSign = widget.myTransaction.amount >= 0 ? true : false;
             this.isRevenue = transactionSign;
-            this._crazySwitch = _getSwitch(this.isRevenue);
             this._description = widget.myTransaction.description;
             this._descriptionController.text = this._description;
             this._selectedCategory = widget.myTransaction.category;
             this._setCategory(this._selectedCategory);
           } else {
             this.isRevenue = false;
-            this._crazySwitch = _getSwitch(isRevenue);
           }
         },
       );
@@ -167,7 +164,7 @@ class _AddingState extends State<Adding> {
                   ),
                   SizedBox(height: 13),
                   SignSelector(
-                    mySwitch: _crazySwitch ?? _getSwitch(false),
+                    mySwitch: _getSwitch(),
                   ),
                   SizedBox(height: 26),
                   CategoryField(),
@@ -221,23 +218,19 @@ class _AddingState extends State<Adding> {
     this._amount = text;
   }
 
-  Widget _getSwitch(bool value) {
+  Widget _getSwitch() {
     return Container(
       child: Transform.scale(
         scale: 1.5,
         child: Switch(
-          value: value,
-          onChanged: _setIsRevenue,
+          value: this.isRevenue,
+          onChanged: (bool value) => setState(() => this.isRevenue = value),
           activeColor: Colors.lightGreen,
           inactiveThumbColor: Colors.red,
           inactiveTrackColor: Colors.redAccent,
         ),
       ),
     );
-  }
-
-  void _setIsRevenue(bool value) {
-    this.isRevenue = value;
   }
 
   void _addCategoryTextFieldChanged(String text) {
@@ -277,7 +270,7 @@ class _AddingState extends State<Adding> {
     }
     if (_formKey.currentState.validate()) {
       this._amount = _moneyController.numberValue.toString();
-      final int sign = isRevenue ? 1 : -1;
+      final int sign = this.isRevenue ? 1 : -1;
       final double _realAmount = round((sign) * double.parse(_amount), 2);
       if (widget.myTransaction != null) {
         final MyTransaction data = MyTransaction(
