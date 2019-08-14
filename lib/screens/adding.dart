@@ -1,11 +1,11 @@
 import 'dart:async';
 
-import 'package:Eyemoney/custom_widgets/add_category_textfield.dart';
-import 'package:Eyemoney/custom_widgets/amount_textfield.dart';
-import 'package:Eyemoney/custom_widgets/btn_adding_check.dart';
-import 'package:Eyemoney/custom_widgets/category_field.dart';
-import 'package:Eyemoney/custom_widgets/description_textfield.dart';
-import 'package:Eyemoney/custom_widgets/sign_selector.dart';
+import 'package:Eyemoney/custom_widgets/adding/add_category_textfield.dart';
+import 'package:Eyemoney/custom_widgets/adding/amount_textfield.dart';
+import 'package:Eyemoney/custom_widgets/adding/btn_adding_check.dart';
+import 'package:Eyemoney/custom_widgets/adding/description_textfield.dart';
+import 'package:Eyemoney/custom_widgets/adding/sign_selector.dart';
+import 'package:Eyemoney/custom_widgets/dismissible_background.dart';
 import 'package:Eyemoney/database/transaction.dart';
 import 'package:Eyemoney/outsourcing/localization/localizations.dart';
 import 'package:flutter/material.dart';
@@ -89,10 +89,8 @@ class _AddingState extends State<Adding> {
               if (dir == DismissDirection.endToStart) {
                 setState(
                   () {
-                    this._categories.removeAt(_categories.indexOf(item));
+                    this._deleteCategory(item);
                     this._setCategoryPref(this._categories);
-                    this._radioVal = 0;
-                    this._selectedCategory = AppLocalizations.of(context).other;
                   },
                 );
 
@@ -105,11 +103,7 @@ class _AddingState extends State<Adding> {
                 );
               }
             },
-            background: Container(
-              color: Colors.red,
-              child: Icon(Icons.delete),
-              alignment: Alignment.centerRight,
-            ),
+            background: DismissibleBackground(),
             child: Container(
               decoration: BoxDecoration(
                   color: (_categories.indexOf(item) % 2 == 0) ? Color.fromARGB(5, 255, 255, 0) : Color.fromARGB(5, 0, 0, 255),
@@ -121,10 +115,11 @@ class _AddingState extends State<Adding> {
                   setState(
                     () {
                       this._radioVal = value;
-                      _selectedCategory = item;
+                      this._selectedCategory = item;
                     },
                   );
                 },
+                secondary: Icon(Icons.dehaze),
                 activeColor: Colors.blue,
                 title: Container(
                   height: 48,
@@ -167,14 +162,22 @@ class _AddingState extends State<Adding> {
                     mySwitch: _getSwitch(),
                   ),
                   SizedBox(height: 26),
-                  CategoryField(),
-                  SizedBox(height: 26),
-                  Column(children: _listTiles),
-                  SizedBox(height: 26),
                   AddCategoryTextField(
-                    onChanged: _addCategoryTextFieldChanged,
                     onSubmitted: _addCategoryTextFieldOnSubmitted,
                     addCategoryController: _addCategoryController,
+                  ),
+                  SizedBox(height: 26),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 40),
+                    child: Container(
+                      height: 282,
+                      decoration: BoxDecoration(border: Border.all(color: Colors.black12, width: 1), borderRadius: BorderRadius.circular(5)),
+                      child: ReorderableListView(
+                        children: _listTiles,
+                        scrollDirection: Axis.vertical,
+                        onReorder: _onReorderCategories,
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -187,16 +190,46 @@ class _AddingState extends State<Adding> {
     );
   }
 
+  void _deleteCategory(String item) {
+    int _selectedIndex = _categories.indexOf(_selectedCategory);
+    int _index = _categories.indexOf(item);
+    this._categories.removeAt(_index);
+    if (_index < _selectedIndex) {
+      this._radioVal--;
+    }
+    if (this._categories.isEmpty) {
+      _categories.insert(0, AppLocalizations.of(context).other);
+      this._radioVal = 0;
+    } else if (this._categories.isNotEmpty && this._selectedCategory == item) {
+      this._radioVal = 0;
+    }
+  }
+
+  void _onReorderCategories(int oldIndex, int newIndex) {
+    String old = this._categories[oldIndex];
+    if (oldIndex > newIndex) {
+      for (int i = oldIndex; i > newIndex; i--) {
+        this._categories[i] = this._categories[i - 1];
+      }
+      this._categories[newIndex] = old;
+      this._radioVal = newIndex;
+    } else {
+      for (int i = oldIndex; i < newIndex - 1; i++) {
+        this._categories[i] = this._categories[i + 1];
+      }
+      this._categories[newIndex - 1] = old;
+      this._radioVal = newIndex - 1;
+    }
+    setState(() {
+      this._setCategoryPref(this._categories);
+    });
+  }
+
   // only category for shared preferences
   void _loadCategoryPref(BuildContext context) {
     setState(
       () {
         _categories = this._prefs.getStringList(categoryPrefKey) ?? getStandardCategories(context);
-        if (_categories.isEmpty) {
-          _categories.insert(0, AppLocalizations.of(context).other);
-        } else if (_categories.isNotEmpty && _categories.first != AppLocalizations.of(context).other) {
-          _categories.insert(0, AppLocalizations.of(context).other);
-        }
       },
     );
   }
@@ -233,10 +266,6 @@ class _AddingState extends State<Adding> {
     );
   }
 
-  void _addCategoryTextFieldChanged(String text) {
-    _scrollController.animateTo(_scrollController.position.maxScrollExtent, duration: new Duration(milliseconds: 500), curve: Curves.ease);
-  }
-
   void _descriptionTextFieldChanged(String text) {
     this._description = text;
   }
@@ -249,7 +278,7 @@ class _AddingState extends State<Adding> {
     if (category.length == category.split(' ').length - 1) {
       category = category.replaceAll(' ', '');
     }
-    if (_categories.contains(category)) {
+    if (this._categories.contains(category)) {
       this._selectedCategory = category;
       this._radioVal = this._categories.indexOf(category);
     } else if (!_categories.contains(category) && category.isNotEmpty) {

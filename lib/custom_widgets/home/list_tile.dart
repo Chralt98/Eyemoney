@@ -1,6 +1,6 @@
-import 'package:Eyemoney/custom_widgets/list_tile_amount.dart';
-import 'package:Eyemoney/custom_widgets/list_tile_category.dart';
-import 'package:Eyemoney/custom_widgets/list_tile_description.dart';
+import 'package:Eyemoney/custom_widgets/home/list_tile_amount.dart';
+import 'package:Eyemoney/custom_widgets/home/list_tile_category.dart';
+import 'package:Eyemoney/custom_widgets/home/list_tile_description.dart';
 import 'package:flutter/material.dart';
 
 class MyListTile extends StatelessWidget {
