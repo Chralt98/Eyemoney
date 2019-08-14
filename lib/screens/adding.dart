@@ -260,7 +260,7 @@ class _AddingState extends State<Adding> {
           onChanged: (bool value) => setState(() => this.isRevenue = value),
           activeColor: Colors.lightGreen,
           inactiveThumbColor: Colors.red,
-          inactiveTrackColor: Colors.redAccent,
+          inactiveTrackColor: Color.fromARGB(120, 255, 0, 0),
         ),
       ),
     );

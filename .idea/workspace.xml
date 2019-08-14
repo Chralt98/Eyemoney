@@ -16,27 +16,11 @@
       <change beforePath="$PROJECT_DIR$/android/.gradle/5.1.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/5.1.1/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/android/.gradle/5.1.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/5.1.1/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/android/.gradle/5.1.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/5.1.1/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/.gradle/5.1.1/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/5.1.1/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/android/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/android/local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/android/local.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/custom_widgets/add_category_textfield.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/custom_widgets/adding/add_category_textfield.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/custom_widgets/amount_textfield.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/custom_widgets/adding/amount_textfield.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/custom_widgets/btn_adding_check.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/custom_widgets/adding/btn_adding_check.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/custom_widgets/btn_month_selection.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/custom_widgets/home/btn_month_selection.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/custom_widgets/category_field.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/custom_widgets/adding/category_field.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/custom_widgets/date_display.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/custom_widgets/home/date_display.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/custom_widgets/description_textfield.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/custom_widgets/adding/description_textfield.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/custom_widgets/drawer.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/custom_widgets/home/drawer.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/custom_widgets/list_info_icon.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/custom_widgets/home/list_info_icon.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/custom_widgets/list_info_label.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/custom_widgets/home/list_info_label.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/custom_widgets/list_tile.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/custom_widgets/home/list_tile.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/custom_widgets/list_tile_amount.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/custom_widgets/home/list_tile_amount.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/custom_widgets/list_tile_category.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/custom_widgets/home/list_tile_category.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/custom_widgets/list_tile_description.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/custom_widgets/home/list_tile_description.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/custom_widgets/money_sums.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/custom_widgets/home/money_sums.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/custom_widgets/sign_selector.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/custom_widgets/adding/sign_selector.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/custom_widgets/transaction_list.dart" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/screens/adding.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/adding.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screens/home.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/home.dart" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.dart_tool/" />
     <ignored path="$PROJECT_DIR$/.idea/" />
@@ -65,8 +49,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lib/screens/adding.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="337">
-              <caret line="159" column="39" lean-forward="true" selection-start-line="159" selection-start-column="39" selection-end-line="159" selection-end-column="39" />
+            <state relative-caret-position="327">
+              <caret line="262" column="61" lean-forward="true" selection-start-line="262" selection-start-column="61" selection-end-line="262" selection-end-column="61" />
               <folding>
                 <element signature="e#0#20#0" expanded="true" />
               </folding>
@@ -180,8 +164,9 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="793" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="485" />
+    <option name="y" value="22" />
     <option name="width" value="814" />
     <option name="height" value="867" />
   </component>
@@ -306,14 +291,14 @@
       <window_info id="Capture Tool" order="7" />
       <window_info id="Favorites" order="8" side_tool="true" />
       <window_info anchor="bottom" id="Dart Analysis" order="0" weight="0.19246298" />
-      <window_info active="true" anchor="bottom" id="Run" order="1" sideWeight="0.5347044" visible="true" weight="0.25706595" />
+      <window_info active="true" anchor="bottom" id="Run" order="1" sideWeight="0.5340617" visible="true" weight="0.25706595" />
       <window_info anchor="bottom" id="TODO" order="2" weight="0.32974428" />
       <window_info anchor="bottom" id="Android Profiler" order="3" show_stripe_button="false" />
       <window_info anchor="bottom" id="Logcat" order="4" weight="0.32974428" />
       <window_info anchor="bottom" id="Debug" order="5" weight="0.47106326" />
       <window_info anchor="bottom" id="Terminal" order="6" sideWeight="0.49871466" weight="0.3270525" />
       <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.50064266" side_tool="true" weight="0.32974428" />
-      <window_info anchor="bottom" id="Flutter Performance" order="8" sideWeight="0.46529564" side_tool="true" weight="0.27994618" />
+      <window_info anchor="bottom" id="Flutter Performance" order="8" sideWeight="0.4659383" side_tool="true" weight="0.25706595" />
       <window_info anchor="bottom" id="Version Control" order="9" weight="0.32974428" />
       <window_info anchor="bottom" id="Build" order="10" />
       <window_info anchor="bottom" id="Find" order="11" weight="0.3270525" />
@@ -694,8 +679,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/screens/adding.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="337">
-          <caret line="159" column="39" lean-forward="true" selection-start-line="159" selection-start-column="39" selection-end-line="159" selection-end-column="39" />
+        <state relative-caret-position="327">
+          <caret line="262" column="61" lean-forward="true" selection-start-line="262" selection-start-column="61" selection-end-line="262" selection-end-column="61" />
           <folding>
             <element signature="e#0#20#0" expanded="true" />
           </folding>
