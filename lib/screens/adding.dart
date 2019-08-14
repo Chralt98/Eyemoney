@@ -164,10 +164,13 @@ class _AddingState extends State<Adding> {
                     addCategoryController: _addCategoryController,
                   ),
                   SizedBox(height: 26),
-                  Text((AppLocalizations.of(context).category +
-                          ': ' +
-                          _selectedCategory)
-                      .toString()),
+                  Container(
+                      padding: EdgeInsets.symmetric(horizontal: 40),
+                      child: FittedBox(
+                          child: Text((AppLocalizations.of(context).category +
+                                  ': ' +
+                                  _selectedCategory)
+                              .toString()))),
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 40),
                     child: Container(
