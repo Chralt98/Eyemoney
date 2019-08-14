@@ -29,8 +29,8 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     // DateTime.now(); => 2019-08-05 17:41:24.065004
-    this._selectedDate = DateTime(DateTime.now().year, DateTime.now().month);
-    this._loadDatabase();
+    _selectedDate = DateTime(DateTime.now().year, DateTime.now().month);
+    _loadDatabase();
   }
 
   @override
@@ -40,14 +40,14 @@ class _HomeState extends State<Home> {
         title: Text(widget.title),
         backgroundColor: Colors.blueAccent,
         actions: <Widget>[
-          DateDisplay(date: this._selectedDate),
+          DateDisplay(date: _selectedDate),
           MonthSelector(onPressed: _showMonthPicker),
         ],
       ),
       body: Container(
         child: Column(
           children: <Widget>[
-            MoneySums(transactions: this._myTransactions),
+            MoneySums(transactions: _myTransactions),
             ListInfoLabel(),
             ListInfoIcon(),
             Expanded(
@@ -66,9 +66,10 @@ class _HomeState extends State<Home> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (BuildContext context) => Adding(selectedDate: _selectedDate),
+              builder: (BuildContext context) =>
+                  Adding(selectedDate: _selectedDate),
             ),
-          ).then((response) => this._loadDatabase());
+          ).then((response) => _loadDatabase());
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
@@ -85,8 +86,13 @@ class _HomeState extends State<Home> {
           final String description = item.description;
           return GestureDetector(
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Adding(selectedDate: _selectedDate, myTransaction: item)))
-                  .then((response) => this._loadDatabase());
+              Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => Adding(
+                              selectedDate: _selectedDate,
+                              myTransaction: item)))
+                  .then((response) => _loadDatabase());
             },
             child: Dismissible(
               key: Key(item.toString()),
@@ -94,18 +100,22 @@ class _HomeState extends State<Home> {
               onDismissed: (DismissDirection dir) {
                 if (dir == DismissDirection.endToStart) {
                   setState(() {
-                    this._myTransactions.removeAt(index);
+                    _myTransactions.removeAt(index);
                     removeFromDatabase(item);
                   });
                   Scaffold.of(context).showSnackBar(
                     SnackBar(
-                      content: Text('"' + (description ?? '–') + '"' + ' ' + AppLocalizations.of(context).removed),
+                      content: Text('"' +
+                          (description ?? '–') +
+                          '"' +
+                          ' ' +
+                          AppLocalizations.of(context).removed),
                       action: SnackBarAction(
                         label: AppLocalizations.of(context).undo,
                         onPressed: () {
                           setState(
                             () {
-                              this._myTransactions.insert(index, item);
+                              _myTransactions.insert(index, item);
                               insertInDatabase(item);
                             },
                           );
@@ -140,11 +150,15 @@ class _HomeState extends State<Home> {
   }
 
   void _showMonthPicker() {
-    showMonthPicker(context: context, initialDate: _selectedDate ?? DateTime(DateTime.now().year, DateTime.now().month)).then(
+    showMonthPicker(
+            context: context,
+            initialDate: _selectedDate ??
+                DateTime(DateTime.now().year, DateTime.now().month))
+        .then(
       (date) => setState(
         () {
           _selectedDate = date;
-          this._loadDatabase();
+          _loadDatabase();
         },
       ),
     );
@@ -155,7 +169,7 @@ class _HomeState extends State<Home> {
     // refresh GUI
     setState(
       () {
-        this._myTransactions = temp;
+        _myTransactions = temp;
       },
     );
   }

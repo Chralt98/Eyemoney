@@ -8,9 +8,9 @@ class ListInfoLabel extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          this._getLabel(context, AppLocalizations.of(context).description),
-          this._getLabel(context, AppLocalizations.of(context).category),
-          this._getLabel(context, AppLocalizations.of(context).amount),
+          _getLabel(context, AppLocalizations.of(context).description),
+          _getLabel(context, AppLocalizations.of(context).category),
+          _getLabel(context, AppLocalizations.of(context).amount),
         ],
       ),
     );

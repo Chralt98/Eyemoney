@@ -8,21 +8,28 @@ class SignSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
     return Container(
-      alignment: Alignment.centerLeft,
-      child: Wrap(
-        children: <Widget>[
-          SizedBox(
-            width: 40,
+      alignment: Alignment.center,
+      width: screenWidth,
+      child: FittedBox(
+        child: Row(children: <Widget>[
+          Text(
+            AppLocalizations.of(context).expenditure,
+            style: TextStyle(
+                color: Colors.red, fontSize: 16, fontWeight: FontWeight.bold),
           ),
-          Text(AppLocalizations.of(context).expenditure, style: TextStyle(color: Colors.red, fontSize: 16, fontWeight: FontWeight.bold)),
           SizedBox(width: 15),
           mySwitch,
           SizedBox(width: 15),
-          Text(AppLocalizations.of(context).revenue, style: TextStyle(color: Colors.lightGreen, fontSize: 16, fontWeight: FontWeight.bold)),
-        ],
-        crossAxisAlignment: WrapCrossAlignment.center,
-        direction: Axis.horizontal,
+          Text(
+            AppLocalizations.of(context).revenue,
+            style: TextStyle(
+                color: Colors.lightGreen,
+                fontSize: 16,
+                fontWeight: FontWeight.bold),
+          ),
+        ]),
       ),
     );
   }
