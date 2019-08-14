@@ -24,6 +24,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   DateTime _selectedDate;
   List<MyTransaction> _myTransactions;
+  ScrollController _scrollController = new ScrollController();
 
   @override
   void initState() {
@@ -31,6 +32,12 @@ class _HomeState extends State<Home> {
     // DateTime.now(); => 2019-08-05 17:41:24.065004
     _selectedDate = DateTime(DateTime.now().year, DateTime.now().month);
     _loadDatabase();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -79,11 +86,13 @@ class _HomeState extends State<Home> {
   Widget _getList(BuildContext context) {
     if (_myTransactions != null && _myTransactions.isNotEmpty) {
       return ListView.builder(
+        controller: _scrollController,
         padding: EdgeInsets.only(bottom: 120),
         itemCount: _myTransactions.length,
         itemBuilder: (BuildContext context, int index) {
           final MyTransaction item = _myTransactions[index];
           final String description = item.description;
+          final String amount = item.amount.toString();
           return GestureDetector(
             onTap: () {
               Navigator.push(
@@ -107,8 +116,11 @@ class _HomeState extends State<Home> {
                     SnackBar(
                       content: Text('"' +
                           (description ?? '–') +
-                          '"' +
-                          ' ' +
+                          '", ' +
+                          AppLocalizations.of(context).amount +
+                          ': ' +
+                          amount +
+                          ', ' +
                           AppLocalizations.of(context).removed),
                       action: SnackBarAction(
                         label: AppLocalizations.of(context).undo,
@@ -164,13 +176,18 @@ class _HomeState extends State<Home> {
     );
   }
 
-  void _loadDatabase() async {
-    List<MyTransaction> temp = await getDatabase(_selectedDate);
-    // refresh GUI
-    setState(
-      () {
-        _myTransactions = temp;
-      },
-    );
+  void _loadDatabase() {
+    getDatabase(_selectedDate).then((list) {
+      setState(() {
+        _myTransactions = list;
+      });
+    }).whenComplete(_scrollDown);
+  }
+
+  void _scrollDown() async {
+    if (_scrollController.hasClients) {
+      await _scrollController
+          .jumpTo(_scrollController.position.maxScrollExtent);
+    }
   }
 }

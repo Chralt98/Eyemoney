@@ -19,17 +19,24 @@ class ListInfoLabel extends StatelessWidget {
   Widget _getLabel(BuildContext context, String label) {
     final double screenWidth = MediaQuery.of(context).size.width;
     return Container(
-      alignment: Alignment.center,
-      child: FittedBox(
-        child: Text(
-          label,
-          style: TextStyle(color: Color.fromARGB(255, 0, 0, 50)),
-        ),
-        fit: BoxFit.scaleDown,
-      ),
-      width: screenWidth / 3,
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.black54),
+          border: BorderDirectional(
+            top: BorderSide(width: 1, color: Colors.black12),
+          ),
+          color: Colors.white),
+      child: Container(
+        alignment: Alignment.center,
+        child: FittedBox(
+          child: Text(
+            label,
+            style: TextStyle(
+              color: Color.fromARGB(255, 0, 0, 50),
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          fit: BoxFit.scaleDown,
+        ),
+        width: screenWidth / 3,
       ),
     );
   }

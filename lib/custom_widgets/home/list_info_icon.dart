@@ -19,10 +19,14 @@ class ListInfoIcon extends StatelessWidget {
   Widget _getSymbol(BuildContext context, IconData symbol) {
     final double screenWidth = MediaQuery.of(context).size.width;
     return Container(
-      child: Icon(symbol),
-      width: screenWidth / 3,
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.black54),
+          border: BorderDirectional(
+            bottom: BorderSide(width: 3, color: Colors.blueGrey),
+          ),
+          color: Colors.white),
+      child: Container(
+        child: Icon(symbol),
+        width: screenWidth / 3,
       ),
     );
   }

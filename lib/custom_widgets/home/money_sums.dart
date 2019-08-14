@@ -10,11 +10,17 @@ class MoneySums extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      color: Colors.white,
       child: Row(
         children: <Widget>[
-          this._getSum(context, _getTupleRevenueExpenditure()[0], Colors.lightGreen),
+          this._getSum(
+              context, _getTupleRevenueExpenditure()[0], Colors.lightGreen),
           this._getSum(context, _getTupleRevenueExpenditure()[1], Colors.red),
-          this._getSum(context, _getTupleRevenueExpenditure()[0] + _getTupleRevenueExpenditure()[1], Color.fromARGB(255, 0, 0, 50)),
+          this._getSum(
+              context,
+              _getTupleRevenueExpenditure()[0] +
+                  _getTupleRevenueExpenditure()[1],
+              Color.fromARGB(255, 0, 0, 50)),
         ],
       ),
     );
@@ -42,7 +48,8 @@ class MoneySums extends StatelessWidget {
       height: 26,
       width: screenWidth / 3,
       child: FittedBox(
-        child: Text(stringAmount, textAlign: TextAlign.center, style: TextStyle(color: color)),
+        child: Text(stringAmount,
+            textAlign: TextAlign.center, style: TextStyle(color: color)),
         fit: BoxFit.scaleDown,
       ),
     );
