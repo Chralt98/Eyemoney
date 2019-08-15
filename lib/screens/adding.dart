@@ -15,7 +15,6 @@ import 'package:Eyemoney/outsourcing/localization/localizations.dart';
 import 'package:Eyemoney/outsourcing/my_classes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../outsourcing/global_vars.dart';
@@ -78,47 +77,7 @@ class _AddingState extends State<Adding> {
 
   @override
   Widget build(BuildContext context) {
-    final _listTiles = _categories
-        .map(
-          (item) => Dismissible(
-            key: Key(item.toString()),
-            direction: DismissDirection.endToStart,
-            onDismissed: (DismissDirection dir) {
-              if (dir == DismissDirection.endToStart) {
-                _deleteCategory(item);
-                Fluttertoast.showToast(
-                  msg: item + ' ' + AppLocalizations.of(context).removed,
-                  toastLength: Toast.LENGTH_SHORT,
-                  gravity: ToastGravity.BOTTOM,
-                  timeInSecForIos: 1,
-                  fontSize: 16.0,
-                );
-              }
-            },
-            background: DismissibleBackground(),
-            child: ListDecoration(
-              index: _categories.indexOf(item),
-              tile: RadioListTile<int>(
-                value: _categories.indexOf(item),
-                groupValue: _radioVal,
-                onChanged: (int value) {
-                  setState(
-                    () {
-                      _radioVal = value;
-                      _selectedCategory = item;
-                    },
-                  );
-                },
-                secondary: Icon(Icons.dehaze),
-                activeColor: Theme.of(context).primaryColor,
-                title: CategoryItem(
-                  item: item,
-                ),
-              ),
-            ),
-          ),
-        )
-        .toList();
+    final _listTiles = _getListTiles();
     return new Scaffold(
       appBar: new AppBar(
         backgroundColor: Theme.of(context).accentColor,
@@ -169,6 +128,43 @@ class _AddingState extends State<Adding> {
         ],
       ),
     );
+  }
+
+  List<Dismissible> _getListTiles() {
+    return _categories.map((item) {
+      final index = _categories.indexOf(item);
+      return Dismissible(
+        key: Key(item.toString()),
+        direction: DismissDirection.endToStart,
+        onDismissed: (DismissDirection dir) {
+          if (dir == DismissDirection.endToStart) {
+            _deleteCategory(item);
+            showToast(item + ' ' + AppLocalizations.of(context).removed);
+          }
+        },
+        background: DismissibleBackground(),
+        child: ListDecoration(
+          index: index,
+          tile: RadioListTile<int>(
+            value: index,
+            groupValue: _radioVal,
+            onChanged: (int value) {
+              setState(
+                () {
+                  _radioVal = value;
+                  _selectedCategory = item;
+                },
+              );
+            },
+            secondary: Icon(Icons.dehaze),
+            activeColor: Theme.of(context).primaryColor,
+            title: CategoryItem(
+              item: item,
+            ),
+          ),
+        ),
+      );
+    }).toList();
   }
 
   void _initDefaultValues() {
@@ -304,43 +300,42 @@ class _AddingState extends State<Adding> {
     _addCategoryController.text = '';
   }
 
-  void _onCheck() async {
-    final AddingArguments args = ModalRoute.of(context).settings.arguments;
+  void _onCheck() {
     if (_addCategoryController.text != '' &&
         _addCategoryController.text != _selectedCategory) {
       _setCategory(_addCategoryController.text);
     }
     if (_formKey.currentState.validate()) {
-      _amount = _moneyController.numberValue.toString();
-      final int sign = isRevenue ? 1 : -1;
-      final double _realAmount = round((sign) * double.parse(_amount), 2);
-      if (args.myTransaction != null) {
-        final MyTransaction data = MyTransaction(
-          id: args.myTransaction.id,
-          category: _selectedCategory,
-          description: _description,
-          amount: _realAmount,
-          date: DateTime((args.selectedDate ?? DateTime.now()).year,
-                  (args.selectedDate ?? DateTime.now()).month)
-              .toString(),
-        );
-        await updateTransaction(data);
-      } else {
-        final MyTransaction data = MyTransaction(
-          category: _selectedCategory,
-          description: _description,
-          amount: _realAmount,
-          date: DateTime((args.selectedDate ?? DateTime.now()).year,
-                  (args.selectedDate ?? DateTime.now()).month)
-              .toString(),
-        );
-        await insertInDatabase(data);
-      }
+      _insertOrUpdateDatabase();
       try {
         Navigator.pop(context);
       } catch (e) {
         print(e);
       }
+    }
+  }
+
+  void _insertOrUpdateDatabase() async {
+    _amount = _moneyController.numberValue.toString();
+    final int sign = isRevenue ? 1 : -1;
+    final double _realAmount = round((sign) * double.parse(_amount), 2);
+
+    final AddingArguments args = ModalRoute.of(context).settings.arguments;
+
+    final MyTransaction data = MyTransaction(
+      id: (args.myTransaction != null) ? args.myTransaction.id : null,
+      category: _selectedCategory,
+      description: _description,
+      amount: _realAmount,
+      date: DateTime((args.selectedDate ?? DateTime.now()).year,
+              (args.selectedDate ?? DateTime.now()).month)
+          .toString(),
+    );
+
+    if (args.myTransaction != null) {
+      await updateTransaction(data);
+    } else {
+      await insertInDatabase(data);
     }
   }
 }
