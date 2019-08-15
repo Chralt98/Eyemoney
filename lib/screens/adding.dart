@@ -4,8 +4,10 @@ import 'package:Eyemoney/custom_widgets/adding/add_category_textfield.dart';
 import 'package:Eyemoney/custom_widgets/adding/amount_textfield.dart';
 import 'package:Eyemoney/custom_widgets/adding/btn_adding_check.dart';
 import 'package:Eyemoney/custom_widgets/adding/category_item.dart';
+import 'package:Eyemoney/custom_widgets/adding/category_list.dart';
 import 'package:Eyemoney/custom_widgets/adding/description_textfield.dart';
 import 'package:Eyemoney/custom_widgets/adding/list_decoration.dart';
+import 'package:Eyemoney/custom_widgets/adding/selected_category.dart';
 import 'package:Eyemoney/custom_widgets/adding/sign_selector.dart';
 import 'package:Eyemoney/custom_widgets/dismissible_background.dart';
 import 'package:Eyemoney/database/transaction.dart';
@@ -16,7 +18,7 @@ import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../outsourcing/globals.dart';
+import '../outsourcing/global_vars.dart';
 import '../outsourcing/my_functions.dart';
 
 class Adding extends StatefulWidget {
@@ -30,18 +32,24 @@ class Adding extends StatefulWidget {
 
 class _AddingState extends State<Adding> {
   List<String> _categories = List<String>();
+
   SharedPreferences _prefs;
+
   String _description;
   String _amount = '0.00';
   String _selectedCategory = '';
+  bool isRevenue = false;
+
   var _moneyController =
       MoneyMaskedTextController(decimalSeparator: '.', thousandSeparator: ',');
+
   int _radioVal = 0;
+
   final _formKey = GlobalKey<FormState>();
+
   ScrollController _scrollController;
   TextEditingController _descriptionController;
   TextEditingController _addCategoryController;
-  bool isRevenue = false;
 
   @override
   void initState() {
@@ -52,28 +60,9 @@ class _AddingState extends State<Adding> {
     SharedPreferences.getInstance()
       ..then(
         (prefs) {
-          setState(() => _prefs = prefs);
+          _prefs = prefs;
           _loadCategoryPref(context);
-          final AddingArguments args =
-              ModalRoute.of(context).settings.arguments;
-          _selectedCategory =
-              _categories.first ?? AppLocalizations.of(context).other;
-          if (args.myTransaction != null) {
-            double temp = ((args.myTransaction.amount < 0
-                ? args.myTransaction.amount * -1
-                : args.myTransaction.amount));
-            _amount = temp.toString() ?? '0.00';
-            _moneyController.updateValue(temp);
-            bool transactionSign =
-                args.myTransaction.amount >= 0 ? true : false;
-            isRevenue = transactionSign;
-            _description = args.myTransaction.description;
-            _descriptionController.text = _description;
-            _selectedCategory = args.myTransaction.category;
-            _setCategory(_selectedCategory);
-          } else {
-            isRevenue = false;
-          }
+          _initDefaultValues();
         },
       );
   }
@@ -166,31 +155,11 @@ class _AddingState extends State<Adding> {
                     addCategoryController: _addCategoryController,
                   ),
                   SizedBox(height: 26),
-                  Container(
-                      padding: EdgeInsets.symmetric(horizontal: 40),
-                      child: FittedBox(
-                          child: Text(
-                        (AppLocalizations.of(context).category +
-                                ': ' +
-                                _selectedCategory)
-                            .toString(),
-                        style: Theme.of(context).textTheme.body1,
-                      ))),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 40),
-                    child: Container(
-                      height: 282,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black12, width: 1),
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: ReorderableListView(
-                        children: _listTiles,
-                        scrollDirection: Axis.vertical,
-                        onReorder: _onReorderCategories,
-                      ),
-                    ),
+                  SelectedCategory(
+                    selectedCategory: _selectedCategory,
                   ),
+                  CategoryList(
+                      tiles: _listTiles, reorderCallback: _onReorderCategories),
                 ],
               ),
             ),
@@ -200,6 +169,26 @@ class _AddingState extends State<Adding> {
         ],
       ),
     );
+  }
+
+  void _initDefaultValues() {
+    final AddingArguments args = ModalRoute.of(context).settings.arguments;
+    _selectedCategory = _categories.first ?? AppLocalizations.of(context).other;
+    if (args.myTransaction != null) {
+      double temp = ((args.myTransaction.amount < 0
+          ? args.myTransaction.amount * -1
+          : args.myTransaction.amount));
+      _amount = temp.toString() ?? '0.00';
+      _moneyController.updateValue(temp);
+      _description = args.myTransaction.description;
+      _descriptionController.text = _description;
+      _selectedCategory = args.myTransaction.category;
+      _setCategory(_selectedCategory);
+      bool transactionSign = args.myTransaction.amount >= 0 ? true : false;
+      isRevenue = transactionSign;
+    } else {
+      isRevenue = false;
+    }
   }
 
   void _deleteCategory(String item) {

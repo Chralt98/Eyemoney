@@ -5,10 +5,10 @@ class ListInfoIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          border: BorderDirectional(
-            bottom: BorderSide(width: 2, color: Colors.black),
-          ),
-          color: Colors.white),
+        border: BorderDirectional(
+          bottom: BorderSide(width: 2, color: Colors.black),
+        ),
+      ),
       height: 27,
       child: Row(
         children: <Widget>[

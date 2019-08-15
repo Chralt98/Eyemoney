@@ -15,7 +15,9 @@ class ListTileAmount extends StatelessWidget {
         child: Text(
           normTwoDecimal(round((amount ?? 0.0), 2).toString()),
           textAlign: TextAlign.center,
-          style: TextStyle(color: (amount < 0.0) ? Colors.red : Colors.lightGreen),
+          style: TextStyle(
+              color: (amount < 0.0) ? Colors.red : Colors.lightGreen,
+              fontWeight: FontWeight.bold),
         ),
         fit: BoxFit.scaleDown,
       ),

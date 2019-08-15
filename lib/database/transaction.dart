@@ -1,4 +1,4 @@
-import 'package:Eyemoney/outsourcing/globals.dart';
+import 'package:Eyemoney/outsourcing/global_vars.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 

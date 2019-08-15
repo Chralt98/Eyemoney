@@ -6,7 +6,7 @@ import 'package:Eyemoney/screens/statistics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'outsourcing/globals.dart';
+import 'outsourcing/global_vars.dart';
 
 void main() {
   runApp(MyApp());
@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         // Define the default brightness and colors.
-        // dark mode brightness: Brightness.dark,
+        brightness: Brightness.light,
         primaryColor: Colors.indigo,
         accentColor: Colors.indigoAccent,
 
@@ -53,9 +53,8 @@ class MyApp extends StatelessWidget {
         // Define the default TextTheme. Use this to specify the default
         // text styling for headlines, titles, bodies of text, and more.
         textTheme: TextTheme(
-          title: TextStyle(fontSize: 18.0, color: Colors.black),
-          body1: TextStyle(fontSize: 14.0, color: Colors.black),
-          body2: TextStyle(color: Colors.black),
+          title: TextStyle(fontSize: 18.0),
+          body1: TextStyle(fontSize: 14.0),
         ),
       ),
     );

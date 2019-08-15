@@ -6,9 +6,10 @@ class ListInfoLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          color: Colors.white,
-          border: BorderDirectional(
-              top: BorderSide(width: 2, color: Colors.black))),
+        border: BorderDirectional(
+          top: BorderSide(width: 2, color: Colors.black),
+        ),
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
