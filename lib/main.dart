@@ -1,12 +1,21 @@
 import 'package:Eyemoney/outsourcing/localization/localizations.dart';
+import 'package:Eyemoney/screens/adding.dart';
 import 'package:Eyemoney/screens/home.dart';
+import 'package:Eyemoney/screens/settings.dart';
+import 'package:Eyemoney/screens/statistics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'outsourcing/globals.dart';
 
 void main() {
-  runApp(new MaterialApp(
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
       localizationsDelegates: [
         // ... app-specific localization delegate[s] here
         AppLocalizationsDelegate(),
@@ -22,6 +31,15 @@ void main() {
         const Locale('fr', ''), // France
         const Locale('ru', ''), // Russia
       ],
+      initialRoute: Home.routeName,
+      routes: {
+        // When navigating to the "/" route, build the FirstScreen widget.
+        Home.routeName: (context) => Home(title: appName),
+        // When navigating to the "/second" route, build the SecondScreen widget.
+        Settings.routeName: (context) => Settings(),
+        Adding.routeName: (context) => Adding(),
+        Statistics.routeName: (context) => Statistics(),
+      },
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         // Define the default brightness and colors.
@@ -40,5 +58,6 @@ void main() {
           body2: TextStyle(color: Colors.black),
         ),
       ),
-      home: Home(title: appName)));
+    );
+  }
 }

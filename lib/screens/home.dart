@@ -8,12 +8,14 @@ import 'package:Eyemoney/custom_widgets/home/list_tile.dart';
 import 'package:Eyemoney/custom_widgets/home/money_sums.dart';
 import 'package:Eyemoney/database/transaction.dart';
 import 'package:Eyemoney/outsourcing/localization/localizations.dart';
+import 'package:Eyemoney/outsourcing/my_classes.dart';
 import 'package:Eyemoney/screens/adding.dart';
 import 'package:flutter/material.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
 
 class Home extends StatefulWidget {
   final String title;
+  static const routeName = '/';
 
   const Home({Key key, @required this.title}) : super(key: key);
 
@@ -70,12 +72,11 @@ class _HomeState extends State<Home> {
         child: Icon(Icons.add),
         backgroundColor: Theme.of(context).accentColor,
         onPressed: () {
-          Navigator.push(
+          // pass arguments
+          Navigator.pushNamed(
             context,
-            MaterialPageRoute(
-              builder: (BuildContext context) =>
-                  Adding(selectedDate: _selectedDate),
-            ),
+            Adding.routeName,
+            arguments: AddingArguments(selectedDate: _selectedDate),
           ).then((response) => _loadDatabase());
         },
       ),
@@ -95,13 +96,12 @@ class _HomeState extends State<Home> {
           final String amount = item.amount.toString();
           return GestureDetector(
             onTap: () {
-              Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => Adding(
-                              selectedDate: _selectedDate,
-                              myTransaction: item)))
-                  .then((response) => _loadDatabase());
+              Navigator.pushNamed(
+                context,
+                Adding.routeName,
+                arguments: AddingArguments(
+                    selectedDate: _selectedDate, myTransaction: item),
+              ).then((response) => _loadDatabase());
             },
             child: Dismissible(
               key: Key(item.toString()),
@@ -184,10 +184,9 @@ class _HomeState extends State<Home> {
     }).whenComplete(_scrollDown);
   }
 
-  void _scrollDown() async {
+  void _scrollDown() {
     if (_scrollController.hasClients) {
-      await _scrollController
-          .jumpTo(_scrollController.position.maxScrollExtent);
+      _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
     }
   }
 }

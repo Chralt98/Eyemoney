@@ -1,7 +1,5 @@
 import 'package:Eyemoney/outsourcing/globals.dart';
 import 'package:Eyemoney/outsourcing/localization/localizations.dart';
-import 'package:Eyemoney/screens/settings.dart';
-import 'package:Eyemoney/screens/statistics.dart';
 import 'package:flutter/material.dart';
 
 class MyDrawer extends StatelessWidget {
@@ -54,11 +52,7 @@ class MyDrawer extends StatelessWidget {
               color: Colors.black,
             ),
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (BuildContext context) => Statistics()),
-              );
+              Navigator.pushNamed(context, '/statistics');
             },
           ),
           ListTile(
@@ -71,11 +65,7 @@ class MyDrawer extends StatelessWidget {
               color: Colors.black,
             ),
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (BuildContext context) => Settings()),
-              );
+              Navigator.pushNamed(context, '/settings');
             },
           ),
         ],

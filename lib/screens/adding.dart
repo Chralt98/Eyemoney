@@ -10,6 +10,7 @@ import 'package:Eyemoney/custom_widgets/adding/sign_selector.dart';
 import 'package:Eyemoney/custom_widgets/dismissible_background.dart';
 import 'package:Eyemoney/database/transaction.dart';
 import 'package:Eyemoney/outsourcing/localization/localizations.dart';
+import 'package:Eyemoney/outsourcing/my_classes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -19,11 +20,9 @@ import '../outsourcing/globals.dart';
 import '../outsourcing/my_functions.dart';
 
 class Adding extends StatefulWidget {
-  final DateTime selectedDate;
-  final MyTransaction myTransaction;
+  static const routeName = '/adding';
 
-  const Adding({Key key, @required this.selectedDate, this.myTransaction})
-      : super(key: key);
+  const Adding({Key key}) : super(key: key);
 
   @override
   _AddingState createState() => new _AddingState();
@@ -55,20 +54,22 @@ class _AddingState extends State<Adding> {
         (prefs) {
           setState(() => _prefs = prefs);
           _loadCategoryPref(context);
+          final AddingArguments args =
+              ModalRoute.of(context).settings.arguments;
           _selectedCategory =
               _categories.first ?? AppLocalizations.of(context).other;
-          if (widget.myTransaction != null) {
-            double temp = ((widget.myTransaction.amount < 0
-                ? widget.myTransaction.amount * -1
-                : widget.myTransaction.amount));
+          if (args.myTransaction != null) {
+            double temp = ((args.myTransaction.amount < 0
+                ? args.myTransaction.amount * -1
+                : args.myTransaction.amount));
             _amount = temp.toString() ?? '0.00';
             _moneyController.updateValue(temp);
             bool transactionSign =
-                widget.myTransaction.amount >= 0 ? true : false;
+                args.myTransaction.amount >= 0 ? true : false;
             isRevenue = transactionSign;
-            _description = widget.myTransaction.description;
+            _description = args.myTransaction.description;
             _descriptionController.text = _description;
-            _selectedCategory = widget.myTransaction.category;
+            _selectedCategory = args.myTransaction.category;
             _setCategory(_selectedCategory);
           } else {
             isRevenue = false;
@@ -120,7 +121,7 @@ class _AddingState extends State<Adding> {
                   );
                 },
                 secondary: Icon(Icons.dehaze),
-                activeColor: Theme.of(context).accentColor,
+                activeColor: Theme.of(context).primaryColor,
                 title: CategoryItem(
                   item: item,
                 ),
@@ -315,6 +316,7 @@ class _AddingState extends State<Adding> {
   }
 
   void _onCheck() async {
+    final AddingArguments args = ModalRoute.of(context).settings.arguments;
     if (_addCategoryController.text != '' &&
         _addCategoryController.text != _selectedCategory) {
       _setCategory(_addCategoryController.text);
@@ -323,14 +325,14 @@ class _AddingState extends State<Adding> {
       _amount = _moneyController.numberValue.toString();
       final int sign = isRevenue ? 1 : -1;
       final double _realAmount = round((sign) * double.parse(_amount), 2);
-      if (widget.myTransaction != null) {
+      if (args.myTransaction != null) {
         final MyTransaction data = MyTransaction(
-          id: widget.myTransaction.id,
+          id: args.myTransaction.id,
           category: _selectedCategory,
           description: _description,
           amount: _realAmount,
-          date: DateTime((widget.selectedDate ?? DateTime.now()).year,
-                  (widget.selectedDate ?? DateTime.now()).month)
+          date: DateTime((args.selectedDate ?? DateTime.now()).year,
+                  (args.selectedDate ?? DateTime.now()).month)
               .toString(),
         );
         await updateTransaction(data);
@@ -339,8 +341,8 @@ class _AddingState extends State<Adding> {
           category: _selectedCategory,
           description: _description,
           amount: _realAmount,
-          date: DateTime((widget.selectedDate ?? DateTime.now()).year,
-                  (widget.selectedDate ?? DateTime.now()).month)
+          date: DateTime((args.selectedDate ?? DateTime.now()).year,
+                  (args.selectedDate ?? DateTime.now()).month)
               .toString(),
         );
         await insertInDatabase(data);
