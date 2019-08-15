@@ -2,8 +2,7 @@ import 'package:Eyemoney/custom_widgets/dismissible_background.dart';
 import 'package:Eyemoney/custom_widgets/home/btn_month_selection.dart';
 import 'package:Eyemoney/custom_widgets/home/date_display.dart';
 import 'package:Eyemoney/custom_widgets/home/drawer.dart';
-import 'package:Eyemoney/custom_widgets/home/list_info_icon.dart';
-import 'package:Eyemoney/custom_widgets/home/list_info_label.dart';
+import 'package:Eyemoney/custom_widgets/home/list_info.dart';
 import 'package:Eyemoney/custom_widgets/home/list_tile.dart';
 import 'package:Eyemoney/custom_widgets/home/money_sums.dart';
 import 'package:Eyemoney/database/transaction.dart';
@@ -57,8 +56,7 @@ class _HomeState extends State<Home> {
         child: Column(
           children: <Widget>[
             MoneySums(transactions: _myTransactions),
-            ListInfoLabel(),
-            ListInfoIcon(),
+            ListInfo(),
             Expanded(
               child: Container(
                 child: _getList(context),
