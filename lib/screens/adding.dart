@@ -120,7 +120,7 @@ class _AddingState extends State<Adding> {
                   );
                 },
                 secondary: Icon(Icons.dehaze),
-                activeColor: Colors.blue,
+                activeColor: Theme.of(context).accentColor,
                 title: CategoryItem(
                   item: item,
                 ),
@@ -131,6 +131,7 @@ class _AddingState extends State<Adding> {
         .toList();
     return new Scaffold(
       appBar: new AppBar(
+        backgroundColor: Theme.of(context).accentColor,
         title: Text(AppLocalizations.of(context).add),
         actions: [],
       ),
@@ -167,10 +168,13 @@ class _AddingState extends State<Adding> {
                   Container(
                       padding: EdgeInsets.symmetric(horizontal: 40),
                       child: FittedBox(
-                          child: Text((AppLocalizations.of(context).category +
-                                  ': ' +
-                                  _selectedCategory)
-                              .toString()))),
+                          child: Text(
+                        (AppLocalizations.of(context).category +
+                                ': ' +
+                                _selectedCategory)
+                            .toString(),
+                        style: Theme.of(context).textTheme.body1,
+                      ))),
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 40),
                     child: Container(

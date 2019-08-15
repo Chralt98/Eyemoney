@@ -20,7 +20,7 @@ class MoneySums extends StatelessWidget {
               context,
               _getTupleRevenueExpenditure()[0] +
                   _getTupleRevenueExpenditure()[1],
-              Color.fromARGB(255, 0, 0, 50)),
+              Theme.of(context).textTheme.body1.color),
         ],
       ),
     );

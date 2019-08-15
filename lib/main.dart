@@ -6,18 +6,39 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'outsourcing/globals.dart';
 
 void main() {
-  runApp(new MaterialApp(localizationsDelegates: [
-    // ... app-specific localization delegate[s] here
-    AppLocalizationsDelegate(),
-    GlobalMaterialLocalizations.delegate,
-    GlobalWidgetsLocalizations.delegate,
-  ], supportedLocales: [
-    const Locale('en', ''), // English
-    const Locale('de', ''),
-    const Locale('ae', ''),
-    const Locale('zh', ''),
-    const Locale('es', ''),
-    const Locale('fr', ''),
-    const Locale('ru', ''),
-  ], debugShowCheckedModeBanner: false, theme: ThemeData(fontFamily: 'Montserrat' /*, brightness: Brightness.dark*/), home: Home(title: appName)));
+  runApp(new MaterialApp(
+      localizationsDelegates: [
+        // ... app-specific localization delegate[s] here
+        AppLocalizationsDelegate(),
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('en', ''), // English
+        const Locale('de', ''), // German
+        const Locale('ae', ''), // Arabia
+        const Locale('zh', ''), // Chinese
+        const Locale('es', ''), // Spain
+        const Locale('fr', ''), // France
+        const Locale('ru', ''), // Russia
+      ],
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        // Define the default brightness and colors.
+        // dark mode brightness: Brightness.dark,
+        primaryColor: Colors.indigo,
+        accentColor: Colors.indigoAccent,
+
+        // Define the default font family.
+        // fontFamily: 'Montserrat',
+
+        // Define the default TextTheme. Use this to specify the default
+        // text styling for headlines, titles, bodies of text, and more.
+        textTheme: TextTheme(
+          title: TextStyle(fontSize: 18.0, color: Colors.black),
+          body1: TextStyle(fontSize: 14.0, color: Colors.black),
+          body2: TextStyle(color: Colors.black),
+        ),
+      ),
+      home: Home(title: appName)));
 }

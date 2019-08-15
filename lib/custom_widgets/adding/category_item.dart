@@ -13,6 +13,7 @@ class CategoryItem extends StatelessWidget {
         alignment: Alignment.centerLeft,
         child: Text(
           item,
+          style: Theme.of(context).textTheme.body1,
         ),
         fit: BoxFit.scaleDown,
       ),

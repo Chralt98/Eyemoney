@@ -18,7 +18,8 @@ class MyDrawer extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               textBaseline: TextBaseline.alphabetic,
               children: <Widget>[
-                Text(appName, textScaleFactor: 2, style: TextStyle(color: Colors.white)),
+                Text(appName,
+                    textScaleFactor: 2, style: TextStyle(color: Colors.white)),
                 Icon(
                   Icons.fiber_smart_record,
                   size: 50,
@@ -27,33 +28,53 @@ class MyDrawer extends StatelessWidget {
               ],
             ),
             decoration: BoxDecoration(
-              color: Colors.blueAccent,
+              color: Theme.of(context).primaryColor,
             ),
           ),
           ListTile(
-            title: Text(AppLocalizations.of(context).home),
-            leading: Icon(Icons.home),
+            title: Text(
+              AppLocalizations.of(context).home,
+              style: Theme.of(context).textTheme.body2,
+            ),
+            leading: Icon(
+              Icons.home,
+              color: Colors.black,
+            ),
             onTap: () {
               Navigator.pop(context);
             },
           ),
           ListTile(
-            title: Text(AppLocalizations.of(context).statistics),
-            leading: Icon(Icons.assessment),
+            title: Text(
+              AppLocalizations.of(context).statistics,
+              style: Theme.of(context).textTheme.body2,
+            ),
+            leading: Icon(
+              Icons.assessment,
+              color: Colors.black,
+            ),
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (BuildContext context) => Statistics()),
+                MaterialPageRoute(
+                    builder: (BuildContext context) => Statistics()),
               );
             },
           ),
           ListTile(
-            title: Text(AppLocalizations.of(context).settings),
-            leading: Icon(Icons.settings),
+            title: Text(
+              AppLocalizations.of(context).settings,
+              style: Theme.of(context).textTheme.body2,
+            ),
+            leading: Icon(
+              Icons.settings,
+              color: Colors.black,
+            ),
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (BuildContext context) => Settings()),
+                MaterialPageRoute(
+                    builder: (BuildContext context) => Settings()),
               );
             },
           ),

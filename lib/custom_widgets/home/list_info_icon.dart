@@ -4,8 +4,12 @@ class ListInfoIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      decoration: BoxDecoration(
+          border: BorderDirectional(
+            bottom: BorderSide(width: 2, color: Colors.black),
+          ),
+          color: Colors.white),
       height: 27,
-      color: Colors.white,
       child: Row(
         children: <Widget>[
           this._getSymbol(context, Icons.info_outline),
@@ -19,11 +23,6 @@ class ListInfoIcon extends StatelessWidget {
   Widget _getSymbol(BuildContext context, IconData symbol) {
     final double screenWidth = MediaQuery.of(context).size.width;
     return Container(
-      decoration: BoxDecoration(
-          border: BorderDirectional(
-            bottom: BorderSide(width: 3, color: Colors.blueGrey),
-          ),
-          color: Colors.white),
       child: Container(
         child: Icon(symbol),
         width: screenWidth / 3,

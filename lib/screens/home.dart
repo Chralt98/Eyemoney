@@ -45,7 +45,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: Theme.of(context).accentColor,
         actions: <Widget>[
           DateDisplay(date: _selectedDate),
           MonthSelector(onPressed: _showMonthPicker),
@@ -68,7 +68,7 @@ class _HomeState extends State<Home> {
       drawer: MyDrawer(),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: Theme.of(context).accentColor,
         onPressed: () {
           Navigator.push(
             context,

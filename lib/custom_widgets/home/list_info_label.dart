@@ -5,6 +5,10 @@ class ListInfoLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      decoration: BoxDecoration(
+          color: Colors.white,
+          border: BorderDirectional(
+              top: BorderSide(width: 2, color: Colors.black))),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
@@ -19,25 +23,15 @@ class ListInfoLabel extends StatelessWidget {
   Widget _getLabel(BuildContext context, String label) {
     final double screenWidth = MediaQuery.of(context).size.width;
     return Container(
-      decoration: BoxDecoration(
-          border: BorderDirectional(
-            top: BorderSide(width: 1, color: Colors.black12),
-          ),
-          color: Colors.white),
-      child: Container(
-        alignment: Alignment.center,
-        child: FittedBox(
-          child: Text(
-            label,
-            style: TextStyle(
-              color: Color.fromARGB(255, 0, 0, 50),
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          fit: BoxFit.scaleDown,
+      alignment: Alignment.center,
+      child: FittedBox(
+        child: Text(
+          label,
+          style: Theme.of(context).textTheme.title,
         ),
-        width: screenWidth / 3,
+        fit: BoxFit.scaleDown,
       ),
+      width: screenWidth / 3,
     );
   }
 }

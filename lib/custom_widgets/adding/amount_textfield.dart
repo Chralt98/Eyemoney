@@ -18,6 +18,7 @@ class AmountTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      style: Theme.of(context).textTheme.body2,
       controller: moneyController,
       keyboardType:
           TextInputType.numberWithOptions(signed: false, decimal: true),

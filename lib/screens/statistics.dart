@@ -7,7 +7,7 @@ class Statistics extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context).statistics),
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: Theme.of(context).accentColor,
       ),
       body: Container(),
     );

@@ -10,7 +10,7 @@ class AddingCheck extends StatelessWidget {
     return Container(
       child: new FloatingActionButton(
         child: Icon(Icons.check),
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: Theme.of(context).accentColor,
         onPressed: onPressed,
       ),
       alignment: Alignment.bottomRight,

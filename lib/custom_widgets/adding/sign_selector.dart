@@ -17,7 +17,7 @@ class SignSelector extends StatelessWidget {
           Text(
             AppLocalizations.of(context).expenditure,
             style: TextStyle(
-                color: Colors.red, fontSize: 16, fontWeight: FontWeight.bold),
+                color: Colors.red, fontSize: 14, fontWeight: FontWeight.bold),
           ),
           SizedBox(width: 15),
           mySwitch,
@@ -26,7 +26,7 @@ class SignSelector extends StatelessWidget {
             AppLocalizations.of(context).revenue,
             style: TextStyle(
                 color: Colors.lightGreen,
-                fontSize: 16,
+                fontSize: 14,
                 fontWeight: FontWeight.bold),
           ),
         ]),

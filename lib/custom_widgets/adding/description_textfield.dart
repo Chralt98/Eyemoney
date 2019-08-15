@@ -7,11 +7,13 @@ class DescriptionTextField extends StatelessWidget {
   final DescriptionChangedCallback onChanged;
   final TextEditingController descriptionController;
 
-  DescriptionTextField({@required this.descriptionController, @required this.onChanged});
+  DescriptionTextField(
+      {@required this.descriptionController, @required this.onChanged});
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      style: Theme.of(context).textTheme.body2,
       textCapitalization: TextCapitalization.words,
       controller: descriptionController,
       decoration: InputDecoration(
