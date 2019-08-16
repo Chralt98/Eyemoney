@@ -7,10 +7,16 @@ class MyTransaction {
   final String category;
   final String description;
   final double amount;
+  final int quantity;
   final String date;
 
   MyTransaction(
-      {this.id, this.category, this.description, this.amount, this.date});
+      {this.id,
+      this.category,
+      this.description,
+      this.amount,
+      this.quantity,
+      this.date});
 
   Map<String, dynamic> toMap() {
     return {
@@ -18,6 +24,7 @@ class MyTransaction {
       'category': category,
       'description': description,
       'amount': amount,
+      'quantity': quantity,
       'date': date,
     };
   }
@@ -26,7 +33,7 @@ class MyTransaction {
   // each Transaction when using the print statement.
   @override
   String toString() {
-    return 'MyTransactions{id: $id, category: $category, description: $description, amount: $amount, date: $date}';
+    return 'MyTransactions{id: $id, category: $category, description: $description, amount: $amount, quantity: $quantity, date: $date}';
   }
 }
 
@@ -39,7 +46,7 @@ Future<Database> getDataBase() async {
 // When the database is first created, create a table to store transactions.
     onCreate: (db, version) {
       return db.execute(
-        "CREATE TABLE transactions(id INTEGER PRIMARY KEY AUTOINCREMENT, category TEXT, description TEXT, amount REAL, date DATETIME)",
+        "CREATE TABLE transactions(id INTEGER PRIMARY KEY AUTOINCREMENT, category TEXT, description TEXT, amount REAL, quantity INTEGER, date DATETIME)",
       );
     },
 // Set the version. This executes the onCreate function and provides a
@@ -95,6 +102,7 @@ Future<List<MyTransaction>> getDatabase(DateTime selectedDate) async {
       category: maps[i]['category'],
       description: maps[i]['description'],
       amount: maps[i]['amount'],
+      quantity: maps[i]['quantity'],
       date: maps[i]['date'],
     );
   });

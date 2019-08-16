@@ -39,7 +39,10 @@ class _AddingState extends State<Adding> {
   String _selectedCategory = '';
   bool isRevenue = false;
 
+  double _balance = 0.0;
+
   var _moneyController = MoneyMaskedTextController();
+
   // var _quantityController = TextEditingController(text: '1');
   var _quantityController = MaskedTextController(text: '1', mask: '000');
 
@@ -63,8 +66,27 @@ class _AddingState extends State<Adding> {
           _prefs = prefs;
           _loadCategoryPref(context);
           _initDefaultValues();
+          _moneyController.addListener(_calculateNewBalance);
         },
       );
+  }
+
+  void _calculateNewBalance() {
+    final AddingArguments args = ModalRoute.of(context).settings.arguments;
+    if (_moneyController.numberValue == 0.0) {
+      setState(() {
+        _balance = args.balance ?? 0.0;
+      });
+    } else {
+      setState(() {
+        _balance = round(
+            args.balance +
+                (isRevenue ? 1 : -1) *
+                    _moneyController.numberValue *
+                    double.parse(_quantityController.text ?? 1.0),
+            2);
+      });
+    }
   }
 
   @override
@@ -95,6 +117,9 @@ class _AddingState extends State<Adding> {
               key: _formKey,
               child: Column(
                 children: <Widget>[
+                  Text(
+                      'Fuege bitte diesen TEXT noch in allen Sprachen ein und aendere Betrag auf der Startseite zu Geld!!!: ' +
+                          _balance.toString()),
                   SizedBox(height: 26),
                   SignSelector(
                     mySwitch: _getSwitch(),
@@ -119,6 +144,9 @@ class _AddingState extends State<Adding> {
                           keyboardType: TextInputType.numberWithOptions(
                               decimal: false, signed: false),
                           onTap: () => _quantityController.text = '',
+                          onChanged: (text) {
+                            _calculateNewBalance();
+                          },
                           controller: _quantityController,
                         ),
                       ),
@@ -190,6 +218,7 @@ class _AddingState extends State<Adding> {
 
   void _initDefaultValues() {
     final AddingArguments args = ModalRoute.of(context).settings.arguments;
+    _balance = args.balance ?? 0.0;
     _selectedCategory = _categories.first ?? AppLocalizations.of(context).other;
     if (args.myTransaction != null) {
       double temp = ((args.myTransaction.amount < 0
@@ -197,6 +226,7 @@ class _AddingState extends State<Adding> {
           : args.myTransaction.amount));
       _amount = temp.toString() ?? '0.00';
       _moneyController.updateValue(temp);
+      _quantityController.text = args.myTransaction.quantity.toString();
       _description = args.myTransaction.description;
       _descriptionController.text = _description;
       _selectedCategory = args.myTransaction.category;
@@ -284,7 +314,12 @@ class _AddingState extends State<Adding> {
         scale: 2,
         child: Switch(
           value: isRevenue,
-          onChanged: (bool value) => setState(() => isRevenue = value),
+          onChanged: (bool value) => setState(
+            () {
+              isRevenue = value;
+              _calculateNewBalance();
+            },
+          ),
           activeColor: Colors.lightGreen,
           inactiveThumbColor: Colors.red,
           inactiveTrackColor: Color.fromARGB(120, 255, 0, 0),
@@ -340,12 +375,11 @@ class _AddingState extends State<Adding> {
     _amount = _moneyController.numberValue.toString();
     final int sign = isRevenue ? 1 : -1;
 
-    int quantity = 1;
+    int _quantity = 1;
     if (_quantityController.text != '') {
-      quantity = int.parse(_quantityController.text);
+      _quantity = int.parse(_quantityController.text);
     }
-    final double _realAmount =
-        round((sign) * double.parse(_amount) * quantity, 2);
+    final double _realAmount = round((sign) * double.parse(_amount), 2);
 
     final AddingArguments args = ModalRoute.of(context).settings.arguments;
 
@@ -354,6 +388,7 @@ class _AddingState extends State<Adding> {
       category: _selectedCategory,
       description: _description,
       amount: _realAmount,
+      quantity: _quantity,
       date: DateTime((args.selectedDate ?? DateTime.now()).year,
               (args.selectedDate ?? DateTime.now()).month)
           .toString(),

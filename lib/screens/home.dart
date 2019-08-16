@@ -8,6 +8,7 @@ import 'package:Eyemoney/custom_widgets/home/money_sums.dart';
 import 'package:Eyemoney/database/transaction.dart';
 import 'package:Eyemoney/outsourcing/localization/localizations.dart';
 import 'package:Eyemoney/outsourcing/my_classes.dart';
+import 'package:Eyemoney/outsourcing/my_functions.dart';
 import 'package:Eyemoney/screens/adding.dart';
 import 'package:flutter/material.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
@@ -74,7 +75,8 @@ class _HomeState extends State<Home> {
           Navigator.pushNamed(
             context,
             Adding.routeName,
-            arguments: AddingArguments(selectedDate: _selectedDate),
+            arguments: AddingArguments(
+                selectedDate: _selectedDate, balance: _getBalance()),
           ).then((response) => _loadDatabase());
         },
       ),
@@ -89,35 +91,38 @@ class _HomeState extends State<Home> {
         padding: EdgeInsets.only(bottom: 120),
         itemCount: _myTransactions.length,
         itemBuilder: (BuildContext context, int index) {
-          final MyTransaction item = _myTransactions[index];
-          final String description = item.description;
-          final String amount = item.amount.toString();
+          final MyTransaction _item = _myTransactions[index];
+          final String _description = _item.description;
+          final double _amount = _item.amount * _item.quantity;
+          final String _stringAmount = _amount.toString();
           return GestureDetector(
             onTap: () {
               Navigator.pushNamed(
                 context,
                 Adding.routeName,
                 arguments: AddingArguments(
-                    selectedDate: _selectedDate, myTransaction: item),
+                    selectedDate: _selectedDate,
+                    balance: _getBalance(),
+                    myTransaction: _item),
               ).then((response) => _loadDatabase());
             },
             child: Dismissible(
-              key: Key(item.toString()),
+              key: Key(_item.id.toString()),
               direction: DismissDirection.endToStart,
               onDismissed: (DismissDirection dir) {
                 if (dir == DismissDirection.endToStart) {
                   setState(() {
                     _myTransactions.removeAt(index);
-                    removeFromDatabase(item);
+                    removeFromDatabase(_item);
                   });
                   Scaffold.of(context).showSnackBar(
                     SnackBar(
                       content: Text('"' +
-                          (description ?? '–') +
+                          (_description ?? '–') +
                           '", ' +
                           AppLocalizations.of(context).amount +
                           ': ' +
-                          amount +
+                          _stringAmount +
                           ', ' +
                           AppLocalizations.of(context).removed),
                       action: SnackBarAction(
@@ -125,8 +130,8 @@ class _HomeState extends State<Home> {
                         onPressed: () {
                           setState(
                             () {
-                              _myTransactions.insert(index, item);
-                              insertInDatabase(item);
+                              _myTransactions.insert(index, _item);
+                              insertInDatabase(_item);
                             },
                           );
                         },
@@ -137,9 +142,9 @@ class _HomeState extends State<Home> {
               },
               background: DismissibleBackground(),
               child: MyListTile(
-                description: item.description,
-                category: item.category,
-                amount: item.amount,
+                description: _description,
+                category: _item.category,
+                amount: _amount,
                 index: index,
               ),
             ),
@@ -157,6 +162,17 @@ class _HomeState extends State<Home> {
         child: CircularProgressIndicator(),
       );
     }
+  }
+
+  double _getBalance() {
+    double balance = 0;
+    if (_myTransactions != null) {
+      for (int i = 0; i < _myTransactions.length; i++) {
+        balance += _myTransactions[i].amount;
+      }
+    }
+    balance = round(balance, 2);
+    return balance;
   }
 
   void _showMonthPicker() {
