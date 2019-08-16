@@ -39,8 +39,9 @@ class _AddingState extends State<Adding> {
   String _selectedCategory = '';
   bool isRevenue = false;
 
-  var _moneyController =
-      MoneyMaskedTextController(decimalSeparator: ',', thousandSeparator: '.');
+  var _moneyController = MoneyMaskedTextController();
+  // var _quantityController = TextEditingController(text: '1');
+  var _quantityController = MaskedTextController(text: '1', mask: '000');
 
   int _radioVal = 0;
 
@@ -94,26 +95,46 @@ class _AddingState extends State<Adding> {
               key: _formKey,
               child: Column(
                 children: <Widget>[
-                  SizedBox(height: 40),
-                  AmountTextField(
-                      moneyController: _moneyController,
-                      submitCallback: _onSubmitAmount,
-                      validatorCallback: _onValidateAmount),
+                  SizedBox(height: 26),
+                  SignSelector(
+                    mySwitch: _getSwitch(),
+                  ),
+                  SizedBox(height: 26),
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: AmountTextField(
+                            moneyController: _moneyController,
+                            submitCallback: _onSubmitAmount,
+                            validatorCallback: _onValidateAmount),
+                      ),
+                      Icon(Icons.clear),
+                      Container(
+                        width: 55,
+                        child: TextField(
+                          decoration: InputDecoration(
+                            border: UnderlineInputBorder(),
+                            filled: true,
+                          ),
+                          keyboardType: TextInputType.numberWithOptions(
+                              decimal: false, signed: false),
+                          onTap: () => _quantityController.text = '',
+                          controller: _quantityController,
+                        ),
+                      ),
+                    ],
+                  ),
                   SizedBox(height: 26),
                   DescriptionTextField(
                     onChanged: _descriptionTextFieldChanged,
                     descriptionController: _descriptionController,
                   ),
                   SizedBox(height: 13),
-                  SignSelector(
-                    mySwitch: _getSwitch(),
-                  ),
-                  SizedBox(height: 26),
                   AddCategoryTextField(
                     onSubmitted: _addCategoryTextFieldOnSubmitted,
                     addCategoryController: _addCategoryController,
                   ),
-                  SizedBox(height: 26),
+                  SizedBox(height: 13),
                   SelectedCategory(
                     selectedCategory: _selectedCategory,
                   ),
@@ -245,7 +266,7 @@ class _AddingState extends State<Adding> {
   }
 
   String _onValidateAmount(String number) {
-    if (number == '0.00') {
+    if (number == '0,00') {
       _scrollController.animateTo(0,
           duration: new Duration(milliseconds: 500), curve: Curves.ease);
       return AppLocalizations.of(context).amountDescription;
@@ -318,7 +339,13 @@ class _AddingState extends State<Adding> {
   void _insertOrUpdateDatabase() async {
     _amount = _moneyController.numberValue.toString();
     final int sign = isRevenue ? 1 : -1;
-    final double _realAmount = round((sign) * double.parse(_amount), 2);
+
+    int quantity = 1;
+    if (_quantityController.text != '') {
+      quantity = int.parse(_quantityController.text);
+    }
+    final double _realAmount =
+        round((sign) * double.parse(_amount) * quantity, 2);
 
     final AddingArguments args = ModalRoute.of(context).settings.arguments;
 

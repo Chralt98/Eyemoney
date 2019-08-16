@@ -20,13 +20,12 @@ class AmountTextField extends StatelessWidget {
     return TextFormField(
       style: Theme.of(context).textTheme.body2,
       controller: moneyController,
-      keyboardType:
-          TextInputType.numberWithOptions(signed: false, decimal: true),
+      keyboardType: TextInputType.number,
       decoration: InputDecoration(
         border: UnderlineInputBorder(),
         filled: true,
         icon: Icon(Icons.fiber_smart_record),
-        labelText: AppLocalizations.of(context).amount,
+        labelText: AppLocalizations.of(context).amount + ' *',
       ),
       validator: validatorCallback,
       onFieldSubmitted: submitCallback,

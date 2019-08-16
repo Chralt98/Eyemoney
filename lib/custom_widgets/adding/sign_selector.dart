@@ -1,4 +1,3 @@
-import 'package:Eyemoney/outsourcing/localization/localizations.dart';
 import 'package:flutter/material.dart';
 
 class SignSelector extends StatelessWidget {
@@ -15,18 +14,18 @@ class SignSelector extends StatelessWidget {
       child: FittedBox(
         child: Row(children: <Widget>[
           Text(
-            AppLocalizations.of(context).expenditure,
+            '–',
             style: TextStyle(
-                color: Colors.red, fontSize: 14, fontWeight: FontWeight.bold),
+                color: Colors.red, fontSize: 40, fontWeight: FontWeight.bold),
           ),
           SizedBox(width: 15),
           mySwitch,
           SizedBox(width: 15),
           Text(
-            AppLocalizations.of(context).revenue,
+            '+',
             style: TextStyle(
                 color: Colors.lightGreen,
-                fontSize: 14,
+                fontSize: 40,
                 fontWeight: FontWeight.bold),
           ),
         ]),

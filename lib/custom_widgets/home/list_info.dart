@@ -47,12 +47,11 @@ class ListInfo extends StatelessWidget {
   Widget _getLabel(BuildContext context, String label) {
     return Expanded(
       child: FittedBox(
-        fit: BoxFit.fill,
+        fit: BoxFit.scaleDown,
         child: Container(
           alignment: Alignment.center,
           child: Text(
             label,
-            style: Theme.of(context).textTheme.title,
           ),
         ),
       ),
