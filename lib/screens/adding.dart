@@ -40,7 +40,7 @@ class _AddingState extends State<Adding> {
   bool isRevenue = false;
 
   var _moneyController =
-      MoneyMaskedTextController(decimalSeparator: '.', thousandSeparator: ',');
+      MoneyMaskedTextController(decimalSeparator: ',', thousandSeparator: '.');
 
   int _radioVal = 0;
 

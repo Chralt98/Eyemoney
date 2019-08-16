@@ -7,8 +7,8 @@ class ListInfo extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         border: BorderDirectional(
-          top: BorderSide(width: 2, color: Colors.black),
-          bottom: BorderSide(width: 2, color: Colors.black),
+          top: BorderSide(width: 1, color: Colors.black12),
+          bottom: BorderSide(width: 2, color: Colors.black12),
         ),
       ),
       height: 54,
