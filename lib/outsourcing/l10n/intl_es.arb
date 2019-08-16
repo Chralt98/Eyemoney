@@ -144,5 +144,20 @@
   "@health": {
     "type": "text",
     "placeholders": {}
-  }
+  },
+  "money": "dinero",
+    "@money": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "balance": "equilibrar",
+    "@balance": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "optional": "opcional",
+    "@optional": {
+      "type": "text",
+      "placeholders": {}
+    }
 }

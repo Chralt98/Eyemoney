@@ -34,7 +34,7 @@ class ListInfo extends StatelessWidget {
           Expanded(
             child: Column(
               children: <Widget>[
-                _getLabel(context, AppLocalizations.of(context).amount),
+                _getLabel(context, AppLocalizations.of(context).money),
                 _getSymbol(context, Icons.fiber_smart_record),
               ],
             ),

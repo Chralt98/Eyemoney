@@ -26,3 +26,11 @@ void showToast(String text) {
     fontSize: 14.0,
   );
 }
+
+String deleteSpaces(String text) {
+  if (text.length == text.split(' ').length - 1) {
+    // here the category would set empty if only spaces
+    text = text.replaceAll(' ', '');
+  }
+  return text;
+}

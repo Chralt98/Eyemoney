@@ -222,6 +222,27 @@ class AppLocalizations {
       name: 'health',
     );
   }
+
+  String get money {
+    return Intl.message(
+      'money',
+      name: 'money',
+    );
+  }
+
+  String get balance {
+    return Intl.message(
+      'balance',
+      name: 'balance',
+    );
+  }
+
+  String get optional {
+    return Intl.message(
+      'optional',
+      name: 'optional',
+    );
+  }
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

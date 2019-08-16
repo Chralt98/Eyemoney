@@ -78,12 +78,17 @@ class _AddingState extends State<Adding> {
         _balance = args.balance ?? 0.0;
       });
     } else {
+      double quantity;
+      if (deleteSpaces(_quantityController.text) == '' ||
+          _quantityController.text == null) {
+        quantity = 1.0;
+      } else {
+        quantity = double.parse(_quantityController.text ?? 1.0);
+      }
       setState(() {
         _balance = round(
             args.balance +
-                (isRevenue ? 1 : -1) *
-                    _moneyController.numberValue *
-                    double.parse(_quantityController.text ?? 1.0),
+                (isRevenue ? 1 : -1) * _moneyController.numberValue * quantity,
             2);
       });
     }
@@ -117,14 +122,19 @@ class _AddingState extends State<Adding> {
               key: _formKey,
               child: Column(
                 children: <Widget>[
-                  Text(
-                      'Fuege bitte diesen TEXT noch in allen Sprachen ein und aendere Betrag auf der Startseite zu Geld!!!: ' +
-                          _balance.toString()),
                   SizedBox(height: 26),
                   SignSelector(
                     mySwitch: _getSwitch(),
                   ),
-                  SizedBox(height: 26),
+                  SizedBox(
+                    height: 13,
+                  ),
+                  Text(AppLocalizations.of(context).balance +
+                      ': ' +
+                      _balance.toString()),
+                  SizedBox(
+                    height: 13,
+                  ),
                   Row(
                     children: <Widget>[
                       Expanded(
@@ -166,6 +176,7 @@ class _AddingState extends State<Adding> {
                   SelectedCategory(
                     selectedCategory: _selectedCategory,
                   ),
+                  SizedBox(height: 13),
                   CategoryList(
                       tiles: _listTiles, reorderCallback: _onReorderCategories),
                 ],
@@ -173,7 +184,11 @@ class _AddingState extends State<Adding> {
             ),
             controller: _scrollController,
           ),
-          AddingCheck(onPressed: () => _onCheck()),
+          AddingCheck(
+            onPressed: () => _onCheck(),
+            isVisible:
+                MediaQuery.of(context).viewInsets.bottom == 0 ? true : false,
+          ),
         ],
       ),
     );
@@ -329,7 +344,7 @@ class _AddingState extends State<Adding> {
   }
 
   void _descriptionTextFieldChanged(String text) {
-    _description = text;
+    _description = deleteSpaces(text);
   }
 
   void _addCategoryTextFieldOnSubmitted(String text) {
@@ -337,10 +352,7 @@ class _AddingState extends State<Adding> {
   }
 
   void _setCategory(String category) async {
-    if (category.length == category.split(' ').length - 1) {
-      // here the category would set empty if only spaces
-      category = category.replaceAll(' ', '');
-    }
+    category = deleteSpaces(category);
     if (_categories.contains(category)) {
       _selectedCategory = category;
       _radioVal = _categories.indexOf(_selectedCategory);
@@ -374,6 +386,8 @@ class _AddingState extends State<Adding> {
   void _insertOrUpdateDatabase() async {
     _amount = _moneyController.numberValue.toString();
     final int sign = isRevenue ? 1 : -1;
+
+    _description = _description == '' ? '–' : _description;
 
     int _quantity = 1;
     if (_quantityController.text != '') {

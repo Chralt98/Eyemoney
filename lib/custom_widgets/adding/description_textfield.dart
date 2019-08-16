@@ -21,7 +21,10 @@ class DescriptionTextField extends StatelessWidget {
         filled: true,
         icon: Icon(Icons.info_outline),
         hintText: AppLocalizations.of(context).descriptionQuestion,
-        labelText: AppLocalizations.of(context).description,
+        labelText: AppLocalizations.of(context).description +
+            ' (' +
+            AppLocalizations.of(context).optional +
+            ')',
       ),
       onChanged: onChanged,
       maxLength: 50,

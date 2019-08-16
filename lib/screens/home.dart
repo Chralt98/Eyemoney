@@ -168,7 +168,7 @@ class _HomeState extends State<Home> {
     double balance = 0;
     if (_myTransactions != null) {
       for (int i = 0; i < _myTransactions.length; i++) {
-        balance += _myTransactions[i].amount;
+        balance += _myTransactions[i].amount * _myTransactions[i].quantity;
       }
     }
     balance = round(balance, 2);

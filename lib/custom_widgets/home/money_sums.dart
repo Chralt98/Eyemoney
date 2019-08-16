@@ -30,9 +30,11 @@ class MoneySums extends StatelessWidget {
     if (this.transactions != null) {
       for (int i = 0; i < this.transactions.length; i++) {
         if (this.transactions[i].amount > 0) {
-          sumRevenue += this.transactions[i].amount;
+          sumRevenue +=
+              this.transactions[i].amount * this.transactions[i].quantity;
         } else if (this.transactions[i].amount < 0) {
-          sumExpenditure += this.transactions[i].amount;
+          sumExpenditure +=
+              this.transactions[i].amount * this.transactions[i].quantity;
         }
       }
     }
