@@ -18,10 +18,9 @@ class MyDrawer extends StatelessWidget {
               children: <Widget>[
                 Text(appName,
                     textScaleFactor: 2, style: TextStyle(color: Colors.white)),
-                Icon(
-                  Icons.fiber_smart_record,
-                  size: 50,
-                  color: Colors.white,
+                Image(
+                  image: AssetImage('assets/images/inner_favicon.png'),
+                  height: 50,
                 ),
               ],
             ),

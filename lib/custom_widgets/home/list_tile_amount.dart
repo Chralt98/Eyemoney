@@ -13,15 +13,18 @@ class ListTileAmount extends StatelessWidget {
         (normTwoDecimal(round((amount ?? 0.0), 2).toString()) == '0.00'
             ? '–'
             : normTwoDecimal(round((amount ?? 0.0), 2).toString()));
+    final color = (_amountString == '–')
+        ? Colors.black
+        : ((amount < 0.0) ? Colors.red : Colors.lightGreen);
+    final fontWeight =
+        (_amountString == '–') ? FontWeight.normal : FontWeight.bold;
     return Container(
       height: 38,
       child: FittedBox(
         child: Text(
           _amountString,
           textAlign: TextAlign.center,
-          style: TextStyle(
-              color: (amount < 0.0) ? Colors.red : Colors.lightGreen,
-              fontWeight: FontWeight.bold),
+          style: TextStyle(color: color, fontWeight: fontWeight),
         ),
         fit: BoxFit.scaleDown,
       ),
