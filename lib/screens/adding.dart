@@ -106,6 +106,13 @@ class _AddingState extends State<Adding> {
   @override
   Widget build(BuildContext context) {
     final _listTiles = _getListTiles();
+    final String _balanceString = AppLocalizations.of(context).balance +
+        ': ' +
+        (_balance.toString() == '0.0'
+            ? '0.00'
+            : normTwoDecimal(_balance.toString()));
+    final bool _addingVisibility =
+        MediaQuery.of(context).viewInsets.bottom == 0 ? true : false;
     return new Scaffold(
       appBar: new AppBar(
         backgroundColor: Theme.of(context).accentColor,
@@ -122,16 +129,14 @@ class _AddingState extends State<Adding> {
               key: _formKey,
               child: Column(
                 children: <Widget>[
-                  SizedBox(height: 26),
-                  SignSelector(
-                    mySwitch: _getSwitch(),
-                  ),
+                  SizedBox(height: 13),
+                  Text(_balanceString),
                   SizedBox(
                     height: 13,
                   ),
-                  Text(AppLocalizations.of(context).balance +
-                      ': ' +
-                      _balance.toString()),
+                  SignSelector(
+                    mySwitch: _getSwitch(),
+                  ),
                   SizedBox(
                     height: 13,
                   ),
@@ -145,7 +150,7 @@ class _AddingState extends State<Adding> {
                       ),
                       Icon(Icons.clear),
                       Container(
-                        width: 55,
+                        width: 60,
                         child: TextField(
                           decoration: InputDecoration(
                             border: UnderlineInputBorder(),
@@ -163,22 +168,21 @@ class _AddingState extends State<Adding> {
                     ],
                   ),
                   SizedBox(height: 26),
-                  DescriptionTextField(
-                    onChanged: _descriptionTextFieldChanged,
-                    descriptionController: _descriptionController,
-                  ),
-                  SizedBox(height: 13),
-                  AddCategoryTextField(
-                    onSubmitted: _addCategoryTextFieldOnSubmitted,
-                    addCategoryController: _addCategoryController,
-                  ),
-                  SizedBox(height: 13),
                   SelectedCategory(
                     selectedCategory: _selectedCategory,
                   ),
                   SizedBox(height: 13),
                   CategoryList(
                       tiles: _listTiles, reorderCallback: _onReorderCategories),
+                  AddCategoryTextField(
+                    onSubmitted: _addCategoryTextFieldOnSubmitted,
+                    addCategoryController: _addCategoryController,
+                  ),
+                  SizedBox(height: 13),
+                  DescriptionTextField(
+                    onChanged: _descriptionTextFieldChanged,
+                    descriptionController: _descriptionController,
+                  ),
                 ],
               ),
             ),
@@ -186,8 +190,7 @@ class _AddingState extends State<Adding> {
           ),
           AddingCheck(
             onPressed: () => _onCheck(),
-            isVisible:
-                MediaQuery.of(context).viewInsets.bottom == 0 ? true : false,
+            isVisible: _addingVisibility,
           ),
         ],
       ),

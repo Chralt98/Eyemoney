@@ -13,6 +13,7 @@ class AddCategoryTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsetsDirectional.only(end: 40),
       child: TextField(
         style: Theme.of(context).textTheme.body2,
         textCapitalization: TextCapitalization.words,

@@ -9,16 +9,20 @@ class MoneySums extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _revenue =
+        _getSum(context, _getTupleRevenueExpenditure()[0], Colors.lightGreen);
+    final _expenditure =
+        _getSum(context, _getTupleRevenueExpenditure()[1], Colors.red);
+    final _balance = _getSum(
+        context,
+        _getTupleRevenueExpenditure()[0] + _getTupleRevenueExpenditure()[1],
+        Theme.of(context).textTheme.body1.color);
     return Container(
       child: Row(
         children: <Widget>[
-          _getSum(context, _getTupleRevenueExpenditure()[0], Colors.lightGreen),
-          _getSum(context, _getTupleRevenueExpenditure()[1], Colors.red),
-          _getSum(
-              context,
-              _getTupleRevenueExpenditure()[0] +
-                  _getTupleRevenueExpenditure()[1],
-              Theme.of(context).textTheme.body1.color),
+          _revenue,
+          _expenditure,
+          _balance,
         ],
       ),
     );

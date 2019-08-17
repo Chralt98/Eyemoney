@@ -14,34 +14,14 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/android/.gradle/5.1.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/5.1.1/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/android/.gradle/5.1.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/5.1.1/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/.gradle/5.1.1/fileContent/fileContent.lock" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/5.1.1/fileContent/fileContent.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/android/.gradle/5.1.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/5.1.1/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/android/.gradle/5.1.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/5.1.1/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/android/.gradle/5.1.1/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/5.1.1/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/android/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/android/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/custom_widgets/adding/btn_adding_check.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/custom_widgets/adding/btn_adding_check.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/custom_widgets/adding/description_textfield.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/custom_widgets/adding/description_textfield.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/custom_widgets/home/list_info.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/custom_widgets/home/list_info.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/custom_widgets/adding/add_category_textfield.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/custom_widgets/adding/add_category_textfield.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/custom_widgets/home/money_sums.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/custom_widgets/home/money_sums.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/outsourcing/l10n/intl_ae.arb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/outsourcing/l10n/intl_ae.arb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/outsourcing/l10n/intl_de.arb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/outsourcing/l10n/intl_de.arb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/outsourcing/l10n/intl_en.arb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/outsourcing/l10n/intl_en.arb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/outsourcing/l10n/intl_es.arb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/outsourcing/l10n/intl_es.arb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/outsourcing/l10n/intl_fr.arb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/outsourcing/l10n/intl_fr.arb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/outsourcing/l10n/intl_messages.arb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/outsourcing/l10n/intl_messages.arb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/outsourcing/l10n/intl_ru.arb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/outsourcing/l10n/intl_ru.arb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/outsourcing/l10n/intl_zh.arb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/outsourcing/l10n/intl_zh.arb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/outsourcing/l10n/messages_ae.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/outsourcing/l10n/messages_ae.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/outsourcing/l10n/messages_all.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/outsourcing/l10n/messages_all.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/outsourcing/l10n/messages_de.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/outsourcing/l10n/messages_de.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/outsourcing/l10n/messages_en.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/outsourcing/l10n/messages_en.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/outsourcing/l10n/messages_es.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/outsourcing/l10n/messages_es.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/outsourcing/l10n/messages_fr.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/outsourcing/l10n/messages_fr.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/outsourcing/l10n/messages_messages.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/outsourcing/l10n/messages_messages.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/outsourcing/l10n/messages_ru.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/outsourcing/l10n/messages_ru.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/outsourcing/l10n/messages_zh.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/outsourcing/l10n/messages_zh.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/outsourcing/localization/localizations.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/outsourcing/localization/localizations.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/outsourcing/my_functions.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/outsourcing/my_functions.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/screens/adding.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/adding.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/screens/home.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/home.dart" afterDir="false" />
     </list>
@@ -57,32 +37,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/lib/screens/adding.dart">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="290">
-              <caret line="80" column="22" lean-forward="true" selection-start-line="80" selection-start-column="22" selection-end-line="80" selection-end-column="22" />
-              <folding>
-                <element signature="e#0#20#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib/custom_widgets/adding/btn_adding_check.dart">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
-              <caret line="11" column="24" lean-forward="true" selection-start-line="11" selection-start-column="24" selection-end-line="11" selection-end-column="24" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/screens/home.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="190">
-              <caret line="120" column="49" selection-start-line="120" selection-start-column="49" selection-end-line="120" selection-end-column="49" />
+            <state relative-caret-position="256">
+              <caret line="97" column="59" lean-forward="true" selection-start-line="97" selection-start-column="59" selection-end-line="97" selection-end-column="59" />
               <folding>
                 <element signature="e#0#69#0" expanded="true" />
               </folding>
@@ -91,12 +50,36 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/lib/outsourcing/my_functions.dart">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="136">
+              <caret line="11" column="7" selection-start-line="11" selection-start-column="7" selection-end-line="11" selection-end-column="7" />
+              <folding>
+                <element signature="e#35#54#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/custom_widgets/home/money_sums.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="390">
-              <caret line="26" column="46" selection-start-line="26" selection-start-column="46" selection-end-line="26" selection-end-column="46" />
+            <state relative-caret-position="195">
+              <caret line="13" column="24" lean-forward="true" selection-start-line="13" selection-start-column="24" selection-end-line="13" selection-end-column="24" />
               <folding>
                 <element signature="e#0#52#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/lib/screens/adding.dart">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="180">
+              <caret line="132" column="39" lean-forward="true" selection-start-line="132" selection-start-column="39" selection-end-line="132" selection-end-column="39" />
+              <folding>
+                <element signature="e#0#20#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -167,7 +150,6 @@
         <option value="$PROJECT_DIR$/lib/custom_widgets/home/list_tile_description.dart" />
         <option value="$PROJECT_DIR$/lib/custom_widgets/home/list_tile_category.dart" />
         <option value="$PROJECT_DIR$/lib/custom_widgets/adding/category_item.dart" />
-        <option value="$PROJECT_DIR$/lib/custom_widgets/adding/add_category_textfield.dart" />
         <option value="$PROJECT_DIR$/lib/custom_widgets/home/drawer.dart" />
         <option value="$PROJECT_DIR$/lib/screens/settings.dart" />
         <option value="$PROJECT_DIR$/lib/screens/statistics.dart" />
@@ -191,11 +173,12 @@
         <option value="$PROJECT_DIR$/lib/outsourcing/l10n/intl_ru.arb" />
         <option value="$PROJECT_DIR$/lib/outsourcing/l10n/intl_zh.arb" />
         <option value="$PROJECT_DIR$/lib/custom_widgets/home/list_info.dart" />
-        <option value="$PROJECT_DIR$/lib/custom_widgets/home/money_sums.dart" />
-        <option value="$PROJECT_DIR$/lib/screens/home.dart" />
         <option value="$PROJECT_DIR$/lib/custom_widgets/adding/description_textfield.dart" />
         <option value="$PROJECT_DIR$/lib/outsourcing/my_functions.dart" />
         <option value="$PROJECT_DIR$/lib/custom_widgets/adding/btn_adding_check.dart" />
+        <option value="$PROJECT_DIR$/lib/custom_widgets/home/money_sums.dart" />
+        <option value="$PROJECT_DIR$/lib/custom_widgets/adding/add_category_textfield.dart" />
+        <option value="$PROJECT_DIR$/lib/screens/home.dart" />
         <option value="$PROJECT_DIR$/lib/screens/adding.dart" />
       </list>
     </option>
@@ -210,8 +193,9 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="AndroidView" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -241,13 +225,6 @@
               <item name="Eyemoney" type="b2602c69:ProjectViewProjectNode" />
               <item name="Eyemoney" type="462c0819:PsiDirectoryNode" />
               <item name="lib" type="462c0819:PsiDirectoryNode" />
-              <item name="custom_widgets" type="462c0819:PsiDirectoryNode" />
-              <item name="home" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Eyemoney" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Eyemoney" type="462c0819:PsiDirectoryNode" />
-              <item name="lib" type="462c0819:PsiDirectoryNode" />
               <item name="outsourcing" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -260,7 +237,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -337,7 +313,7 @@
     <frame x="0" y="23" width="1920" height="1057" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17502668" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.17502668" />
       <window_info id="Captures" order="1" side_tool="true" />
       <window_info id="Structure" order="2" side_tool="true" />
       <window_info id="Image Layers" order="3" />
@@ -347,7 +323,7 @@
       <window_info id="Capture Tool" order="7" />
       <window_info id="Favorites" order="8" side_tool="true" />
       <window_info anchor="bottom" id="Dart Analysis" order="0" weight="0.19246298" />
-      <window_info active="true" anchor="bottom" id="Run" order="1" sideWeight="0.5288154" visible="true" weight="0.32004312" />
+      <window_info anchor="bottom" id="Run" order="1" sideWeight="0.5288154" visible="true" weight="0.32004312" />
       <window_info anchor="bottom" id="TODO" order="2" weight="0.32974428" />
       <window_info anchor="bottom" id="Android Profiler" order="3" show_stripe_button="false" />
       <window_info anchor="bottom" id="Logcat" order="4" weight="0.32974428" />
@@ -397,16 +373,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
           <caret line="20" column="13" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/custom_widgets/adding/add_category_textfield.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="22" column="16" selection-start-line="22" selection-start-column="16" selection-end-line="22" selection-end-column="16" />
-          <folding>
-            <element signature="e#0#70#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -539,16 +505,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/custom_widgets/adding/amount_textfield.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="30" column="39" selection-start-line="30" selection-start-column="39" selection-end-line="30" selection-end-column="39" />
-          <folding>
-            <element signature="e#0#70#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pubspec.yaml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="555">
@@ -675,16 +631,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/custom_widgets/home/money_sums.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="26" column="46" selection-start-line="26" selection-start-column="46" selection-end-line="26" selection-end-column="46" />
-          <folding>
-            <element signature="e#0#52#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib/custom_widgets/home/list_info.dart">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="405">
@@ -701,26 +647,6 @@
           <caret line="24" column="18" lean-forward="true" selection-start-line="24" selection-start-column="18" selection-end-line="24" selection-end-column="18" />
           <folding>
             <element signature="e#0#70#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/outsourcing/my_functions.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="435">
-          <caret line="29" column="7" lean-forward="true" selection-start-line="29" selection-start-column="7" selection-end-line="29" selection-end-column="7" />
-          <folding>
-            <element signature="e#35#54#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/screens/home.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="120" column="49" selection-start-line="120" selection-start-column="49" selection-end-line="120" selection-end-column="49" />
-          <folding>
-            <element signature="e#0#69#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -755,17 +681,67 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/lib/custom_widgets/adding/amount_textfield.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="30" column="39" selection-start-line="30" selection-start-column="39" selection-end-line="30" selection-end-column="39" />
+          <folding>
+            <element signature="e#0#70#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/lib/custom_widgets/adding/btn_adding_check.dart">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
-          <caret line="11" column="24" lean-forward="true" selection-start-line="11" selection-start-column="24" selection-end-line="11" selection-end-column="24" />
+          <caret line="11" column="24" selection-start-line="11" selection-start-column="24" selection-end-line="11" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/custom_widgets/home/money_sums.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="13" column="24" lean-forward="true" selection-start-line="13" selection-start-column="24" selection-end-line="13" selection-end-column="24" />
+          <folding>
+            <element signature="e#0#52#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/custom_widgets/adding/add_category_textfield.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="15" column="49" selection-start-line="15" selection-start-column="49" selection-end-line="15" selection-end-column="49" />
+          <folding>
+            <element signature="e#0#70#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/outsourcing/my_functions.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="11" column="7" selection-start-line="11" selection-start-column="7" selection-end-line="11" selection-end-column="7" />
+          <folding>
+            <element signature="e#35#54#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/screens/home.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="256">
+          <caret line="97" column="59" lean-forward="true" selection-start-line="97" selection-start-column="59" selection-end-line="97" selection-end-column="59" />
+          <folding>
+            <element signature="e#0#69#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/screens/adding.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="290">
-          <caret line="80" column="22" lean-forward="true" selection-start-line="80" selection-start-column="22" selection-end-line="80" selection-end-column="22" />
+        <state relative-caret-position="180">
+          <caret line="132" column="39" lean-forward="true" selection-start-line="132" selection-start-column="39" selection-end-line="132" selection-end-column="39" />
           <folding>
             <element signature="e#0#20#0" expanded="true" />
           </folding>

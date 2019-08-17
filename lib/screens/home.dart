@@ -94,7 +94,8 @@ class _HomeState extends State<Home> {
           final MyTransaction _item = _myTransactions[index];
           final String _description = _item.description;
           final double _amount = _item.amount * _item.quantity;
-          final String _stringAmount = _amount.toString();
+          final String _stringAmount =
+              normTwoDecimal(round(_amount, 2).toString());
           return GestureDetector(
             onTap: () {
               Navigator.pushNamed(
@@ -115,29 +116,8 @@ class _HomeState extends State<Home> {
                     _myTransactions.removeAt(index);
                     removeFromDatabase(_item);
                   });
-                  Scaffold.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('"' +
-                          (_description ?? '–') +
-                          '", ' +
-                          AppLocalizations.of(context).amount +
-                          ': ' +
-                          _stringAmount +
-                          ', ' +
-                          AppLocalizations.of(context).removed),
-                      action: SnackBarAction(
-                        label: AppLocalizations.of(context).undo,
-                        onPressed: () {
-                          setState(
-                            () {
-                              _myTransactions.insert(index, _item);
-                              insertInDatabase(_item);
-                            },
-                          );
-                        },
-                      ),
-                    ),
-                  );
+                  _showScaffoldSnackBar(
+                      context, _description, _stringAmount, index, _item);
                 }
               },
               background: DismissibleBackground(),
@@ -162,6 +142,33 @@ class _HomeState extends State<Home> {
         child: CircularProgressIndicator(),
       );
     }
+  }
+
+  void _showScaffoldSnackBar(BuildContext context, String _description,
+      String _stringAmount, int index, MyTransaction _item) {
+    Scaffold.of(context).showSnackBar(
+      SnackBar(
+        content: Text('"' +
+            (_description ?? '–') +
+            '", ' +
+            AppLocalizations.of(context).amount +
+            ': ' +
+            _stringAmount +
+            ', ' +
+            AppLocalizations.of(context).removed),
+        action: SnackBarAction(
+          label: AppLocalizations.of(context).undo,
+          onPressed: () {
+            setState(
+              () {
+                _myTransactions.insert(index, _item);
+                insertInDatabase(_item);
+              },
+            );
+          },
+        ),
+      ),
+    );
   }
 
   double _getBalance() {
