@@ -24,11 +24,18 @@ class ListInfo extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: Column(
-              children: <Widget>[
-                _getLabel(context, AppLocalizations.of(context).category),
-                _getSymbol(context, Icons.category),
-              ],
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border(
+                    left: BorderSide(width: 1, color: Colors.black12),
+                    right: BorderSide(width: 1, color: Colors.black12)),
+              ),
+              child: Column(
+                children: <Widget>[
+                  _getLabel(context, AppLocalizations.of(context).category),
+                  _getSymbol(context, Icons.category),
+                ],
+              ),
             ),
           ),
           Expanded(
@@ -62,7 +69,10 @@ class ListInfo extends StatelessWidget {
     return Expanded(
       child: Container(
         alignment: Alignment.center,
-        child: Icon(symbol),
+        child: Icon(
+          symbol,
+          color: Colors.black45,
+        ),
       ),
     );
   }

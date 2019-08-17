@@ -374,6 +374,7 @@ class _AddingState extends State<Adding> {
 
   void _addCategoryTextFieldOnSubmitted(String text) {
     _setCategory(text);
+    _onCheck();
   }
 
   void _setCategory(String category) async {
