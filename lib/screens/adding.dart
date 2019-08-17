@@ -136,6 +136,16 @@ class _AddingState extends State<Adding> {
                   ),
                   SignSelector(
                     mySwitch: _getSwitch(),
+                    onExpenditure: () {
+                      setState(() {
+                        isRevenue = false;
+                      });
+                    },
+                    onRevenue: () {
+                      setState(() {
+                        isRevenue = true;
+                      });
+                    },
                   ),
                   SizedBox(
                     height: 13,
@@ -162,6 +172,7 @@ class _AddingState extends State<Adding> {
                           onChanged: (text) {
                             _calculateNewBalance();
                           },
+                          onSubmitted: _onSubmitQuantity,
                           controller: _quantityController,
                         ),
                       ),
@@ -181,6 +192,7 @@ class _AddingState extends State<Adding> {
                   SizedBox(height: 13),
                   DescriptionTextField(
                     onChanged: _descriptionTextFieldChanged,
+                    onSubmitted: _submitDescription,
                     descriptionController: _descriptionController,
                   ),
                 ],
@@ -324,6 +336,16 @@ class _AddingState extends State<Adding> {
 
   void _onSubmitAmount(String text) {
     _amount = text;
+    _onCheck();
+  }
+
+  void _onSubmitQuantity(String quantity) {
+    _onCheck();
+  }
+
+  void _submitDescription(String description) {
+    _description = description;
+    _onCheck();
   }
 
   Widget _getSwitch() {

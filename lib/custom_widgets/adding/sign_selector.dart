@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 
 class SignSelector extends StatelessWidget {
   final Widget mySwitch;
+  final VoidCallback onRevenue;
+  final VoidCallback onExpenditure;
 
-  SignSelector({@required this.mySwitch});
+  SignSelector(
+      {@required this.mySwitch,
+      @required this.onRevenue,
+      @required this.onExpenditure});
 
   @override
   Widget build(BuildContext context) {
@@ -13,20 +18,26 @@ class SignSelector extends StatelessWidget {
       width: screenWidth,
       child: FittedBox(
         child: Row(children: <Widget>[
-          Text(
-            '–',
-            style: TextStyle(
-                color: Colors.red, fontSize: 40, fontWeight: FontWeight.bold),
+          GestureDetector(
+            onTap: onExpenditure,
+            child: Text(
+              '–',
+              style: TextStyle(
+                  color: Colors.red, fontSize: 40, fontWeight: FontWeight.bold),
+            ),
           ),
           SizedBox(width: 15),
           mySwitch,
           SizedBox(width: 15),
-          Text(
-            '+',
-            style: TextStyle(
-                color: Colors.lightGreen,
-                fontSize: 40,
-                fontWeight: FontWeight.bold),
+          GestureDetector(
+            onTap: onRevenue,
+            child: Text(
+              '+',
+              style: TextStyle(
+                  color: Colors.lightGreen,
+                  fontSize: 40,
+                  fontWeight: FontWeight.bold),
+            ),
           ),
         ]),
       ),

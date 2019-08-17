@@ -151,7 +151,7 @@ class _HomeState extends State<Home> {
         content: Text('"' +
             (_description ?? '–') +
             '", ' +
-            AppLocalizations.of(context).amount +
+            AppLocalizations.of(context).money +
             ': ' +
             _stringAmount +
             ', ' +

@@ -2,13 +2,17 @@ import 'package:Eyemoney/outsourcing/localization/localizations.dart';
 import 'package:flutter/material.dart';
 
 typedef void DescriptionChangedCallback(String text);
+typedef void DescriptionSubmitCallback(String text);
 
 class DescriptionTextField extends StatelessWidget {
   final DescriptionChangedCallback onChanged;
   final TextEditingController descriptionController;
+  final DescriptionSubmitCallback onSubmitted;
 
   DescriptionTextField(
-      {@required this.descriptionController, @required this.onChanged});
+      {@required this.descriptionController,
+      @required this.onChanged,
+      @required this.onSubmitted});
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +31,7 @@ class DescriptionTextField extends StatelessWidget {
             ')',
       ),
       onChanged: onChanged,
+      onSubmitted: onSubmitted,
       maxLength: 50,
     );
   }
