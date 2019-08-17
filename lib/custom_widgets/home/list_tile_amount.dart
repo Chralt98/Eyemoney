@@ -9,11 +9,15 @@ class ListTileAmount extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
+    final _amountString =
+        (normTwoDecimal(round((amount ?? 0.0), 2).toString()) == '0.00'
+            ? '–'
+            : normTwoDecimal(round((amount ?? 0.0), 2).toString()));
     return Container(
       height: 38,
       child: FittedBox(
         child: Text(
-          normTwoDecimal(round((amount ?? 0.0), 2).toString()),
+          _amountString,
           textAlign: TextAlign.center,
           style: TextStyle(
               color: (amount < 0.0) ? Colors.red : Colors.lightGreen,

@@ -2,18 +2,14 @@ import 'package:Eyemoney/outsourcing/localization/localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 
-typedef String ValidatorCallback(String text);
 typedef void SubmitCallback(String text);
 
 class AmountTextField extends StatelessWidget {
   final MoneyMaskedTextController moneyController;
-  final ValidatorCallback validatorCallback;
   final SubmitCallback submitCallback;
 
   AmountTextField(
-      {@required this.moneyController,
-      @required this.validatorCallback,
-      @required this.submitCallback});
+      {@required this.moneyController, @required this.submitCallback});
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +21,11 @@ class AmountTextField extends StatelessWidget {
         border: UnderlineInputBorder(),
         filled: true,
         icon: Icon(Icons.fiber_smart_record),
-        labelText: AppLocalizations.of(context).amount + ' *',
+        labelText: AppLocalizations.of(context).amount +
+            ' (' +
+            AppLocalizations.of(context).optional +
+            ')',
       ),
-      validator: validatorCallback,
       onFieldSubmitted: submitCallback,
     );
   }

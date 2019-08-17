@@ -42,13 +42,9 @@ class _AddingState extends State<Adding> {
   double _balance = 0.0;
 
   var _moneyController = MoneyMaskedTextController();
-
-  // var _quantityController = TextEditingController(text: '1');
   var _quantityController = MaskedTextController(text: '1', mask: '000');
 
   int _radioVal = 0;
-
-  final _formKey = GlobalKey<FormState>();
 
   ScrollController _scrollController;
   TextEditingController _descriptionController;
@@ -75,7 +71,10 @@ class _AddingState extends State<Adding> {
     final AddingArguments args = ModalRoute.of(context).settings.arguments;
     if (_moneyController.numberValue == 0.0) {
       setState(() {
-        _balance = args.balance ?? 0.0;
+        _balance = (args.myTransaction != null)
+            ? ((args.balance ?? 0.0) -
+                args.myTransaction.amount * args.myTransaction.quantity)
+            : args.balance ?? 0.0;
       });
     } else {
       double quantity;
@@ -86,10 +85,22 @@ class _AddingState extends State<Adding> {
         quantity = double.parse(_quantityController.text ?? 1.0);
       }
       setState(() {
-        _balance = round(
-            args.balance +
-                (isRevenue ? 1 : -1) * _moneyController.numberValue * quantity,
-            2);
+        if (args.myTransaction != null) {
+          _balance = round(
+              (args.balance +
+                      (isRevenue ? 1 : -1) *
+                          _moneyController.numberValue *
+                          quantity) -
+                  (args.myTransaction.amount * args.myTransaction.quantity),
+              2);
+        } else {
+          _balance = round(
+              args.balance +
+                  (isRevenue ? 1 : -1) *
+                      _moneyController.numberValue *
+                      quantity,
+              2);
+        }
       });
     }
   }
@@ -124,79 +135,77 @@ class _AddingState extends State<Adding> {
         children: <Widget>[
           new SingleChildScrollView(
             padding:
-                const EdgeInsets.only(left: 16, right: 16, bottom: 120, top: 0),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: <Widget>[
-                  SizedBox(height: 13),
-                  Text(_balanceString),
-                  SizedBox(
-                    height: 13,
-                  ),
-                  SignSelector(
-                    mySwitch: _getSwitch(),
-                    onExpenditure: () {
-                      setState(() {
-                        isRevenue = false;
-                      });
-                    },
-                    onRevenue: () {
-                      setState(() {
-                        isRevenue = true;
-                      });
-                    },
-                  ),
-                  SizedBox(
-                    height: 13,
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: AmountTextField(
-                            moneyController: _moneyController,
-                            submitCallback: _onSubmitAmount,
-                            validatorCallback: _onValidateAmount),
-                      ),
-                      Icon(Icons.clear),
-                      Container(
-                        width: 60,
-                        child: TextField(
-                          decoration: InputDecoration(
-                            border: UnderlineInputBorder(),
-                            filled: true,
-                          ),
-                          keyboardType: TextInputType.numberWithOptions(
-                              decimal: false, signed: false),
-                          onTap: () => _quantityController.text = '',
-                          onChanged: (text) {
-                            _calculateNewBalance();
-                          },
-                          onSubmitted: _onSubmitQuantity,
-                          controller: _quantityController,
+                const EdgeInsets.only(left: 16, right: 16, bottom: 150, top: 0),
+            child: Column(
+              children: <Widget>[
+                SizedBox(height: 26),
+                SelectedCategory(
+                  selectedCategory: _selectedCategory,
+                ),
+                SizedBox(
+                  height: 13,
+                ),
+                CategoryList(
+                    tiles: _listTiles, reorderCallback: _onReorderCategories),
+                AddCategoryTextField(
+                  onSubmitted: _addCategoryTextFieldOnSubmitted,
+                  addCategoryController: _addCategoryController,
+                ),
+                SizedBox(height: 13),
+                DescriptionTextField(
+                  onChanged: _descriptionTextFieldChanged,
+                  onSubmitted: _submitDescription,
+                  descriptionController: _descriptionController,
+                ),
+                SizedBox(height: 13),
+                Text(_balanceString),
+                SizedBox(
+                  height: 13,
+                ),
+                SignSelector(
+                  mySwitch: _getSwitch(),
+                  onExpenditure: () {
+                    setState(() {
+                      isRevenue = false;
+                    });
+                  },
+                  onRevenue: () {
+                    setState(() {
+                      isRevenue = true;
+                    });
+                  },
+                ),
+                SizedBox(
+                  height: 13,
+                ),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: AmountTextField(
+                          moneyController: _moneyController,
+                          submitCallback: _onSubmitAmount),
+                    ),
+                    Icon(Icons.clear),
+                    Container(
+                      width: 60,
+                      child: TextField(
+                        decoration: InputDecoration(
+                          border: UnderlineInputBorder(),
+                          filled: true,
                         ),
+                        keyboardType: TextInputType.numberWithOptions(
+                            decimal: false, signed: false),
+                        onTap: () => _quantityController.text = '',
+                        onChanged: (text) {
+                          _calculateNewBalance();
+                        },
+                        onSubmitted: _onSubmitQuantity,
+                        controller: _quantityController,
                       ),
-                    ],
-                  ),
-                  SizedBox(height: 26),
-                  SelectedCategory(
-                    selectedCategory: _selectedCategory,
-                  ),
-                  SizedBox(height: 13),
-                  CategoryList(
-                      tiles: _listTiles, reorderCallback: _onReorderCategories),
-                  AddCategoryTextField(
-                    onSubmitted: _addCategoryTextFieldOnSubmitted,
-                    addCategoryController: _addCategoryController,
-                  ),
-                  SizedBox(height: 13),
-                  DescriptionTextField(
-                    onChanged: _descriptionTextFieldChanged,
-                    onSubmitted: _submitDescription,
-                    descriptionController: _descriptionController,
-                  ),
-                ],
-              ),
+                    ),
+                  ],
+                ),
+              ],
             ),
             controller: _scrollController,
           ),
@@ -266,6 +275,7 @@ class _AddingState extends State<Adding> {
     } else {
       isRevenue = false;
     }
+    _calculateNewBalance();
   }
 
   void _deleteCategory(String item) {
@@ -323,15 +333,6 @@ class _AddingState extends State<Adding> {
   Future<Null> _setCategoryPref(List<String> categories) async {
     await _prefs.setStringList(categoryPrefKey, categories);
     _loadCategoryPref(context);
-  }
-
-  String _onValidateAmount(String number) {
-    if (number == '0,00') {
-      _scrollController.animateTo(0,
-          duration: new Duration(milliseconds: 500), curve: Curves.ease);
-      return AppLocalizations.of(context).amountDescription;
-    }
-    return null;
   }
 
   void _onSubmitAmount(String text) {
@@ -399,13 +400,11 @@ class _AddingState extends State<Adding> {
         _addCategoryController.text != _selectedCategory) {
       _setCategory(_addCategoryController.text);
     }
-    if (_formKey.currentState.validate()) {
-      _insertOrUpdateDatabase();
-      try {
-        Navigator.pop(context);
-      } catch (e) {
-        print(e);
-      }
+    _insertOrUpdateDatabase();
+    try {
+      Navigator.pop(context);
+    } catch (e) {
+      print(e);
     }
   }
 
