@@ -278,10 +278,9 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
-    <editor active="true" />
+    <frame x="485" y="22" width="814" height="867" extended-state="0" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25321338" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.5225464" />
       <window_info id="Captures" order="1" side_tool="true" />
       <window_info id="Structure" order="2" side_tool="true" />
       <window_info id="Image Layers" order="3" />
@@ -291,7 +290,7 @@
       <window_info id="Capture Tool" order="7" />
       <window_info id="Favorites" order="8" side_tool="true" />
       <window_info anchor="bottom" id="Dart Analysis" order="0" weight="0.19246298" />
-      <window_info active="true" anchor="bottom" id="Run" order="1" sideWeight="0.5340617" visible="true" weight="0.25706595" />
+      <window_info anchor="bottom" id="Run" order="1" sideWeight="0.5340617" weight="0.260218" />
       <window_info anchor="bottom" id="TODO" order="2" weight="0.32974428" />
       <window_info anchor="bottom" id="Android Profiler" order="3" show_stripe_button="false" />
       <window_info anchor="bottom" id="Logcat" order="4" weight="0.32974428" />
