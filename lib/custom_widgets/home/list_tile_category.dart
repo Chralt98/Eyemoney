@@ -10,7 +10,11 @@ class ListTileCategory extends StatelessWidget {
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
     return Container(
-      child: Text(category ?? AppLocalizations.of(context).other, textAlign: TextAlign.center),
+      child: Text(
+        category ?? AppLocalizations.of(context).other,
+        textAlign: TextAlign.center,
+        style: Theme.of(context).textTheme.body1,
+      ),
       width: screenWidth / 3,
     );
   }

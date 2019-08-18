@@ -144,5 +144,20 @@
   "@health": {
     "type": "text",
     "placeholders": {}
-  }
+  },
+  "money": "钱",
+    "@money": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "balance": "平衡",
+    "@balance": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "optional": "可选的",
+    "@optional": {
+      "type": "text",
+      "placeholders": {}
+    }
 }

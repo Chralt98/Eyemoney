@@ -144,5 +144,20 @@
   "@health": {
     "type": "text",
     "placeholders": {}
-  }
+  },
+  "money": "Деньги",
+    "@money": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "balance": "остаток средств",
+    "@balance": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "optional": "необязательный",
+    "@optional": {
+      "type": "text",
+      "placeholders": {}
+    }
 }

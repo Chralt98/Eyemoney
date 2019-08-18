@@ -7,12 +7,15 @@ class AddCategoryTextField extends StatelessWidget {
   final TextFieldChangedCallback onSubmitted;
   final TextEditingController addCategoryController;
 
-  AddCategoryTextField({@required this.onSubmitted, @required this.addCategoryController});
+  AddCategoryTextField(
+      {@required this.onSubmitted, @required this.addCategoryController});
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsetsDirectional.only(end: 40),
       child: TextField(
+        style: Theme.of(context).textTheme.body2,
         textCapitalization: TextCapitalization.words,
         controller: addCategoryController,
         decoration: InputDecoration(
@@ -22,7 +25,7 @@ class AddCategoryTextField extends StatelessWidget {
           hintText: AppLocalizations.of(context).addCategoryDescription,
           labelText: AppLocalizations.of(context).addCategory,
         ),
-        onSubmitted: (String category) => onSubmitted(category),
+        onSubmitted: onSubmitted,
         keyboardType: TextInputType.text,
         maxLength: 25,
       ),

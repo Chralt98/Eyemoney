@@ -9,12 +9,20 @@ class MoneySums extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _revenue =
+        _getSum(context, _getTupleRevenueExpenditure()[0], Colors.lightGreen);
+    final _expenditure =
+        _getSum(context, _getTupleRevenueExpenditure()[1], Colors.red);
+    final _balance = _getSum(
+        context,
+        _getTupleRevenueExpenditure()[0] + _getTupleRevenueExpenditure()[1],
+        Theme.of(context).textTheme.body1.color);
     return Container(
       child: Row(
         children: <Widget>[
-          this._getSum(context, _getTupleRevenueExpenditure()[0], Colors.lightGreen),
-          this._getSum(context, _getTupleRevenueExpenditure()[1], Colors.red),
-          this._getSum(context, _getTupleRevenueExpenditure()[0] + _getTupleRevenueExpenditure()[1], Color.fromARGB(255, 0, 0, 50)),
+          _revenue,
+          _expenditure,
+          _balance,
         ],
       ),
     );
@@ -26,9 +34,11 @@ class MoneySums extends StatelessWidget {
     if (this.transactions != null) {
       for (int i = 0; i < this.transactions.length; i++) {
         if (this.transactions[i].amount > 0) {
-          sumRevenue += this.transactions[i].amount;
+          sumRevenue +=
+              this.transactions[i].amount * this.transactions[i].quantity;
         } else if (this.transactions[i].amount < 0) {
-          sumExpenditure += this.transactions[i].amount;
+          sumExpenditure +=
+              this.transactions[i].amount * this.transactions[i].quantity;
         }
       }
     }
@@ -42,7 +52,9 @@ class MoneySums extends StatelessWidget {
       height: 26,
       width: screenWidth / 3,
       child: FittedBox(
-        child: Text(stringAmount, textAlign: TextAlign.center, style: TextStyle(color: color)),
+        child: Text(stringAmount,
+            textAlign: TextAlign.center,
+            style: TextStyle(color: color, fontWeight: FontWeight.bold)),
         fit: BoxFit.scaleDown,
       ),
     );

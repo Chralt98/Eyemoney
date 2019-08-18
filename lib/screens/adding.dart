@@ -3,24 +3,27 @@ import 'dart:async';
 import 'package:Eyemoney/custom_widgets/adding/add_category_textfield.dart';
 import 'package:Eyemoney/custom_widgets/adding/amount_textfield.dart';
 import 'package:Eyemoney/custom_widgets/adding/btn_adding_check.dart';
+import 'package:Eyemoney/custom_widgets/adding/category_item.dart';
+import 'package:Eyemoney/custom_widgets/adding/category_list.dart';
 import 'package:Eyemoney/custom_widgets/adding/description_textfield.dart';
+import 'package:Eyemoney/custom_widgets/adding/list_decoration.dart';
+import 'package:Eyemoney/custom_widgets/adding/selected_category.dart';
 import 'package:Eyemoney/custom_widgets/adding/sign_selector.dart';
 import 'package:Eyemoney/custom_widgets/dismissible_background.dart';
 import 'package:Eyemoney/database/transaction.dart';
 import 'package:Eyemoney/outsourcing/localization/localizations.dart';
+import 'package:Eyemoney/outsourcing/my_classes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../outsourcing/globals.dart';
+import '../outsourcing/global_vars.dart';
 import '../outsourcing/my_functions.dart';
 
 class Adding extends StatefulWidget {
-  final DateTime selectedDate;
-  final MyTransaction myTransaction;
+  static const routeName = '/adding';
 
-  const Adding({Key key, @required this.selectedDate, this.myTransaction}) : super(key: key);
+  const Adding({Key key}) : super(key: key);
 
   @override
   _AddingState createState() => new _AddingState();
@@ -28,116 +31,102 @@ class Adding extends StatefulWidget {
 
 class _AddingState extends State<Adding> {
   List<String> _categories = List<String>();
+
   SharedPreferences _prefs;
+
   String _description;
   String _amount = '0.00';
-  String _selectedCategory;
-  var _moneyController = MoneyMaskedTextController(decimalSeparator: '.', thousandSeparator: ',');
+  String _selectedCategory = '';
+  bool isRevenue = false;
+
+  double _balance = 0.0;
+
+  var _moneyController = MoneyMaskedTextController();
+  var _quantityController = MaskedTextController(text: '1', mask: '000');
+
   int _radioVal = 0;
-  final _formKey = GlobalKey<FormState>();
+
   ScrollController _scrollController;
   TextEditingController _descriptionController;
   TextEditingController _addCategoryController;
-  bool isRevenue = false;
 
   @override
   void initState() {
     super.initState();
-    this._scrollController = new ScrollController();
-    this._descriptionController = new TextEditingController();
-    this._addCategoryController = new TextEditingController();
+    _scrollController = new ScrollController();
+    _descriptionController = new TextEditingController();
+    _addCategoryController = new TextEditingController();
     SharedPreferences.getInstance()
       ..then(
         (prefs) {
-          setState(() => this._prefs = prefs);
-          _selectedCategory = AppLocalizations.of(context).other;
-          this._loadCategoryPref(context);
-          if (widget.myTransaction != null) {
-            double temp = ((widget.myTransaction.amount < 0 ? widget.myTransaction.amount * -1 : widget.myTransaction.amount));
-            this._amount = temp.toString() ?? '0.00';
-            _moneyController.updateValue(temp);
-            bool transactionSign = widget.myTransaction.amount >= 0 ? true : false;
-            this.isRevenue = transactionSign;
-            this._description = widget.myTransaction.description;
-            this._descriptionController.text = this._description;
-            this._selectedCategory = widget.myTransaction.category;
-            this._setCategory(this._selectedCategory);
-          } else {
-            this.isRevenue = false;
-          }
+          _prefs = prefs;
+          _loadCategoryPref(context);
+          _initDefaultValues();
+          _moneyController.addListener(_calculateNewBalance);
         },
       );
   }
 
+  void _calculateNewBalance() {
+    final AddingArguments args = ModalRoute.of(context).settings.arguments;
+    if (_moneyController.numberValue == 0.0) {
+      setState(() {
+        _balance = (args.myTransaction != null)
+            ? ((args.balance ?? 0.0) -
+                args.myTransaction.amount * args.myTransaction.quantity)
+            : args.balance ?? 0.0;
+      });
+    } else {
+      double quantity;
+      if (deleteSpaces(_quantityController.text) == '' ||
+          _quantityController.text == null) {
+        quantity = 1.0;
+      } else {
+        quantity = double.parse(_quantityController.text ?? 1.0);
+      }
+      setState(() {
+        if (args.myTransaction != null) {
+          _balance = round(
+              (args.balance +
+                      (isRevenue ? 1 : -1) *
+                          _moneyController.numberValue *
+                          quantity) -
+                  (args.myTransaction.amount * args.myTransaction.quantity),
+              2);
+        } else {
+          _balance = round(
+              args.balance +
+                  (isRevenue ? 1 : -1) *
+                      _moneyController.numberValue *
+                      quantity,
+              2);
+        }
+      });
+    }
+  }
+
   @override
   void dispose() {
-    this._addCategoryController.dispose();
-    this._scrollController.dispose();
-    this._moneyController.dispose();
-    this._descriptionController.dispose();
+    _addCategoryController.dispose();
+    _scrollController.dispose();
+    _moneyController.dispose();
+    _descriptionController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final _listTiles = _categories
-        .map(
-          (item) => Dismissible(
-            key: Key(item.toString()),
-            direction: DismissDirection.endToStart,
-            onDismissed: (DismissDirection dir) {
-              if (dir == DismissDirection.endToStart) {
-                setState(
-                  () {
-                    this._deleteCategory(item);
-                    this._setCategoryPref(this._categories);
-                  },
-                );
-
-                Fluttertoast.showToast(
-                  msg: item + ' ' + AppLocalizations.of(context).removed,
-                  toastLength: Toast.LENGTH_SHORT,
-                  gravity: ToastGravity.BOTTOM,
-                  timeInSecForIos: 1,
-                  fontSize: 16.0,
-                );
-              }
-            },
-            background: DismissibleBackground(),
-            child: Container(
-              decoration: BoxDecoration(
-                  color: (_categories.indexOf(item) % 2 == 0) ? Color.fromARGB(5, 255, 255, 0) : Color.fromARGB(5, 0, 0, 255),
-                  border: Border.fromBorderSide(BorderSide(width: 0.0, color: Colors.black12, style: BorderStyle.solid))),
-              child: RadioListTile<int>(
-                value: _categories.indexOf(item),
-                groupValue: this._radioVal,
-                onChanged: (int value) {
-                  setState(
-                    () {
-                      this._radioVal = value;
-                      this._selectedCategory = item;
-                    },
-                  );
-                },
-                secondary: Icon(Icons.dehaze),
-                activeColor: Colors.blue,
-                title: Container(
-                  height: 48,
-                  child: FittedBox(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      item,
-                    ),
-                    fit: BoxFit.scaleDown,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        )
-        .toList();
+    final _listTiles = _getListTiles();
+    final String _balanceString = AppLocalizations.of(context).balance +
+        ': ' +
+        (_balance.toString() == '0.0'
+            ? '0.00'
+            : normTwoDecimal(_balance.toString()));
+    final bool _addingVisibility =
+        MediaQuery.of(context).viewInsets.bottom == 0 ? true : false;
     return new Scaffold(
       appBar: new AppBar(
+        backgroundColor: Theme.of(context).accentColor,
         title: Text(AppLocalizations.of(context).add),
         actions: [],
       ),
@@ -145,83 +134,189 @@ class _AddingState extends State<Adding> {
         alignment: AlignmentDirectional.topCenter,
         children: <Widget>[
           new SingleChildScrollView(
-            padding: const EdgeInsets.only(left: 16, right: 16, bottom: 120, top: 0),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: <Widget>[
-                  SizedBox(height: 40),
-                  AmountTextField(moneyController: _moneyController, submitCallback: _onSubmitAmount, validatorCallback: _onValidateAmount),
-                  SizedBox(height: 26),
-                  DescriptionTextField(
-                    onChanged: _descriptionTextFieldChanged,
-                    descriptionController: _descriptionController,
-                  ),
-                  SizedBox(height: 13),
-                  SignSelector(
-                    mySwitch: _getSwitch(),
-                  ),
-                  SizedBox(height: 26),
-                  AddCategoryTextField(
-                    onSubmitted: _addCategoryTextFieldOnSubmitted,
-                    addCategoryController: _addCategoryController,
-                  ),
-                  SizedBox(height: 26),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 40),
-                    child: Container(
-                      height: 282,
-                      decoration: BoxDecoration(border: Border.all(color: Colors.black12, width: 1), borderRadius: BorderRadius.circular(5)),
-                      child: ReorderableListView(
-                        children: _listTiles,
-                        scrollDirection: Axis.vertical,
-                        onReorder: _onReorderCategories,
+            padding:
+                const EdgeInsets.only(left: 16, right: 16, bottom: 150, top: 0),
+            child: Column(
+              children: <Widget>[
+                SizedBox(height: 26),
+                SelectedCategory(
+                  selectedCategory: _selectedCategory,
+                ),
+                SizedBox(
+                  height: 13,
+                ),
+                CategoryList(
+                    tiles: _listTiles, reorderCallback: _onReorderCategories),
+                AddCategoryTextField(
+                  onSubmitted: _addCategoryTextFieldOnSubmitted,
+                  addCategoryController: _addCategoryController,
+                ),
+                SizedBox(height: 13),
+                DescriptionTextField(
+                  onChanged: _descriptionTextFieldChanged,
+                  onSubmitted: _submitDescription,
+                  descriptionController: _descriptionController,
+                ),
+                SizedBox(height: 13),
+                Text(_balanceString),
+                SizedBox(
+                  height: 13,
+                ),
+                SignSelector(
+                  mySwitch: _getSwitch(),
+                  onExpenditure: () {
+                    setState(() {
+                      isRevenue = false;
+                    });
+                  },
+                  onRevenue: () {
+                    setState(() {
+                      isRevenue = true;
+                    });
+                  },
+                ),
+                SizedBox(
+                  height: 13,
+                ),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: AmountTextField(
+                          moneyController: _moneyController,
+                          submitCallback: _onSubmitAmount),
+                    ),
+                    Icon(Icons.clear),
+                    Container(
+                      width: 60,
+                      child: TextField(
+                        decoration: InputDecoration(
+                          border: UnderlineInputBorder(),
+                          filled: true,
+                        ),
+                        keyboardType: TextInputType.numberWithOptions(
+                            decimal: false, signed: false),
+                        onTap: () => _quantityController.text = '',
+                        onChanged: (text) {
+                          _calculateNewBalance();
+                        },
+                        onSubmitted: _onSubmitQuantity,
+                        controller: _quantityController,
                       ),
                     ),
-                  ),
-                ],
-              ),
+                  ],
+                ),
+              ],
             ),
             controller: _scrollController,
           ),
-          AddingCheck(onPressed: () => this._onCheck()),
+          AddingCheck(
+            onPressed: () => _onCheck(),
+            isVisible: _addingVisibility,
+          ),
         ],
       ),
     );
   }
 
+  List<Dismissible> _getListTiles() {
+    return _categories.map((item) {
+      final index = _categories.indexOf(item);
+      return Dismissible(
+        key: Key(item.toString()),
+        direction: DismissDirection.endToStart,
+        onDismissed: (DismissDirection dir) {
+          if (dir == DismissDirection.endToStart) {
+            _deleteCategory(item);
+            showToast(item + ' ' + AppLocalizations.of(context).removed);
+          }
+        },
+        background: DismissibleBackground(),
+        child: ListDecoration(
+          index: index,
+          tile: RadioListTile<int>(
+            value: index,
+            groupValue: _radioVal,
+            onChanged: (int value) {
+              setState(
+                () {
+                  _radioVal = value;
+                  _selectedCategory = item;
+                },
+              );
+            },
+            secondary: Icon(Icons.dehaze),
+            activeColor: Theme.of(context).primaryColor,
+            title: CategoryItem(
+              item: item,
+            ),
+          ),
+        ),
+      );
+    }).toList();
+  }
+
+  void _initDefaultValues() {
+    final AddingArguments args = ModalRoute.of(context).settings.arguments;
+    _balance = args.balance ?? 0.0;
+    _selectedCategory = _categories.first ?? AppLocalizations.of(context).other;
+    if (args.myTransaction != null) {
+      double temp = ((args.myTransaction.amount < 0
+          ? args.myTransaction.amount * -1
+          : args.myTransaction.amount));
+      _amount = temp.toString() ?? '0.00';
+      _moneyController.updateValue(temp);
+      _quantityController.text = args.myTransaction.quantity.toString();
+      _description = args.myTransaction.description;
+      _descriptionController.text = _description;
+      _selectedCategory = args.myTransaction.category;
+      _setCategory(_selectedCategory);
+      bool transactionSign = args.myTransaction.amount > 0 ? true : false;
+      isRevenue = transactionSign;
+    } else {
+      isRevenue = false;
+    }
+    _calculateNewBalance();
+  }
+
   void _deleteCategory(String item) {
     int _selectedIndex = _categories.indexOf(_selectedCategory);
     int _index = _categories.indexOf(item);
-    this._categories.removeAt(_index);
+    _categories.removeAt(_index);
     if (_index < _selectedIndex) {
-      this._radioVal--;
+      _radioVal--;
     }
-    if (this._categories.isEmpty) {
+    if (_categories.isEmpty) {
       _categories.insert(0, AppLocalizations.of(context).other);
-      this._radioVal = 0;
-    } else if (this._categories.isNotEmpty && this._selectedCategory == item) {
-      this._radioVal = 0;
+      _radioVal = 0;
+    } else if (_categories.isNotEmpty && _selectedCategory == item) {
+      _radioVal = 0;
     }
+    // _selectedCategory is now set
+    _selectedCategory = _categories[_radioVal];
+    setState(() {
+      _setCategoryPref(_categories);
+    });
   }
 
   void _onReorderCategories(int oldIndex, int newIndex) {
-    String old = this._categories[oldIndex];
+    String old = _categories[oldIndex];
     if (oldIndex > newIndex) {
       for (int i = oldIndex; i > newIndex; i--) {
-        this._categories[i] = this._categories[i - 1];
+        _categories[i] = _categories[i - 1];
       }
-      this._categories[newIndex] = old;
-      this._radioVal = newIndex;
+      _categories[newIndex] = old;
+      _radioVal = newIndex;
+      _selectedCategory = _categories[_radioVal];
     } else {
       for (int i = oldIndex; i < newIndex - 1; i++) {
-        this._categories[i] = this._categories[i + 1];
+        _categories[i] = _categories[i + 1];
       }
-      this._categories[newIndex - 1] = old;
-      this._radioVal = newIndex - 1;
+      _categories[newIndex - 1] = old;
+      _radioVal = newIndex - 1;
+      _selectedCategory = _categories[_radioVal];
     }
     setState(() {
-      this._setCategoryPref(this._categories);
+      _setCategoryPref(_categories);
     });
   }
 
@@ -229,35 +324,43 @@ class _AddingState extends State<Adding> {
   void _loadCategoryPref(BuildContext context) {
     setState(
       () {
-        _categories = this._prefs.getStringList(categoryPrefKey) ?? getStandardCategories(context);
+        _categories = _prefs.getStringList(categoryPrefKey) ??
+            getStandardCategories(context);
       },
     );
   }
 
   Future<Null> _setCategoryPref(List<String> categories) async {
-    await this._prefs.setStringList(categoryPrefKey, categories);
+    await _prefs.setStringList(categoryPrefKey, categories);
     _loadCategoryPref(context);
   }
 
-  String _onValidateAmount(String number) {
-    if (number == '0.00') {
-      _scrollController.animateTo(0, duration: new Duration(milliseconds: 500), curve: Curves.ease);
-      return AppLocalizations.of(context).amountDescription;
-    }
-    return null;
+  void _onSubmitAmount(String text) {
+    _amount = text;
+    _onCheck();
   }
 
-  void _onSubmitAmount(String text) {
-    this._amount = text;
+  void _onSubmitQuantity(String quantity) {
+    _onCheck();
+  }
+
+  void _submitDescription(String description) {
+    _description = description;
+    _onCheck();
   }
 
   Widget _getSwitch() {
     return Container(
       child: Transform.scale(
-        scale: 1.5,
+        scale: 2,
         child: Switch(
-          value: this.isRevenue,
-          onChanged: (bool value) => setState(() => this.isRevenue = value),
+          value: isRevenue,
+          onChanged: (bool value) => setState(
+            () {
+              isRevenue = value;
+              _calculateNewBalance();
+            },
+          ),
           activeColor: Colors.lightGreen,
           inactiveThumbColor: Colors.red,
           inactiveTrackColor: Color.fromARGB(120, 255, 0, 0),
@@ -267,63 +370,73 @@ class _AddingState extends State<Adding> {
   }
 
   void _descriptionTextFieldChanged(String text) {
-    this._description = text;
+    _description = deleteSpaces(text);
   }
 
   void _addCategoryTextFieldOnSubmitted(String text) {
-    this._setCategory(text);
+    _setCategory(text);
+    _onCheck();
   }
 
   void _setCategory(String category) async {
-    if (category.length == category.split(' ').length - 1) {
-      category = category.replaceAll(' ', '');
-    }
-    if (this._categories.contains(category)) {
-      this._selectedCategory = category;
-      this._radioVal = this._categories.indexOf(category);
+    category = deleteSpaces(category);
+    if (_categories.contains(category)) {
+      _selectedCategory = category;
+      _radioVal = _categories.indexOf(_selectedCategory);
     } else if (!_categories.contains(category) && category.isNotEmpty) {
-      this._categories.add(category);
-      this._selectedCategory = category;
-      this._radioVal = this._categories.indexOf(category);
-    } else {
-      this._selectedCategory = AppLocalizations.of(context).other;
-      this._radioVal = 0;
+      _radioVal = 0;
+      _categories.insert(_radioVal, category);
+      _selectedCategory = _categories[_radioVal];
+    } else if (!_categories.contains(category) && category.isEmpty) {
+      _radioVal = 0;
+      _selectedCategory = _categories[_radioVal];
     }
-    await this._setCategoryPref(this._categories);
-    this._addCategoryController.text = '';
+    await _setCategoryPref(_categories);
+    _addCategoryController.text = '';
   }
 
-  void _onCheck() async {
-    if (this._addCategoryController.text != '' && this._addCategoryController.text != this._selectedCategory) {
-      this._setCategory(this._addCategoryController.text);
+  void _onCheck() {
+    if (_addCategoryController.text != '' &&
+        _addCategoryController.text != _selectedCategory) {
+      _setCategory(_addCategoryController.text);
     }
-    if (_formKey.currentState.validate()) {
-      this._amount = _moneyController.numberValue.toString();
-      final int sign = this.isRevenue ? 1 : -1;
-      final double _realAmount = round((sign) * double.parse(_amount), 2);
-      if (widget.myTransaction != null) {
-        final MyTransaction data = MyTransaction(
-          id: widget.myTransaction.id,
-          category: this._selectedCategory,
-          description: this._description,
-          amount: _realAmount,
-          date: DateTime((widget.selectedDate ?? DateTime.now()).year, (widget.selectedDate ?? DateTime.now()).month).toString(),
-        );
-        await updateTransaction(data);
-      } else {
-        final MyTransaction data = MyTransaction(
-          category: _selectedCategory,
-          description: _description,
-          amount: _realAmount,
-          date: DateTime((widget.selectedDate ?? DateTime.now()).year, (widget.selectedDate ?? DateTime.now()).month).toString(),
-        );
-        await insertInDatabase(data);
-      }
-      try {
-        Navigator.pop(context);
-      } catch (e) {
-        print(e);
-      }
+    _insertOrUpdateDatabase();
+    try {
+      Navigator.pop(context);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void _insertOrUpdateDatabase() async {
+    _amount = _moneyController.numberValue.toString();
+    final int sign = isRevenue ? 1 : -1;
+
+    _description = _description == '' ? '–' : _description;
+
+    int _quantity = 1;
+    if (_quantityController.text != '') {
+      _quantity = int.parse(_quantityController.text);
+    }
+    final double _realAmount = round((sign) * double.parse(_amount), 2);
+
+    final AddingArguments args = ModalRoute.of(context).settings.arguments;
+
+    final MyTransaction data = MyTransaction(
+      id: (args.myTransaction != null) ? args.myTransaction.id : null,
+      category: _selectedCategory,
+      description: _description,
+      amount: _realAmount,
+      quantity: _quantity,
+      date: DateTime((args.selectedDate ?? DateTime.now()).year,
+              (args.selectedDate ?? DateTime.now()).month)
+          .toString(),
+    );
+
+    if (args.myTransaction != null) {
+      await updateTransaction(data);
+    } else {
+      await insertInDatabase(data);
     }
   }
 }

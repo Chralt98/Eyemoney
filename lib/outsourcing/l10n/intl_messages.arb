@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2019-08-11T12:04:26.558049",
+  "@@last_modified": "2019-08-16T19:11:40.250071",
   "home": "Home",
   "@home": {
     "type": "text",
@@ -142,6 +142,21 @@
   },
   "health": "health",
   "@health": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "money": "money",
+  "@money": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "balance": "balance",
+  "@balance": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "optional": "optional",
+  "@optional": {
     "type": "text",
     "placeholders": {}
   }

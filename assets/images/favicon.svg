@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   enable-background="new 0 0 38.1 38.1"
+   version="1.1"
+   viewBox="0 0 38.1 38.1"
+   id="svg16"
+   sodipodi:docname="flavicon.svg"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   inkscape:export-filename="/home/chralt/AndroidStudioProjects/Eyemoney/assets/images/flavicon.png"
+   inkscape:export-xdpi="3259.4163"
+   inkscape:export-ydpi="3259.4163">
+  <metadata
+     id="metadata22">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs20" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1027"
+     id="namedview18"
+     showgrid="false"
+     inkscape:zoom="6.194226"
+     inkscape:cx="-25.830507"
+     inkscape:cy="19.049999"
+     inkscape:window-x="0"
+     inkscape:window-y="25"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg16" />
+  <style
+     type="text/css"
+     id="style2">.st0{fill:#00A5CB;} .st1{fill:#0190B0;} .st2{fill:#FFFFFF;} .st3{fill:#F2F2F2;}</style>
+  <path
+     class="st0"
+     d="M19.2,38C8.8,38,0.3,29.5,0.3,19.1S8.8,0.3,19.2,0.3"
+     id="path4"
+     style="fill:#3f51b5;fill-opacity:1" />
+  <path
+     class="st1"
+     d="M19.2,0.3C29.6,0.3,38,8.7,38,19.1S29.6,38,19.2,38"
+     id="path6"
+     style="fill:#3949ab;fill-opacity:1" />
+  <path
+     class="st2"
+     d="m25.6 11.8l0.8-0.8c-0.4-0.6-1.1-1-1.9-1h-1.2c-0.2-1-1-1.7-2-1.7h-1.2v-0.1c0-0.7-0.6-1.2-1.2-1.2h-0.2c-0.7 0-1.2 0.6-1.2 1.2v0.1h-1.3c-1 0-1.8 0.7-2 1.7h-1.2c-1.3 0-2.4 1.1-2.4 2.4v15.4c0 1.3 1.1 2.4 2.4 2.4h11.5c1.3 0 2.4-1.1 2.4-2.4v-9.8l-6.3 6.3-3.8-3.8 8.6-8.6 1.5 1.5v-0.4l-1.3-1.2zm-6.1 12.7l-3.5 1-0.5-0.6 1-3.3 3 2.9zm-0.8-15.6c-0.4 0-0.7-0.3-0.7-0.7s0.3-0.7 0.7-0.7 0.7 0.3 0.7 0.7c0 0.5-0.3 0.7-0.7 0.7z"
+     id="path8" />
+  <polygon
+     class="st2"
+     points="17.4 20.6 20.5 23.7 26.8 17.3 28.4 15.7 25.3 12.7"
+     id="polygon10" />
+  <polygon
+     class="st2"
+     points="16.3 24.9 18.6 24.2 16.9 22.5 16.2 24.8"
+     id="polygon12" />
+  <path
+     class="st2"
+     d="m26.2 11.8l2.4-2.4c0.3-0.3 1.1-0.4 1.4 0l1.6 1.6c0.4 0.4 0.3 1.1 0 1.4l-2.4 2.4-3-3z"
+     id="path14" />
+</svg>
