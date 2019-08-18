@@ -25,7 +25,7 @@ class AddCategoryTextField extends StatelessWidget {
           hintText: AppLocalizations.of(context).addCategoryDescription,
           labelText: AppLocalizations.of(context).addCategory,
         ),
-        onSubmitted: (String category) => onSubmitted(category),
+        onSubmitted: onSubmitted,
         keyboardType: TextInputType.text,
         maxLength: 25,
       ),

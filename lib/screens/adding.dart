@@ -270,7 +270,7 @@ class _AddingState extends State<Adding> {
       _descriptionController.text = _description;
       _selectedCategory = args.myTransaction.category;
       _setCategory(_selectedCategory);
-      bool transactionSign = args.myTransaction.amount >= 0 ? true : false;
+      bool transactionSign = args.myTransaction.amount > 0 ? true : false;
       isRevenue = transactionSign;
     } else {
       isRevenue = false;
