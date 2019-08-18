@@ -9,10 +9,7 @@ class DescriptionTextField extends StatelessWidget {
   final TextEditingController descriptionController;
   final DescriptionSubmitCallback onSubmitted;
 
-  DescriptionTextField(
-      {@required this.descriptionController,
-      @required this.onChanged,
-      @required this.onSubmitted});
+  DescriptionTextField({@required this.descriptionController, @required this.onChanged, @required this.onSubmitted});
 
   @override
   Widget build(BuildContext context) {
@@ -25,10 +22,7 @@ class DescriptionTextField extends StatelessWidget {
         filled: true,
         icon: Icon(Icons.info_outline),
         hintText: AppLocalizations.of(context).descriptionQuestion,
-        labelText: AppLocalizations.of(context).description +
-            ' (' +
-            AppLocalizations.of(context).optional +
-            ')',
+        labelText: AppLocalizations.of(context).description + ' (' + AppLocalizations.of(context).optional + ')',
       ),
       onChanged: onChanged,
       onSubmitted: onSubmitted,

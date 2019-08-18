@@ -71,35 +71,21 @@ class _AddingState extends State<Adding> {
     final AddingArguments args = ModalRoute.of(context).settings.arguments;
     if (_moneyController.numberValue == 0.0) {
       setState(() {
-        _balance = (args.myTransaction != null)
-            ? ((args.balance ?? 0.0) -
-                args.myTransaction.amount * args.myTransaction.quantity)
-            : args.balance ?? 0.0;
+        _balance = (args.myTransaction != null) ? ((args.balance ?? 0.0) - args.myTransaction.amount * args.myTransaction.quantity) : args.balance ?? 0.0;
       });
     } else {
       double quantity;
-      if (deleteSpaces(_quantityController.text) == '' ||
-          _quantityController.text == null) {
+      if (deleteSpaces(_quantityController.text) == '' || _quantityController.text == null) {
         quantity = 1.0;
       } else {
         quantity = double.parse(_quantityController.text ?? 1.0);
       }
       setState(() {
         if (args.myTransaction != null) {
-          _balance = round(
-              (args.balance +
-                      (isRevenue ? 1 : -1) *
-                          _moneyController.numberValue *
-                          quantity) -
-                  (args.myTransaction.amount * args.myTransaction.quantity),
-              2);
+          _balance =
+              round((args.balance + (isRevenue ? 1 : -1) * _moneyController.numberValue * quantity) - (args.myTransaction.amount * args.myTransaction.quantity), 2);
         } else {
-          _balance = round(
-              args.balance +
-                  (isRevenue ? 1 : -1) *
-                      _moneyController.numberValue *
-                      quantity,
-              2);
+          _balance = round(args.balance + (isRevenue ? 1 : -1) * _moneyController.numberValue * quantity, 2);
         }
       });
     }
@@ -117,13 +103,8 @@ class _AddingState extends State<Adding> {
   @override
   Widget build(BuildContext context) {
     final _listTiles = _getListTiles();
-    final String _balanceString = AppLocalizations.of(context).balance +
-        ': ' +
-        (_balance.toString() == '0.0'
-            ? '0.00'
-            : normTwoDecimal(_balance.toString()));
-    final bool _addingVisibility =
-        MediaQuery.of(context).viewInsets.bottom == 0 ? true : false;
+    final String _balanceString = AppLocalizations.of(context).balance + ': ' + (_balance.toString() == '0.0' ? '0.00' : normTwoDecimal(_balance.toString()));
+    final bool _addingVisibility = MediaQuery.of(context).viewInsets.bottom == 0 ? true : false;
     return new Scaffold(
       appBar: new AppBar(
         backgroundColor: Theme.of(context).accentColor,
@@ -134,8 +115,7 @@ class _AddingState extends State<Adding> {
         alignment: AlignmentDirectional.topCenter,
         children: <Widget>[
           new SingleChildScrollView(
-            padding:
-                const EdgeInsets.only(left: 16, right: 16, bottom: 150, top: 0),
+            padding: const EdgeInsets.only(left: 16, right: 16, bottom: 150, top: 0),
             child: Column(
               children: <Widget>[
                 SizedBox(height: 26),
@@ -145,8 +125,7 @@ class _AddingState extends State<Adding> {
                 SizedBox(
                   height: 13,
                 ),
-                CategoryList(
-                    tiles: _listTiles, reorderCallback: _onReorderCategories),
+                CategoryList(tiles: _listTiles, reorderCallback: _onReorderCategories),
                 AddCategoryTextField(
                   onSubmitted: _addCategoryTextFieldOnSubmitted,
                   addCategoryController: _addCategoryController,
@@ -181,9 +160,7 @@ class _AddingState extends State<Adding> {
                 Row(
                   children: <Widget>[
                     Expanded(
-                      child: AmountTextField(
-                          moneyController: _moneyController,
-                          submitCallback: _onSubmitAmount),
+                      child: AmountTextField(moneyController: _moneyController, submitCallback: _onSubmitAmount),
                     ),
                     Icon(Icons.clear),
                     Container(
@@ -193,8 +170,7 @@ class _AddingState extends State<Adding> {
                           border: UnderlineInputBorder(),
                           filled: true,
                         ),
-                        keyboardType: TextInputType.numberWithOptions(
-                            decimal: false, signed: false),
+                        keyboardType: TextInputType.numberWithOptions(decimal: false, signed: false),
                         onTap: () => _quantityController.text = '',
                         onChanged: (text) {
                           _calculateNewBalance();
@@ -260,9 +236,7 @@ class _AddingState extends State<Adding> {
     _balance = args.balance ?? 0.0;
     _selectedCategory = _categories.first ?? AppLocalizations.of(context).other;
     if (args.myTransaction != null) {
-      double temp = ((args.myTransaction.amount < 0
-          ? args.myTransaction.amount * -1
-          : args.myTransaction.amount));
+      double temp = ((args.myTransaction.amount < 0 ? args.myTransaction.amount * -1 : args.myTransaction.amount));
       _amount = temp.toString() ?? '0.00';
       _moneyController.updateValue(temp);
       _quantityController.text = args.myTransaction.quantity.toString();
@@ -324,8 +298,7 @@ class _AddingState extends State<Adding> {
   void _loadCategoryPref(BuildContext context) {
     setState(
       () {
-        _categories = _prefs.getStringList(categoryPrefKey) ??
-            getStandardCategories(context);
+        _categories = _prefs.getStringList(categoryPrefKey) ?? getStandardCategories(context);
       },
     );
   }
@@ -375,7 +348,6 @@ class _AddingState extends State<Adding> {
 
   void _addCategoryTextFieldOnSubmitted(String text) {
     _setCategory(text);
-    _onCheck();
   }
 
   void _setCategory(String category) async {
@@ -396,8 +368,7 @@ class _AddingState extends State<Adding> {
   }
 
   void _onCheck() {
-    if (_addCategoryController.text != '' &&
-        _addCategoryController.text != _selectedCategory) {
+    if (_addCategoryController.text != '' && _addCategoryController.text != _selectedCategory) {
       _setCategory(_addCategoryController.text);
     }
     _insertOrUpdateDatabase();
@@ -428,9 +399,7 @@ class _AddingState extends State<Adding> {
       description: _description,
       amount: _realAmount,
       quantity: _quantity,
-      date: DateTime((args.selectedDate ?? DateTime.now()).year,
-              (args.selectedDate ?? DateTime.now()).month)
-          .toString(),
+      date: DateTime((args.selectedDate ?? DateTime.now()).year, (args.selectedDate ?? DateTime.now()).month).toString(),
     );
 
     if (args.myTransaction != null) {
