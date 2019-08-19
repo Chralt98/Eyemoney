@@ -172,7 +172,7 @@ class _HomeState extends State<Home> {
     showMonthPicker(context: context, initialDate: _selectedDate ?? DateTime.now()).then(
       (date) => setState(
         () {
-          if (date.month == DateTime.now().month) {
+          if ((date ?? DateTime.now()).month == DateTime.now().month) {
             _selectedDate = DateTime.now();
           } else {
             DateTime now = DateTime.now();

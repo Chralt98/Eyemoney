@@ -68,34 +68,6 @@ class _AddingState extends State<Adding> {
       );
   }
 
-  void _calculateNewBalance() {
-    final AddingArguments args = ModalRoute.of(context).settings.arguments;
-    if (_moneyController.numberValue == 0.0) {
-      setState(() {
-        _balance = (args.myTransaction != null)
-            ? ((args.balance ?? 0.0) - args.myTransaction.sign * args.myTransaction.amount * args.myTransaction.quantity)
-            : args.balance ?? 0.0;
-      });
-    } else {
-      double quantity;
-      if (deleteSpaces(_quantityController.text) == '' || _quantityController.text == null) {
-        quantity = 1.0;
-      } else {
-        quantity = double.parse(_quantityController.text ?? 1.0);
-      }
-      setState(() {
-        if (args.myTransaction != null) {
-          _balance = round(
-              (args.balance + (isRevenue ? 1 : -1) * _moneyController.numberValue * quantity) -
-                  (args.myTransaction.sign * args.myTransaction.amount * args.myTransaction.quantity),
-              2);
-        } else {
-          _balance = round(args.balance + (isRevenue ? 1 : -1) * _moneyController.numberValue * quantity, 2);
-        }
-      });
-    }
-  }
-
   @override
   void dispose() {
     _addCategoryController.dispose();
@@ -222,6 +194,54 @@ class _AddingState extends State<Adding> {
     }).toList();
   }
 
+  Widget _getSwitch() {
+    return Container(
+      child: Transform.scale(
+        scale: 2,
+        child: Switch(
+          value: isRevenue,
+          onChanged: (bool value) => setState(
+            () {
+              isRevenue = value;
+              _calculateNewBalance();
+            },
+          ),
+          activeColor: Colors.lightGreen,
+          inactiveThumbColor: Colors.red,
+          inactiveTrackColor: Color.fromARGB(120, 255, 0, 0),
+        ),
+      ),
+    );
+  }
+
+  void _calculateNewBalance() {
+    final AddingArguments args = ModalRoute.of(context).settings.arguments;
+    if (_moneyController.numberValue == 0.0) {
+      setState(() {
+        _balance = (args.myTransaction != null)
+            ? ((args.balance ?? 0.0) - args.myTransaction.sign * args.myTransaction.amount * args.myTransaction.quantity)
+            : args.balance ?? 0.0;
+      });
+    } else {
+      double quantity;
+      if (deleteSpaces(_quantityController.text) == '' || _quantityController.text == null) {
+        quantity = 1.0;
+      } else {
+        quantity = double.parse(_quantityController.text ?? 1.0);
+      }
+      setState(() {
+        if (args.myTransaction != null) {
+          _balance = round(
+              (args.balance + (isRevenue ? 1 : -1) * _moneyController.numberValue * quantity) -
+                  (args.myTransaction.sign * args.myTransaction.amount * args.myTransaction.quantity),
+              2);
+        } else {
+          _balance = round(args.balance + (isRevenue ? 1 : -1) * _moneyController.numberValue * quantity, 2);
+        }
+      });
+    }
+  }
+
   void _initDefaultValues() {
     final AddingArguments args = ModalRoute.of(context).settings.arguments;
     _balance = args.balance ?? 0.0;
@@ -309,26 +329,6 @@ class _AddingState extends State<Adding> {
   void _submitDescription(String description) {
     _description = description;
     _onCheck();
-  }
-
-  Widget _getSwitch() {
-    return Container(
-      child: Transform.scale(
-        scale: 2,
-        child: Switch(
-          value: isRevenue,
-          onChanged: (bool value) => setState(
-            () {
-              isRevenue = value;
-              _calculateNewBalance();
-            },
-          ),
-          activeColor: Colors.lightGreen,
-          inactiveThumbColor: Colors.red,
-          inactiveTrackColor: Color.fromARGB(120, 255, 0, 0),
-        ),
-      ),
-    );
   }
 
   void _descriptionTextFieldChanged(String text) {
