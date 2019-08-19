@@ -1,4 +1,3 @@
-import 'package:Eyemoney/outsourcing/global_vars.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -6,23 +5,19 @@ class MyTransaction {
   final int id;
   final String category;
   final String description;
+  final int sign;
   final double amount;
   final int quantity;
   final String date;
 
-  MyTransaction(
-      {this.id,
-      this.category,
-      this.description,
-      this.amount,
-      this.quantity,
-      this.date});
+  MyTransaction({this.id, this.category, this.description, this.sign, this.amount, this.quantity, this.date});
 
   Map<String, dynamic> toMap() {
     return {
       'id': id,
       'category': category,
       'description': description,
+      'sign': sign,
       'amount': amount,
       'quantity': quantity,
       'date': date,
@@ -33,7 +28,7 @@ class MyTransaction {
   // each Transaction when using the print statement.
   @override
   String toString() {
-    return 'MyTransactions{id: $id, category: $category, description: $description, amount: $amount, quantity: $quantity, date: $date}';
+    return 'MyTransactions{id: $id, category: $category, description: $description, sign: $sign, amount: $amount, quantity: $quantity, date: $date}';
   }
 }
 
@@ -42,11 +37,18 @@ Future<Database> getDataBase() async {
     // Set the path to the database. Note: Using the `join` function from the
     // `path` package is best practice to ensure the path is correctly
     // constructed for each platform.
-    join(await getDatabasesPath(), appName + 'Database.db'),
+    join(await getDatabasesPath(), 'EyemoneyDatabase.db'),
 // When the database is first created, create a table to store transactions.
     onCreate: (db, version) {
       return db.execute(
-        "CREATE TABLE transactions(id INTEGER PRIMARY KEY AUTOINCREMENT, category TEXT, description TEXT, amount REAL, quantity INTEGER, date DATETIME)",
+        "CREATE TABLE transactions("
+        "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+        "category TEXT, "
+        "description TEXT, "
+        "sign INTEGER, "
+        "amount REAL DEFAULT 0 CHECK(amount >= 0), "
+        "quantity INTEGER DEFAULT 1 CHECK(quantity > 0), "
+        "date DATETIME)",
       );
     },
 // Set the version. This executes the onCreate function and provides a
@@ -89,18 +91,15 @@ Future<List<MyTransaction>> getDatabase(DateTime selectedDate) async {
   final Database db = await getDataBase();
 
   // Query the table for all The Dogs.
-  final List<Map<String, dynamic>> maps = await db.query('transactions',
-      where: "date = ?",
-      whereArgs: [
-        (selectedDate ?? DateTime(DateTime.now().year, DateTime.now().month))
-            .toString()
-      ]);
+  final List<Map<String, dynamic>> maps =
+      await db.query('transactions', where: "strftime('%m', date) = ?", whereArgs: [normMonthDatabase(((selectedDate ?? DateTime.now()).month).toString())]);
 
   return List.generate(maps.length, (i) {
     return MyTransaction(
       id: maps[i]['id'],
       category: maps[i]['category'],
       description: maps[i]['description'],
+      sign: maps[i]['sign'],
       amount: maps[i]['amount'],
       quantity: maps[i]['quantity'],
       date: maps[i]['date'],
@@ -120,4 +119,8 @@ Future<void> removeFromDatabase(MyTransaction data) async {
     // Pass the Transactions's id as a whereArg to prevent SQL injection.
     whereArgs: [data.id],
   );
+}
+
+String normMonthDatabase(String month) {
+  return month.length == 1 ? ('0' + month) : month;
 }

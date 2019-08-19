@@ -32,7 +32,7 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     // DateTime.now(); => 2019-08-05 17:41:24.065004
-    _selectedDate = DateTime(DateTime.now().year, DateTime.now().month);
+    _selectedDate = DateTime.now();
     _loadDatabase();
   }
 
@@ -75,8 +75,7 @@ class _HomeState extends State<Home> {
           Navigator.pushNamed(
             context,
             Adding.routeName,
-            arguments: AddingArguments(
-                selectedDate: _selectedDate, balance: _getBalance()),
+            arguments: AddingArguments(selectedDate: _selectedDate, balance: _getBalance()),
           ).then((response) => _loadDatabase());
         },
       ),
@@ -93,18 +92,14 @@ class _HomeState extends State<Home> {
         itemBuilder: (BuildContext context, int index) {
           final MyTransaction _item = _myTransactions[index];
           final String _description = _item.description;
-          final double _amount = _item.amount * _item.quantity;
-          final String _stringAmount =
-              normTwoDecimal(round(_amount, 2).toString());
+          final double _amount = _item.sign * _item.amount * _item.quantity;
+          final String _stringAmount = normTwoDecimal(round(_amount, 2).toString());
           return GestureDetector(
             onTap: () {
               Navigator.pushNamed(
                 context,
                 Adding.routeName,
-                arguments: AddingArguments(
-                    selectedDate: _selectedDate,
-                    balance: _getBalance(),
-                    myTransaction: _item),
+                arguments: AddingArguments(selectedDate: _selectedDate, balance: _getBalance(), myTransaction: _item),
               ).then((response) => _loadDatabase());
             },
             child: Dismissible(
@@ -116,8 +111,7 @@ class _HomeState extends State<Home> {
                     _myTransactions.removeAt(index);
                     removeFromDatabase(_item);
                   });
-                  _showScaffoldSnackBar(
-                      context, _description, _stringAmount, index, _item);
+                  _showScaffoldSnackBar(context, _description, _stringAmount, index, _item);
                 }
               },
               background: DismissibleBackground(),
@@ -144,18 +138,10 @@ class _HomeState extends State<Home> {
     }
   }
 
-  void _showScaffoldSnackBar(BuildContext context, String _description,
-      String _stringAmount, int index, MyTransaction _item) {
+  void _showScaffoldSnackBar(BuildContext context, String _description, String _stringAmount, int index, MyTransaction _item) {
     Scaffold.of(context).showSnackBar(
       SnackBar(
-        content: Text('"' +
-            (_description ?? '–') +
-            '", ' +
-            AppLocalizations.of(context).money +
-            ': ' +
-            _stringAmount +
-            ', ' +
-            AppLocalizations.of(context).removed),
+        content: Text('"' + (_description ?? '–') + '", ' + AppLocalizations.of(context).money + ': ' + _stringAmount + ', ' + AppLocalizations.of(context).removed),
         action: SnackBarAction(
           label: AppLocalizations.of(context).undo,
           onPressed: () {
@@ -175,7 +161,7 @@ class _HomeState extends State<Home> {
     double balance = 0;
     if (_myTransactions != null) {
       for (int i = 0; i < _myTransactions.length; i++) {
-        balance += _myTransactions[i].amount * _myTransactions[i].quantity;
+        balance += _myTransactions[i].sign * _myTransactions[i].amount * _myTransactions[i].quantity;
       }
     }
     balance = round(balance, 2);
@@ -183,14 +169,15 @@ class _HomeState extends State<Home> {
   }
 
   void _showMonthPicker() {
-    showMonthPicker(
-            context: context,
-            initialDate: _selectedDate ??
-                DateTime(DateTime.now().year, DateTime.now().month))
-        .then(
+    showMonthPicker(context: context, initialDate: _selectedDate ?? DateTime.now()).then(
       (date) => setState(
         () {
-          _selectedDate = date;
+          if (date.month == DateTime.now().month) {
+            _selectedDate = DateTime.now();
+          } else {
+            DateTime now = DateTime.now();
+            _selectedDate = DateTime(date.year, date.month, now.day, now.hour, now.minute, now.second);
+          }
           _loadDatabase();
         },
       ),

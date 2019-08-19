@@ -7,6 +7,7 @@ import 'package:Eyemoney/custom_widgets/adding/category_item.dart';
 import 'package:Eyemoney/custom_widgets/adding/category_list.dart';
 import 'package:Eyemoney/custom_widgets/adding/description_textfield.dart';
 import 'package:Eyemoney/custom_widgets/adding/list_decoration.dart';
+import 'package:Eyemoney/custom_widgets/adding/quantity_textfield.dart';
 import 'package:Eyemoney/custom_widgets/adding/selected_category.dart';
 import 'package:Eyemoney/custom_widgets/adding/sign_selector.dart';
 import 'package:Eyemoney/custom_widgets/dismissible_background.dart';
@@ -71,7 +72,9 @@ class _AddingState extends State<Adding> {
     final AddingArguments args = ModalRoute.of(context).settings.arguments;
     if (_moneyController.numberValue == 0.0) {
       setState(() {
-        _balance = (args.myTransaction != null) ? ((args.balance ?? 0.0) - args.myTransaction.amount * args.myTransaction.quantity) : args.balance ?? 0.0;
+        _balance = (args.myTransaction != null)
+            ? ((args.balance ?? 0.0) - args.myTransaction.sign * args.myTransaction.amount * args.myTransaction.quantity)
+            : args.balance ?? 0.0;
       });
     } else {
       double quantity;
@@ -82,8 +85,10 @@ class _AddingState extends State<Adding> {
       }
       setState(() {
         if (args.myTransaction != null) {
-          _balance =
-              round((args.balance + (isRevenue ? 1 : -1) * _moneyController.numberValue * quantity) - (args.myTransaction.amount * args.myTransaction.quantity), 2);
+          _balance = round(
+              (args.balance + (isRevenue ? 1 : -1) * _moneyController.numberValue * quantity) -
+                  (args.myTransaction.sign * args.myTransaction.amount * args.myTransaction.quantity),
+              2);
         } else {
           _balance = round(args.balance + (isRevenue ? 1 : -1) * _moneyController.numberValue * quantity, 2);
         }
@@ -97,6 +102,7 @@ class _AddingState extends State<Adding> {
     _scrollController.dispose();
     _moneyController.dispose();
     _descriptionController.dispose();
+    _quantityController.dispose();
     super.dispose();
   }
 
@@ -163,22 +169,7 @@ class _AddingState extends State<Adding> {
                       child: AmountTextField(moneyController: _moneyController, submitCallback: _onSubmitAmount),
                     ),
                     Icon(Icons.clear),
-                    Container(
-                      width: 60,
-                      child: TextField(
-                        decoration: InputDecoration(
-                          border: UnderlineInputBorder(),
-                          filled: true,
-                        ),
-                        keyboardType: TextInputType.numberWithOptions(decimal: false, signed: false),
-                        onTap: () => _quantityController.text = '',
-                        onChanged: (text) {
-                          _calculateNewBalance();
-                        },
-                        onSubmitted: _onSubmitQuantity,
-                        controller: _quantityController,
-                      ),
-                    ),
+                    QuantityTextField(quantityController: _quantityController, onSubmitQuantity: _onSubmitQuantity, onChanged: (text) => _calculateNewBalance),
                   ],
                 ),
               ],
@@ -236,16 +227,14 @@ class _AddingState extends State<Adding> {
     _balance = args.balance ?? 0.0;
     _selectedCategory = _categories.first ?? AppLocalizations.of(context).other;
     if (args.myTransaction != null) {
-      double temp = ((args.myTransaction.amount < 0 ? args.myTransaction.amount * -1 : args.myTransaction.amount));
-      _amount = temp.toString() ?? '0.00';
-      _moneyController.updateValue(temp);
+      _amount = (args.myTransaction.amount).toString() ?? '0.00';
+      _moneyController.updateValue(args.myTransaction.amount);
       _quantityController.text = args.myTransaction.quantity.toString();
       _description = args.myTransaction.description;
       _descriptionController.text = _description;
       _selectedCategory = args.myTransaction.category;
       _setCategory(_selectedCategory);
-      bool transactionSign = args.myTransaction.amount > 0 ? true : false;
-      isRevenue = transactionSign;
+      isRevenue = args.myTransaction.sign > 0 ? true : false;
     } else {
       isRevenue = false;
     }
@@ -381,7 +370,7 @@ class _AddingState extends State<Adding> {
 
   void _insertOrUpdateDatabase() async {
     _amount = _moneyController.numberValue.toString();
-    final int sign = isRevenue ? 1 : -1;
+    final int _sign = isRevenue ? 1 : -1;
 
     _description = _description == '' ? '–' : _description;
 
@@ -389,7 +378,7 @@ class _AddingState extends State<Adding> {
     if (_quantityController.text != '') {
       _quantity = int.parse(_quantityController.text);
     }
-    final double _realAmount = round((sign) * double.parse(_amount), 2);
+    final double _realAmount = round(double.parse(_amount), 2);
 
     final AddingArguments args = ModalRoute.of(context).settings.arguments;
 
@@ -397,9 +386,10 @@ class _AddingState extends State<Adding> {
       id: (args.myTransaction != null) ? args.myTransaction.id : null,
       category: _selectedCategory,
       description: _description,
+      sign: _sign,
       amount: _realAmount,
       quantity: _quantity,
-      date: DateTime((args.selectedDate ?? DateTime.now()).year, (args.selectedDate ?? DateTime.now()).month).toString(),
+      date: (args.selectedDate ?? DateTime.now()).toString(),
     );
 
     if (args.myTransaction != null) {
