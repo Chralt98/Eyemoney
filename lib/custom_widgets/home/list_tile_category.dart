@@ -9,13 +9,17 @@ class ListTileCategory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
-    return Container(
-      child: Text(
-        category ?? AppLocalizations.of(context).other,
-        textAlign: TextAlign.center,
-        style: Theme.of(context).textTheme.body1,
+    return Expanded(
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border(left: BorderSide(width: 1, color: Colors.black12), right: BorderSide(width: 1, color: Colors.black12)),
+        ),
+        child: Text(
+          category ?? AppLocalizations.of(context).other,
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.body1,
+        ),
       ),
-      width: screenWidth / 3,
     );
   }
 }

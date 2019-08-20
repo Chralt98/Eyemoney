@@ -27,6 +27,8 @@ class _HomeState extends State<Home> {
   DateTime _selectedDate;
   List<MyTransaction> _myTransactions;
   ScrollController _scrollController = new ScrollController();
+  Set<int> _selectedItems = Set<int>();
+  double _selectedItemsSum = 0;
 
   @override
   void initState() {
@@ -56,7 +58,9 @@ class _HomeState extends State<Home> {
       body: Container(
         child: Column(
           children: <Widget>[
-            MoneySums(transactions: _myTransactions),
+            MoneySums(
+              transactions: _myTransactions,
+            ),
             ListInfo(),
             Expanded(
               child: Container(
@@ -71,6 +75,10 @@ class _HomeState extends State<Home> {
         child: Icon(Icons.add),
         backgroundColor: Theme.of(context).accentColor,
         onPressed: () {
+          setState(() {
+            _selectedItems.clear();
+            _selectedItemsSum = 0;
+          });
           // pass arguments
           Navigator.pushNamed(
             context,
@@ -94,6 +102,7 @@ class _HomeState extends State<Home> {
           final String _description = _item.description;
           final double _amount = _item.sign * _item.amount * _item.quantity;
           final String _stringAmount = normTwoDecimal(round(_amount, 2).toString());
+          final bool _isSelected = _selectedItems.contains(index);
           return GestureDetector(
             onTap: () {
               Navigator.pushNamed(
@@ -120,6 +129,8 @@ class _HomeState extends State<Home> {
                 category: _item.category,
                 amount: _amount,
                 index: index,
+                isSelected: _isSelected,
+                onLongPress: () => _onLongPressListTile(index),
               ),
             ),
           );
@@ -136,6 +147,24 @@ class _HomeState extends State<Home> {
         child: CircularProgressIndicator(),
       );
     }
+  }
+
+  void _onLongPressListTile(int index) {
+    if (_selectedItems.contains(index)) {
+      setState(() {
+        _selectedItems.remove(index);
+      });
+    } else {
+      setState(() {
+        _selectedItems.add(index);
+      });
+    }
+    _selectedItems.forEach((index) {
+      MyTransaction _item = _myTransactions[index];
+      _selectedItemsSum += _item.sign * _item.amount * _item.quantity;
+    });
+    print('SUM: $_selectedItemsSum, Selected: $_selectedItems');
+    _selectedItemsSum = 0;
   }
 
   void _showScaffoldSnackBar(BuildContext context, String _description, String _stringAmount, int index, MyTransaction _item) {
@@ -169,6 +198,10 @@ class _HomeState extends State<Home> {
   }
 
   void _showMonthPicker() {
+    setState(() {
+      _selectedItems.clear();
+      _selectedItemsSum = 0;
+    });
     showMonthPicker(context: context, initialDate: _selectedDate ?? DateTime.now()).then(
       (date) => setState(
         () {

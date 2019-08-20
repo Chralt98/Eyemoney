@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 class ListInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
     return Container(
       decoration: BoxDecoration(
         border: BorderDirectional(
@@ -15,20 +16,19 @@ class ListInfo extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Expanded(
+          Container(
             child: Column(
               children: <Widget>[
                 _getLabel(context, AppLocalizations.of(context).description),
                 _getSymbol(context, Icons.info_outline),
               ],
             ),
+            width: screenWidth / 3,
           ),
-          Expanded(
+          Container(
             child: Container(
               decoration: BoxDecoration(
-                border: Border(
-                    left: BorderSide(width: 1, color: Colors.black12),
-                    right: BorderSide(width: 1, color: Colors.black12)),
+                border: Border(left: BorderSide(width: 1, color: Colors.black12), right: BorderSide(width: 1, color: Colors.black12)),
               ),
               child: Column(
                 children: <Widget>[
@@ -37,14 +37,16 @@ class ListInfo extends StatelessWidget {
                 ],
               ),
             ),
+            width: screenWidth / 3,
           ),
-          Expanded(
+          Container(
             child: Column(
               children: <Widget>[
                 _getLabel(context, AppLocalizations.of(context).money),
                 _getSymbol(context, Icons.fiber_smart_record),
               ],
             ),
+            width: screenWidth / 3,
           ),
         ],
       ),
