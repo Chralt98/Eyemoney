@@ -24,11 +24,12 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  GlobalKey<ScaffoldState> _key = new GlobalKey<ScaffoldState>();
   DateTime _selectedDate;
   List<MyTransaction> _myTransactions;
   ScrollController _scrollController = new ScrollController();
   Set<int> _selectedItems = Set<int>();
-  double _selectedItemsSum = 0;
+  bool _isCheckBoxVisible = false;
 
   @override
   void initState() {
@@ -44,9 +45,15 @@ class _HomeState extends State<Home> {
     super.dispose();
   }
 
+  _handleDrawer() {
+    _key.currentState.openDrawer();
+    _clearSelected();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _key,
       appBar: AppBar(
         title: Text(widget.title),
         backgroundColor: Theme.of(context).accentColor,
@@ -54,38 +61,74 @@ class _HomeState extends State<Home> {
           DateDisplay(date: _selectedDate),
           MonthSelector(onPressed: _showMonthPicker),
         ],
-      ),
-      body: Container(
-        child: Column(
-          children: <Widget>[
-            MoneySums(
-              transactions: _myTransactions,
-            ),
-            ListInfo(),
-            Expanded(
-              child: Container(
-                child: _getList(context),
-              ),
-            ),
-          ],
+        leading: new IconButton(
+          icon: new Icon(Icons.menu),
+          onPressed: _handleDrawer,
         ),
       ),
+      body: Stack(alignment: Alignment.bottomRight, children: <Widget>[
+        Container(
+          child: Column(
+            children: <Widget>[
+              MoneySums(
+                transactions: _myTransactions,
+              ),
+              ListInfo(),
+              Expanded(
+                child: Container(
+                  child: _getList(context),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Visibility(
+          visible: _isCheckBoxVisible,
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: new BorderRadius.circular(5.0),
+                  color: Colors.indigoAccent,
+                ),
+                margin: EdgeInsets.only(
+                  left: 20,
+                ),
+                padding: EdgeInsets.all(5),
+                child: Text(
+                  AppLocalizations.of(context).money + ': ' + _getSelectedItemsSum(),
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+              Container(
+                padding: EdgeInsetsDirectional.only(bottom: 16, end: 16),
+                child: FloatingActionButton(
+                  onPressed: _clearSelected,
+                  child: Icon(Icons.clear),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ]),
       drawer: MyDrawer(),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        backgroundColor: Theme.of(context).accentColor,
-        onPressed: () {
-          setState(() {
-            _selectedItems.clear();
-            _selectedItemsSum = 0;
-          });
-          // pass arguments
-          Navigator.pushNamed(
-            context,
-            Adding.routeName,
-            arguments: AddingArguments(selectedDate: _selectedDate, balance: _getBalance()),
-          ).then((response) => _loadDatabase());
-        },
+      floatingActionButton: Visibility(
+        child: FloatingActionButton(
+          child: Icon(Icons.add),
+          backgroundColor: Theme.of(context).accentColor,
+          onPressed: () {
+            _clearSelected();
+            // pass arguments
+            Navigator.pushNamed(
+              context,
+              Adding.routeName,
+              arguments: AddingArguments(selectedDate: _selectedDate, balance: _getBalance()),
+            ).then((response) => _loadDatabase());
+          },
+        ),
+        visible: !_isCheckBoxVisible,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
@@ -105,17 +148,28 @@ class _HomeState extends State<Home> {
           final bool _isSelected = _selectedItems.contains(index);
           return GestureDetector(
             onTap: () {
-              Navigator.pushNamed(
-                context,
-                Adding.routeName,
-                arguments: AddingArguments(selectedDate: _selectedDate, balance: _getBalance(), myTransaction: _item),
-              ).then((response) => _loadDatabase());
+              if (_isCheckBoxVisible) {
+                _checkBox(index);
+              } else {
+                Navigator.pushNamed(
+                  context,
+                  Adding.routeName,
+                  arguments: AddingArguments(selectedDate: _selectedDate, balance: _getBalance(), myTransaction: _item),
+                ).then((response) => _loadDatabase());
+              }
+            },
+            onLongPress: () {
+              setState(() {
+                _selectedItems.clear();
+                _isCheckBoxVisible = !_isCheckBoxVisible;
+              });
             },
             child: Dismissible(
               key: Key(_item.id.toString()),
               direction: DismissDirection.endToStart,
               onDismissed: (DismissDirection dir) {
                 if (dir == DismissDirection.endToStart) {
+                  _clearSelected();
                   setState(() {
                     _myTransactions.removeAt(index);
                     removeFromDatabase(_item);
@@ -130,7 +184,12 @@ class _HomeState extends State<Home> {
                 amount: _amount,
                 index: index,
                 isSelected: _isSelected,
-                onLongPress: () => _onLongPressListTile(index),
+                isVisible: _isCheckBoxVisible,
+                onChanged: (bool value) {
+                  setState(() {
+                    _checkBox(index);
+                  });
+                },
               ),
             ),
           );
@@ -149,7 +208,14 @@ class _HomeState extends State<Home> {
     }
   }
 
-  void _onLongPressListTile(int index) {
+  void _clearSelected() {
+    setState(() {
+      _selectedItems.clear();
+      _isCheckBoxVisible = false;
+    });
+  }
+
+  void _checkBox(int index) {
     if (_selectedItems.contains(index)) {
       setState(() {
         _selectedItems.remove(index);
@@ -159,12 +225,15 @@ class _HomeState extends State<Home> {
         _selectedItems.add(index);
       });
     }
+  }
+
+  String _getSelectedItemsSum() {
+    double _selectedItemsSum = 0;
     _selectedItems.forEach((index) {
       MyTransaction _item = _myTransactions[index];
       _selectedItemsSum += _item.sign * _item.amount * _item.quantity;
     });
-    print('SUM: $_selectedItemsSum, Selected: $_selectedItems');
-    _selectedItemsSum = 0;
+    return normTwoDecimal(round(_selectedItemsSum, 2).toString());
   }
 
   void _showScaffoldSnackBar(BuildContext context, String _description, String _stringAmount, int index, MyTransaction _item) {
@@ -198,10 +267,7 @@ class _HomeState extends State<Home> {
   }
 
   void _showMonthPicker() {
-    setState(() {
-      _selectedItems.clear();
-      _selectedItemsSum = 0;
-    });
+    _clearSelected();
     showMonthPicker(context: context, initialDate: _selectedDate ?? DateTime.now()).then(
       (date) => setState(
         () {
