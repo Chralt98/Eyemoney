@@ -107,6 +107,31 @@ Future<List<MyTransaction>> getDatabase(DateTime selectedDate) async {
   });
 }
 
+Future<List<MyTransaction>> getCategoriesWithPrices(DateTime selectedDate) async {
+  final Database db = await getDataBase();
+
+  // Query the table for all The Dogs.
+  // final List<Map<String, dynamic>> maps = await db.query('transactions',
+  // where: "strftime('%m', date) = ?", whereArgs: [normMonthDatabase(((selectedDate ?? DateTime.now()).month).toString())], groupBy: "category", orderBy: "amount");
+
+  final List<Map<String, dynamic>> maps = await db.rawQuery(
+      "SELECT category, sign, SUM(amount * quantity) AS category_amount FROM transactions WHERE strftime('%m', date) = ? AND sign=-1 GROUP BY category "
+      "UNION SELECT category, sign, SUM(amount * quantity) AS category_amount FROM transactions WHERE strftime('%m', date) = ? AND sign=1 GROUP BY category",
+      [normMonthDatabase(((selectedDate ?? DateTime.now()).month).toString()), normMonthDatabase(((selectedDate ?? DateTime.now()).month).toString())]);
+
+  return List.generate(maps.length, (i) {
+    return MyTransaction(
+      id: maps[i]['id'],
+      category: maps[i]['category'],
+      description: maps[i]['description'],
+      sign: maps[i]['sign'],
+      amount: maps[i]['category_amount'],
+      quantity: maps[i]['quantity'],
+      date: maps[i]['date'],
+    );
+  });
+}
+
 Future<void> removeFromDatabase(MyTransaction data) async {
   // Get a reference to the database.
   final db = await getDataBase();
