@@ -36,12 +36,24 @@ class MoneySums extends StatelessWidget {
   Widget _getSum(BuildContext context, double amount, Color color) {
     // final double screenWidth = MediaQuery.of(context).size.width;
     final stringAmount = normTwoDecimal(round(amount, 2).toString());
-    return Container(
-      height: 26,
-      child: FittedBox(
-        child: Text(AppLocalizations.of(context).balance + ': ' + stringAmount, textAlign: TextAlign.center, style: TextStyle(color: color, fontWeight: FontWeight.bold)),
-        fit: BoxFit.scaleDown,
-      ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Container(
+          height: 26,
+          child: FittedBox(
+            child: Text(AppLocalizations.of(context).balance + ': ', style: TextStyle(color: color, fontWeight: FontWeight.bold)),
+            fit: BoxFit.scaleDown,
+          ),
+        ),
+        Container(
+          height: 26,
+          child: FittedBox(
+            child: Text(stringAmount, textAlign: TextAlign.center, style: TextStyle(color: color, fontWeight: FontWeight.bold)),
+            fit: BoxFit.scaleDown,
+          ),
+        ),
+      ],
     );
   }
 }

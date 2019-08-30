@@ -51,6 +51,17 @@ class _StatisticsState extends State<Statistics> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Statistics"),
+        actions: <Widget>[
+          PopupMenuButton(
+            itemBuilder: (BuildContext context) {
+              return [
+                PopupMenuItem(child: Text('month')),
+                PopupMenuItem(child: Text('year')),
+                PopupMenuItem(child: Text('overall')),
+              ];
+            },
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Center(
